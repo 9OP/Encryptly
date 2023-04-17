@@ -1,10 +1,22 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import { ContextProvider } from "@/context";
+import App from "@/App";
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+const rootElement = document.getElementById("root") as HTMLElement;
+const root = createRoot(rootElement);
+
+root.render(
+  <StrictMode>
+    <ChakraProvider>
+      <Router>
+        <ContextProvider>
+          <App />
+          {/* <ToastContainer /> */}
+        </ContextProvider>
+      </Router>
+    </ChakraProvider>
+  </StrictMode>
+);

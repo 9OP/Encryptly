@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, useLocation, Routes, useNavigate } from "react-router-dom";
+import { FC, useContext, useEffect } from "react";
+import { AppContext } from "@/context";
+import { useLogout } from "@/hooks";
+import IndexPage from "@/pages/index.page";
+import LoginPage from "@/pages/login.page";
+import AuthGuard from "@/pages/guard/authGuard";
 
-function App() {
-  const [count, setCount] = useState(0)
+const Logout: FC = () => {
+  const { accessToken, encryptionKey } = useContext(AppContext);
+  const logout = useLogout();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async function () {
+      accessToken.setValue("");
+      encryptionKey.setValue("");
+
+      try {
+        await logout();
+      } finally {
+        navigate("/login", { replace: true });
+      }
+    })();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <></>;
+};
+
+const NotFound: FC = () => {
+  // Recursively navigate back in the history until:
+  // - find a matching route, or
+  // - reach /
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (function () {
+      if (pathname !== "/") {
+        navigate(-1);
+      }
+    })();
+  }, [navigate, pathname]);
+
+  return <></>;
+};
+
+export default function App() {
+  // const router = useRouter();
+  // const toast = useToast();
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <Routes>
+      <Route>
+        {/* Public */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/logout" element={<Logout />} />
 
-export default App
+        <Route path="/" element={<AuthGuard />}>
+          <Route index element={<IndexPage />} />
+        </Route>
+
+        {/* By default redirect to "/"" */}
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  );
+}
