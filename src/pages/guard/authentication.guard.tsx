@@ -2,35 +2,33 @@ import { FC, useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, Navigate, Outlet } from "react-router-dom";
 import { AppContext } from "@app/context";
 import { getUserInfo } from "@app/hooks/http";
-import { delAccessToken, getAccessToken, setAccessToken } from "@app/lib/storage";
+import {
+  delStorageAccessToken,
+  getStorageAccessToken,
+  setStorageAccessToken,
+} from "@app/lib/storage";
+import { useIsAuthenticated } from "@app/hooks";
 
 const useRecoverAccessToken = () => {
   const { accessToken } = useContext(AppContext);
 
   return async () => {
-    const token = getAccessToken();
+    const token = getStorageAccessToken();
 
     if (token) {
       try {
         await getUserInfo(token);
         accessToken.setValue(token);
-        setAccessToken(token);
+        setStorageAccessToken(token);
         return true;
       } catch (err) {
         accessToken.setValue("");
-        delAccessToken();
+        delStorageAccessToken();
       }
     }
 
     return false;
   };
-};
-
-const useIsAuthenticated = () => {
-  const { accessToken, encryptionKey } = useContext(AppContext);
-  const hasAccessToken = accessToken.value != "" && accessToken.value != null;
-  const hasEncryptionKey = encryptionKey.value != "" && encryptionKey.value != null;
-  return hasAccessToken && hasEncryptionKey;
 };
 
 const AuthGuard: FC = () => {

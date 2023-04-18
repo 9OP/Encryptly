@@ -27,7 +27,6 @@ const PassphraseInput = (props: {
         <FormLabel>Passphrase</FormLabel>
         <Input
           autoFocus
-          borderRadius="0.2rem"
           size="sm"
           type="password"
           value={passphrase}

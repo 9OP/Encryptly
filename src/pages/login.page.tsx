@@ -13,7 +13,7 @@ import { AppContext } from "@app/context";
 import { getUserInfo } from "@app/hooks/http";
 import { exportEncryptionKey, sha256, unwrapEncryptionKey } from "@app/lib/crypto";
 import { AppData } from "@app/models";
-import { delAccessToken } from "@app/lib/storage";
+import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 
 import GoogleLoginButton from "@app/pages/components/googleLoginButton";
 import PassphraseInput from "@app/pages/components/passphraseInput";
@@ -27,22 +27,21 @@ const Login: FC = () => {
     try {
       await getUserInfo(token);
       accessToken.setValue(token);
-      setAccessToken(token);
+      setStorageAccessToken(token);
     } catch (err) {
       setError((err as Error).message);
-      delAccessToken();
+      delStorageAccessToken();
     }
   };
 
   const setEncryptionKey = async (passphrase: string, data: AppData) => {
     try {
-      alert(JSON.stringify(data));
       const digest = await sha256(passphrase);
       const key = await unwrapEncryptionKey(data, digest);
       const exportKey = await exportEncryptionKey(key);
       encryptionKey.setValue(exportKey);
     } catch (err) {
-      setError((err as Error).message);
+      setError("Failed generating the encryption key");
     }
   };
 
@@ -58,7 +57,7 @@ const Login: FC = () => {
         )}
 
         {error && (
-          <Alert status="error" variant="subtle" borderRadius="6px" marginTop="1rem">
+          <Alert status="error" variant="subtle" marginTop="1rem">
             <AlertIcon />
             <Flex direction="column">
               <AlertTitle>Connection failed</AlertTitle>

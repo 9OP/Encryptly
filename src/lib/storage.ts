@@ -1,13 +1,13 @@
 const ACCESS_TOKEN = "access-token";
 
-export const getAccessToken = (): string => {
+export const getStorageAccessToken = (): string => {
   return sessionStorage.getItem(ACCESS_TOKEN) || "";
 };
 
-export const setAccessToken = (token: string) => {
+export const setStorageAccessToken = (token: string) => {
   sessionStorage.setItem(ACCESS_TOKEN, token);
 };
 
-export const delAccessToken = () => {
+export const delStorageAccessToken = () => {
   sessionStorage.removeItem(ACCESS_TOKEN);
 };

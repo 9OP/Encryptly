@@ -5,6 +5,7 @@ import { useLogout } from "@app/hooks";
 import IndexPage from "@app/pages/index.page";
 import LoginPage from "@app/pages/login.page";
 import AuthGuard from "@app/pages/guard/authentication.guard";
+import LoginGuard from "@app/pages/guard/login.guard";
 
 const Logout: FC = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
@@ -48,21 +49,18 @@ const NotFound: FC = () => {
 };
 
 export default function App() {
-  // const router = useRouter();
-  // const toast = useToast();
-
   return (
     <Routes>
       <Route>
-        {/* Public */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/logout" element={<Logout />} />
+        <Route path="/login" element={<LoginGuard />}>
+          <Route index element={<LoginPage />} />
+        </Route>
 
         <Route path="/" element={<AuthGuard />}>
           <Route index element={<IndexPage />} />
         </Route>
 
-        {/* By default redirect to "/"" */}
+        <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

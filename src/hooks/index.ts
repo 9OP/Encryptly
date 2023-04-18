@@ -9,14 +9,19 @@ import {
   loadAppData,
   getUserFiles,
   getStorageQuota,
-  uploadFile,
   deleteAppFolder,
   downloadFile,
-  createFolder,
   moveFile,
   getDriveId,
 } from "./http";
 import promisify from "@app/lib/promisify";
+
+export const useIsAuthenticated = () => {
+  const { accessToken, encryptionKey } = useContext(AppContext);
+  const hasAccessToken = accessToken.value != "" && accessToken.value != null;
+  const hasEncryptionKey = encryptionKey.value != "" && encryptionKey.value != null;
+  return hasAccessToken && hasEncryptionKey;
+};
 
 export const useUserInfo = () => {
   const { accessToken } = useContext(AppContext);
