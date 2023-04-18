@@ -12,14 +12,14 @@ import {
   deleteAppFolder,
   downloadFile,
   moveFile,
-  getDriveId,
 } from "./http";
 import promisify from "@app/lib/promisify";
 
 export const useIsAuthenticated = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
   const hasAccessToken = accessToken.value != "" && accessToken.value != null;
-  const hasEncryptionKey = encryptionKey.value != "" && encryptionKey.value != null;
+  const hasEncryptionKey =
+    encryptionKey.value != "" && encryptionKey.value != null;
   return hasAccessToken && hasEncryptionKey;
 };
 
@@ -55,11 +55,6 @@ export const useListFiles = () => {
   return useSWR("listFiles", () => getUserFiles(accessToken.value));
 };
 
-export const useGetDriveId = () => {
-  const { accessToken } = useContext(AppContext);
-  return useSWR("driveId", () => getDriveId(accessToken.value));
-};
-
 export const revalidateListFiles = async () => {
   await mutate((key: string) => "listFiles" == key, undefined, {
     revalidate: true,
@@ -72,7 +67,9 @@ export const useEncryptFile = () => {
 
   return useCallback(
     (file: File): Promise<Blob> => {
-      const worker = new Worker(new URL("../workers/encrypt.worker.ts", import.meta.url));
+      const worker = new Worker(
+        new URL("@app/lib/webworkers/encrypt.worker.ts", import.meta.url)
+      );
       return promisify(worker, { file, key: encryptionKey.value });
     },
     [encryptionKey.value]
@@ -84,7 +81,9 @@ export const useDecryptFile = () => {
 
   return useCallback(
     (data: Blob): Promise<Blob> => {
-      const worker = new Worker(new URL("../workers/decrypt.worker.ts", import.meta.url));
+      const worker = new Worker(
+        new URL("@app/lib/webworkers/decrypt.worker.ts", import.meta.url)
+      );
       return promisify(worker, { data, key: encryptionKey.value });
     },
     [encryptionKey.value]

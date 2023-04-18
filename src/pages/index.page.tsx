@@ -1,6 +1,7 @@
-import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import {
   Box,
+  Flex,
   HStack,
   Input,
   InputGroup,
@@ -8,11 +9,16 @@ import {
   InputRightElement,
   VStack,
 } from "@chakra-ui/react";
-import { AppContext } from "@app/context";
 import StorageQuota from "@app/pages/components/storage";
 import { CloseIcon, SearchIcon } from "@app/pages/components/icons";
+import FilesList from "./components/files";
 
-const SearchBar = (props: { search: string; setSearch: Dispatch<SetStateAction<string>> }) => {
+interface props {
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+}
+
+const SearchBar: FC<props> = (props: props) => {
   const { search, setSearch } = props;
 
   return (
@@ -40,16 +46,26 @@ const SearchBar = (props: { search: string; setSearch: Dispatch<SetStateAction<s
 };
 
 const Index: FC = () => {
-  const { accessToken, encryptionKey } = useContext(AppContext);
   const [search, setSearch] = useState("");
 
   return (
-    <Box margin="2rem" w="60%">
-      <HStack>
-        <StorageQuota />
-        <SearchBar search={search} setSearch={setSearch} />
-      </HStack>
-    </Box>
+    <Flex margin="2rem" w="100%" justifyContent="center">
+      <VStack w="60%" spacing="1rem">
+        <HStack
+          w="100%"
+          justifyContent="space-between"
+          borderWidth="1px"
+          padding="1.5rem"
+          borderRadius="6px"
+        >
+          <StorageQuota />
+          <SearchBar search={search} setSearch={setSearch} />
+        </HStack>
+        <Flex w="100%" borderWidth="1px" padding="1.5rem" borderRadius="6px">
+          <FilesList search={search} />
+        </Flex>
+      </VStack>
+    </Flex>
   );
 };
 

@@ -7,7 +7,6 @@ export const decrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
   const buff = await data.arrayBuffer();
   const iv = buff.slice(0, NONCE_SIZE);
   const cipher = buff.slice(NONCE_SIZE);
-  // console.log(iv, cipher.byteLength);
   const decrypted = await self.crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, cipher);
   return new Blob([decrypted]);
 };
@@ -16,7 +15,6 @@ export const encrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
   const iv = self.crypto.getRandomValues(new Uint8Array(NONCE_SIZE));
   const plain = await data.arrayBuffer();
   const encrypted = await self.crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, plain);
-  // console.log(iv, encrypted.byteLength);
   return new Blob([iv.buffer, encrypted]);
 };
 

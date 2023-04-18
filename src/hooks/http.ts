@@ -26,13 +26,10 @@ const JSONtoFileMetadata = (json: any): FileMetadata => {
   }
   const fileMetadata: FileMetadata = {
     id: json["id"],
-    name: json["name"], // .replace(/\.bin$/, ""),
-    kind: kind,
+    name: json["name"],
     size: parseInt(json["size"] || 0),
     createdTime: new Date(json["createdTime"]),
     mimeType: json["mimeType"],
-    parents: json["parents"],
-    trashed: json["trashed"],
     fileExtension: json["fileExtension"],
   };
   return fileMetadata;
@@ -68,10 +65,13 @@ const JSONtoStorageQuota = (json: any): StorageQuota => {
 };
 
 export const getUserInfo = async (token: string): Promise<UserInfo> => {
-  const res = await fetch("https://www.googleapis.com/drive/v3/about?fields=user", {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await fetch(
+    "https://www.googleapis.com/drive/v3/about?fields=user",
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   const json = await res.json();
   if (!res.ok) {
     throw ERR_USER_INFO_MISSING;
@@ -90,18 +90,21 @@ const CONFIG_FILE_NAME = "config.json";
 const APP_DATA_FOLDER = "appDataFolder";
 
 const createConfigFile = async (token: string): Promise<string> => {
-  const res = await fetch("https://www.googleapis.com/drive/v3/files?fields=id", {
-    method: "POST",
-    body: JSON.stringify({
-      mimeType: "application/json",
-      parents: [APP_DATA_FOLDER],
-      name: CONFIG_FILE_NAME,
-    }),
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const res = await fetch(
+    "https://www.googleapis.com/drive/v3/files?fields=id",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        mimeType: "application/json",
+        parents: [APP_DATA_FOLDER],
+        name: CONFIG_FILE_NAME,
+      }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const json = await res.json();
   return json["id"];
 };
@@ -113,13 +116,19 @@ const uploadConfigFile = async (
   const bytes = new TextEncoder().encode(JSON.stringify(data));
   const file = new File([bytes], "config.json", { type: "application/json" });
 
-  await fetch(`https://www.googleapis.com/upload/drive/v3/files/${configFileId}?uploadType=media`, {
-    method: "PATCH",
-    body: file,
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  await fetch(
+    `https://www.googleapis.com/upload/drive/v3/files/${configFileId}?uploadType=media`,
+    {
+      method: "PATCH",
+      body: file,
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
-export const saveAppData = async (token: string, data: AppData): Promise<void> => {
+export const saveAppData = async (
+  token: string,
+  data: AppData
+): Promise<void> => {
   const configFileId = await createConfigFile(token);
   await uploadConfigFile(token, configFileId, data);
 };
@@ -135,7 +144,10 @@ const getAppFiles = async (token: string) => {
   const json = await res.json();
   return JSONtoFilesMetadata(json["files"]);
 };
-const loadConfigFile = async (token: string, configFileId: string): Promise<AppData> => {
+const loadConfigFile = async (
+  token: string,
+  configFileId: string
+): Promise<AppData> => {
   const res = await fetch(
     `https://www.googleapis.com/drive/v3/files/${configFileId}?spaces=appDataFolder&alt=media`,
     {
@@ -165,22 +177,11 @@ export const deleteAppFolder = async (token: string): Promise<void> => {
   await Promise.all(promises);
 };
 
-export const getDriveId = async (token: string): Promise<string> => {
-  const res = await fetch("https://www.googleapis.com/drive/v3/files/root", {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  const json = await res.json();
-  if (res.status === 404) {
-    // Workaround to get the root id
-    // message: `"File not found: 0AIBWSGArhz4WUk9PVA."`
-    const rootId = json["error"]["message"].split(" ").at(-1).slice(0, -1);
-    return rootId;
-  }
-  throw new Error(json["error"]["message"]);
-};
-
-export const createFolder = async (token: string, name: string, parent: string): Promise<any> => {
+export const createFolder = async (
+  token: string,
+  name: string,
+  parent: string
+): Promise<any> => {
   const res = await fetch("https://www.googleapis.com/drive/v3/files", {
     method: "POST",
     body: JSON.stringify({
@@ -188,17 +189,27 @@ export const createFolder = async (token: string, name: string, parent: string):
       mimeType: "application/vnd.google-apps.folder",
       parents: [parent],
     }),
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
   });
   const json = await res.json();
   return json;
 };
-export const moveFile = async (token: string, fileId: string, parentId: string): Promise<any> => {
+export const moveFile = async (
+  token: string,
+  fileId: string,
+  parentId: string
+): Promise<any> => {
   const res = await fetch(
     `https://www.googleapis.com/drive/v3/files/${fileId}?addParents=${parentId}`,
     {
       method: "PATCH",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     }
   );
   const json = await res.json();
@@ -206,20 +217,25 @@ export const moveFile = async (token: string, fileId: string, parentId: string):
 };
 
 export const getStorageQuota = async (token: string): Promise<StorageQuota> => {
-  const res = await fetch("https://www.googleapis.com/drive/v3/about?fields=storageQuota", {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await fetch(
+    "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   const json = await res.json();
   return JSONtoStorageQuota(json["storageQuota"]);
 };
 
 export const getUserFiles = async (token: string): Promise<FileMetadata[]> => {
-  await getDriveId(token);
-  const res = await fetch("https://www.googleapis.com/drive/v3/files?fields=*", {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await fetch(
+    "https://www.googleapis.com/drive/v3/files?fields=*",
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   const json = await res.json();
   return JSONtoFilesMetadata(json["files"]);
 };
@@ -237,23 +253,30 @@ const toDataURL = async (url: string): Promise<string> => {
   });
 };
 
-const uploadFileMetadata = async (token: string, parent: string, name: string): Promise<string> => {
+const uploadFileMetadata = async (
+  token: string,
+  parent: string,
+  name: string
+): Promise<string> => {
   // https://developers.google.com/drive/api/guides/manage-uploads#http_2
-  const res = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable", {
-    method: "POST",
-    body: JSON.stringify({
-      name: name,
-      parents: [parent],
-      originalFilename: name,
-      mimeType: "application/octet-stream", // "text/plain"
-      description: "encrypted with cryptogle.io",
-    }),
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json; charset=UTF-8",
-      "X-Upload-Content-Type": "application/octet-stream",
-    },
-  });
+  const res = await fetch(
+    "https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        name: name,
+        parents: [parent],
+        originalFilename: name,
+        mimeType: "application/octet-stream", // "text/plain"
+        description: "From encryptly",
+      }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json; charset=UTF-8",
+        "X-Upload-Content-Type": "application/octet-stream",
+      },
+    }
+  );
   const location = res.headers.get("location");
   if (!res.ok || !location) {
     throw ERR_RESUMABLE_SESSION;
@@ -344,19 +367,31 @@ export const uploadFile = async (
   return uploadFileMedia(token, data, uploadSession);
 };
 
-const downloadFileMedia = async (token: string, fileId: string): Promise<Blob> => {
-  const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+const downloadFileMedia = async (
+  token: string,
+  fileId: string
+): Promise<Blob> => {
+  const res = await fetch(
+    `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   const data = await res.blob();
   return data;
 };
-const downloadFileMetadata = async (token: string, fileId: string): Promise<FileMetadata> => {
-  const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?fields=*`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+const downloadFileMetadata = async (
+  token: string,
+  fileId: string
+): Promise<FileMetadata> => {
+  const res = await fetch(
+    `https://www.googleapis.com/drive/v3/files/${fileId}?fields=*`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   const json = await res.json();
   const metadata = JSONtoFileMetadata(json);
   return metadata;

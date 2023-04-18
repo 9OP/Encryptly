@@ -1,11 +1,9 @@
 import {
   Box,
   Text,
-  VStack,
   HStack,
   IconButton,
   Spinner,
-  Tooltip,
   TableContainer,
   Table,
   Thead,
@@ -14,41 +12,38 @@ import {
   Tbody,
   Td,
 } from "@chakra-ui/react";
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import formatBytes from "../lib/formatBytes";
 import {
-  useDecryptFile,
-  useDownloadFile,
-  useGetDriveId,
-  useListFiles,
-  useMoveFile,
-} from "../lib/hooks";
-import { FileMetadata, getChildren } from "../lib/models";
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import formatBytes from "@app/lib/formatBytes";
+import { useListFiles } from "@app/hooks";
+import { FileMetadata } from "@app/models";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   DocumentIcon,
-  DownloadIcon,
-  FolderIcon,
-  ShieldLockIcon,
-} from "./core/icons";
-import Pagination from "./core/pagination";
+} from "@app/pages/components/icons";
+import Pagination from "@app/pages/components/pagination";
+import DownloadButton from "@app/pages/components/downloadFileButton";
 
 interface FileViewProps {
   files: FileMetadata[];
   isFetching: boolean;
-  setCurrentFolder: Dispatch<SetStateAction<string>>;
 }
 
 type SortOrder = "ASC" | "DESC";
 
-const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) => {
+const FileListView = ({ files, isFetching }: FileViewProps) => {
   const [sortedFiles, setSortedFiles] = useState<FileMetadata[]>(files);
   const [nameOrder, setNameOrder] = useState<SortOrder>("DESC");
   const [dateOrder, setDateOrder] = useState<SortOrder>("DESC");
   const [sizeOrder, setSizeOrder] = useState<SortOrder>("DESC");
   const [sort, setSort] = useState<"name" | "date" | "size">("name");
-  const moveFile = useMoveFile();
 
   const ColHeader = ({
     title,
@@ -59,7 +54,12 @@ const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) =>
     order: SortOrder;
     setOrder: Dispatch<SetStateAction<SortOrder>>;
   }) => (
-    <Th padding={0} color="gray.500" fontWeight="semibold" textTransform="capitalize">
+    <Th
+      padding={0}
+      color="gray.500"
+      fontWeight="semibold"
+      textTransform="capitalize"
+    >
       <HStack spacing={1} marginBottom="0.6rem">
         <Text>{title}</Text>
         <IconButton
@@ -74,7 +74,11 @@ const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) =>
             setSort(title);
           }}
           icon={
-            order === "DESC" ? <ArrowUpIcon boxSize="1.3rem" /> : <ArrowDownIcon boxSize="1.3rem" />
+            order === "DESC" ? (
+              <ArrowUpIcon boxSize="1.3rem" />
+            ) : (
+              <ArrowDownIcon boxSize="1.3rem" />
+            )
           }
         />
       </HStack>
@@ -83,27 +87,25 @@ const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) =>
 
   const handleSorting = useCallback(
     (sortField: "name" | "date" | "size") => {
-      const sorted = [...files]
-        .sort((a, b) => {
-          switch (sortField) {
-            case "name":
-              return nameOrder === "DESC"
-                ? a.name.localeCompare(b.name)
-                : b.name.localeCompare(a.name);
+      const sorted = [...files].sort((a, b) => {
+        switch (sortField) {
+          case "name":
+            return nameOrder === "DESC"
+              ? a.name.localeCompare(b.name)
+              : b.name.localeCompare(a.name);
 
-            case "date":
-              return dateOrder === "DESC"
-                ? a.createdTime.getTime() - b.createdTime.getTime()
-                : b.createdTime.getTime() - a.createdTime.getTime();
+          case "date":
+            return dateOrder === "DESC"
+              ? a.createdTime.getTime() - b.createdTime.getTime()
+              : b.createdTime.getTime() - a.createdTime.getTime();
 
-            case "size":
-              return sizeOrder === "DESC" ? a.size - b.size : b.size - a.size;
+          case "size":
+            return sizeOrder === "DESC" ? a.size - b.size : b.size - a.size;
 
-            default:
-              return 0;
-          }
-        })
-        .sort((a, b) => (a.kind == "FOLDER" ? 0 : 1));
+          default:
+            return 0;
+        }
+      });
       setSortedFiles(sorted);
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,7 +126,11 @@ const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) =>
             <ColHeader title="date" order={dateOrder} setOrder={setDateOrder} />
             <ColHeader title="size" order={sizeOrder} setOrder={setSizeOrder} />
             <Td padding={0}>
-              <HStack justifyContent="flex-end" alignItems="center" marginBottom="0.6rem">
+              <HStack
+                justifyContent="flex-end"
+                alignItems="center"
+                marginBottom="0.6rem"
+              >
                 {isFetching ? <Spinner color="gray.400" size="sm" /> : <></>}
               </HStack>
             </Td>
@@ -134,17 +140,10 @@ const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) =>
           {sortedFiles.map((file, i) => (
             <Tr
               key={i}
-              sx={{ [`&:hover #d-${file.id}`]: { visibility: "visible!important" } }}
-              cursor={file.kind === "FOLDER" ? "pointer" : "auto"}
-              onClick={file.kind === "FOLDER" ? () => setCurrentFolder(file.id) : () => null}
-              onDrop={async (e) => {
-                if (file.kind === "FOLDER") {
-                  const fileId = e.dataTransfer.getData("text");
-                  const parentId = file.id;
-                  await moveFile(fileId, parentId);
-                }
+              sx={{
+                [`&:hover #d-${file.id}`]: { visibility: "visible!important" },
               }}
-              onDragOver={(e) => e.preventDefault()}
+              cursor="pointer"
             >
               <Td paddingX={0} paddingY="0.8rem">
                 <HStack
@@ -153,11 +152,7 @@ const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) =>
                     e.dataTransfer.setData("text/plain", file.id);
                   }}
                 >
-                  {file.kind === "FILE" ? (
-                    <DocumentIcon boxSize="1.3rem" color="blue.500" />
-                  ) : (
-                    <FolderIcon boxSize="1.3rem" color="blue.500" />
-                  )}
+                  <DocumentIcon boxSize="1.3rem" color="blue.500" />
 
                   <Text
                     color="gray.800"
@@ -172,18 +167,26 @@ const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) =>
                   </Text>
                 </HStack>
               </Td>
-              <Td fontSize="xs" color="gray.500" fontWeight="medium" paddingX={0}>
+              <Td
+                fontSize="xs"
+                color="gray.500"
+                fontWeight="medium"
+                paddingX={0}
+              >
                 {file?.createdTime?.toLocaleString()}
               </Td>
-              <Td fontSize="xs" color="gray.500" fontWeight="medium" paddingX={0}>
-                {file.kind === "FILE" ? formatBytes(file?.size || 0) : "--"}
+              <Td
+                fontSize="xs"
+                color="gray.500"
+                fontWeight="medium"
+                paddingX={0}
+              >
+                {formatBytes(file?.size || 0)}
               </Td>
               <Td>
-                {file.kind === "FILE" && (
-                  <HStack justifyContent="flex-end">
-                    <DownloadButton fileId={file.id} />
-                  </HStack>
-                )}
+                <HStack justifyContent="flex-end">
+                  <DownloadButton fileId={file.id} />
+                </HStack>
               </Td>
             </Tr>
           ))}
@@ -193,30 +196,28 @@ const FileListView = ({ files, isFetching, setCurrentFolder }: FileViewProps) =>
   );
 };
 
-const FilesList = (props: {
-  search: string;
-  currentFolder: string;
-  setCurrentFolder: Dispatch<SetStateAction<string>>;
-}): JSX.Element => {
-  const { search, currentFolder, setCurrentFolder } = props;
+const FilesList = (props: { search: string }): JSX.Element => {
+  const { search } = props;
   const [selected, setSelected] = useState(1);
   const { data, isLoading, isValidating } = useListFiles();
-  const { data: rootId } = useGetDriveId();
 
-  const pagination = 12;
+  const pagination = 15;
 
-  const isFetching = useMemo(() => isLoading || isValidating, [isLoading, isValidating]);
+  const isFetching = useMemo(
+    () => isLoading || isValidating,
+    [isLoading, isValidating]
+  );
 
   const filteredFiles = useMemo(() => {
     let filtered = data || [];
-    if (currentFolder && rootId) {
-      filtered = getChildren(rootId, currentFolder, filtered);
-    }
     if (search) {
-      filtered = filtered.filter((f) => f.name.toLowerCase().includes(search.toLowerCase())) || [];
+      filtered =
+        filtered.filter((f) =>
+          f.name.toLowerCase().includes(search.toLowerCase())
+        ) || [];
     }
     return filtered;
-  }, [currentFolder, data, search, rootId]);
+  }, [data, search]);
 
   const pages = useMemo(() => {
     return Math.ceil((filteredFiles?.length || 0) / pagination);
@@ -229,14 +230,15 @@ const FilesList = (props: {
   }, [filteredFiles, selected, pagination]);
 
   return (
-    <Box marginTop="1rem">
-      <FileListView
-        files={rangeFiles}
-        isFetching={isFetching}
-        // currentFolder={currentFolder}
-        setCurrentFolder={setCurrentFolder}
-      />
-      {pages > 1 && <Pagination range={pages} selected={selected} setSelected={setSelected} />}
+    <Box width="100%">
+      <FileListView files={rangeFiles} isFetching={isFetching} />
+      {pages > 1 && (
+        <Pagination
+          range={pages}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      )}
     </Box>
   );
 };

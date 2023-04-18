@@ -1,4 +1,4 @@
-import { decrypt, importEncryptionKey } from "../crypto";
+import { decrypt, importEncryptionKey } from "@app/lib/crypto";
 
 self.onmessage = async function (e) {
   const { data, key }: { data: Blob; key: string } = e.data;
