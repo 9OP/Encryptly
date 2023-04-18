@@ -1,4 +1,4 @@
-import { AppData } from "@/models";
+import { AppData } from "@app/models";
 
 // Recommended nonce byte lenght for AES-GCM 256bytes
 const NONCE_SIZE = 12;

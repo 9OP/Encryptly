@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { GoogleIcon } from "@/pages/components/icons";
+import { GoogleIcon } from "@app/pages/components/icons";
 
 interface props {
   url: string;
@@ -64,9 +64,10 @@ const GoogleLoginButton = ({ url, onSuccess, onFailure }: props) => {
           // As long as the popup window is the google oauth consent screen page, the polling is failing.
           // Once the user accept the consent screen, the popup windows redirect to "http://localhost:3000"
           // with a code in query parameter. This code is necessay to request the access token for the user.
-          console.error(err);
+          //
+          // console.error(err);
         }
-      }, 500);
+      }, 100);
     },
     [onFailure, onSuccess]
   );

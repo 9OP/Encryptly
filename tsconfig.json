@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@app*": ["./src*"]
     },
     "target": "ESNext",
     "useDefineForClassFields": true,

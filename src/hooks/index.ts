@@ -1,7 +1,7 @@
 import { useCallback, useContext } from "react";
 import useSWR, { mutate } from "swr";
-import { AppContext } from "@/context";
-import { generateEncryptionKey, wrapEncryptionKey } from "@/lib/crypto";
+import { AppContext } from "@app/context";
+import { generateEncryptionKey, wrapEncryptionKey } from "@app/lib/crypto";
 import {
   getUserInfo,
   revokeToken,
@@ -16,7 +16,7 @@ import {
   moveFile,
   getDriveId,
 } from "./http";
-import promisify from "@/lib/promisify";
+import promisify from "@app/lib/promisify";
 
 export const useUserInfo = () => {
   const { accessToken } = useContext(AppContext);
