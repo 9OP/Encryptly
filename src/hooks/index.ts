@@ -15,6 +15,7 @@ import {
 } from "./http";
 import promisify from "@app/lib/promisify";
 
+
 export const useIsAuthenticated = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
   const hasAccessToken = accessToken.value != "" && accessToken.value != null;
@@ -68,7 +69,7 @@ export const useEncryptFile = () => {
   return useCallback(
     (file: File): Promise<Blob> => {
       const worker = new Worker(
-        new URL("@app/lib/webworkers/encrypt.worker.ts", import.meta.url)
+        new URL("../lib/webworkers/encrypt.worker.ts", import.meta.url), {type: "module"}
       );
       return promisify(worker, { file, key: encryptionKey.value });
     },
@@ -80,9 +81,9 @@ export const useDecryptFile = () => {
   const { encryptionKey } = useContext(AppContext);
 
   return useCallback(
-    (data: Blob): Promise<Blob> => {
+    async (data: Blob): Promise<Blob> => {
       const worker = new Worker(
-        new URL("@app/lib/webworkers/decrypt.worker.ts", import.meta.url)
+        new URL("../lib/webworkers/decrypt.worker.ts", import.meta.url), {type: "module"}
       );
       return promisify(worker, { data, key: encryptionKey.value });
     },

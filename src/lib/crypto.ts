@@ -111,13 +111,13 @@ export const sha256 = async (str: string): Promise<string> => {
 };
 
 const toB64 = (buf: ArrayBuffer): string => {
-  return window.btoa(
+  return self.btoa(
     new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), "")
   );
 };
 
 const fromB64 = (buf: string): ArrayBuffer => {
   return new Uint8Array(
-    [...window.atob(buf)].reduce((data, char) => data.concat([char.charCodeAt(0)]), [] as number[])
+    [...self.atob(buf)].reduce((data, char) => data.concat([char.charCodeAt(0)]), [] as number[])
   ).buffer;
 };
