@@ -87,11 +87,12 @@ const GoogleLoginButton = ({ url, onSuccess, onFailure }: props) => {
       boxShadow="base"
       size="lg"
       fontSize="xl"
+      fontWeight="semibold"
       leftIcon={<GoogleIcon bg="white" boxSize="2rem" borderRadius="25px" />}
       _hover={{ boxShadow: "sm" }}
       onClick={handleClick}
     >
-      Continue with Google
+      Signin with Google
     </Button>
   );
 };

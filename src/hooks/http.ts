@@ -7,9 +7,7 @@ import { UserInfo, FileMetadata, AppData, StorageQuota } from "../models";
 
 const JSONtoUserInfo = (json: any): UserInfo => {
   const userInfo: UserInfo = {
-    name: json["displayName"],
     email: json["emailAddress"],
-    picture: json["photoLink"],
   };
   return userInfo;
 };
@@ -255,7 +253,6 @@ const toDataURL = async (url: string): Promise<string> => {
 
 const uploadFileMetadata = async (
   token: string,
-  parent: string,
   name: string
 ): Promise<string> => {
   // https://developers.google.com/drive/api/guides/manage-uploads#http_2
@@ -265,7 +262,6 @@ const uploadFileMetadata = async (
       method: "POST",
       body: JSON.stringify({
         name: name,
-        parents: [parent],
         originalFilename: name,
         mimeType: "application/octet-stream", // "text/plain"
         description: "From encryptly",
@@ -359,11 +355,10 @@ async function* uploadFileMedia(
 
 export const uploadFile = async (
   token: string,
-  parent: string,
   name: string,
   data: Blob
 ): Promise<AsyncGenerator<number, string, void>> => {
-  const uploadSession = await uploadFileMetadata(token, parent, name);
+  const uploadSession = await uploadFileMetadata(token, name);
   return uploadFileMedia(token, data, uploadSession);
 };
 

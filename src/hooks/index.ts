@@ -12,6 +12,7 @@ import {
   deleteAppFolder,
   downloadFile,
   moveFile,
+  uploadFile,
 } from "./http";
 import promisify from "@app/lib/promisify";
 
@@ -111,19 +112,18 @@ export const useMoveFile = () => {
   };
 };
 
-// export const useUploadFile = () => {
-//   const { accessToken, currentFolder } = useContext(AppContext);
+export const useUploadFile = () => {
+  const { accessToken } = useContext(AppContext);
 
-//   return async (file: { data: Blob; name: string }) => {
-//     const generator = await uploadFile(
-//       accessToken.value,
-//       currentFolder.value,
-//       file.name,
-//       file.data
-//     );
-//     return generator;
-//   };
-// };
+  return async (file: { data: Blob; name: string }) => {
+    const generator = await uploadFile(
+      accessToken.value,
+      file.name,
+      file.data
+    );
+    return generator;
+  };
+};
 
 export const useDownloadFile = () => {
   const { accessToken } = useContext(AppContext);

@@ -27,7 +27,7 @@ const PassphraseInput = (props: {
         <FormLabel>Passphrase</FormLabel>
         <Input
           autoFocus
-          size="sm"
+          size="md"
           type="password"
           value={passphrase}
           onChange={(e) => setPassphrase(e.target.value.trim())}
@@ -39,7 +39,7 @@ const PassphraseInput = (props: {
         variant="solid"
         colorScheme="blue"
         boxShadow="base"
-        size="sm"
+        size="lg"
         width="100%"
         onClick={handleClick}
         disabled={!passphrase}

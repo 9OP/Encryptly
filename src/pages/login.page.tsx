@@ -5,13 +5,18 @@ import {
   AlertTitle,
   Box,
   Flex,
+  Heading,
   VStack,
 } from "@chakra-ui/react";
 import { FC, useContext, useState } from "react";
 import getAuthorizationUrl from "@app/lib/authorizationUrl";
 import { AppContext } from "@app/context";
 import { getUserInfo } from "@app/hooks/http";
-import { exportEncryptionKey, sha256, unwrapEncryptionKey } from "@app/lib/crypto";
+import {
+  exportEncryptionKey,
+  sha256,
+  unwrapEncryptionKey,
+} from "@app/lib/crypto";
 import { AppData } from "@app/models";
 import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 
@@ -46,27 +51,45 @@ const Login: FC = () => {
   };
 
   return (
-    <VStack spacing="2rem" width="100%" height="100%" alignItems="center" justifyContent="center">
-      <Box>
-        {!accessToken.value && (
-          <GoogleLoginButton url={url} onSuccess={setAccessToken} onFailure={setError} />
-        )}
+    <Flex margin="2rem">
+      <Flex flexDirection="row">
+        <VStack
+          spacing="2rem"
+          width="100%"
+          height="100%"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box>
+            {!accessToken.value && (
+              <VStack spacing="1rem">
+                <Heading size="2xl">Sign in to continue</Heading>
+                <GoogleLoginButton
+                  url={url}
+                  onSuccess={setAccessToken}
+                  onFailure={setError}
+                />
+              </VStack>
+            )}
 
-        {accessToken.value && !encryptionKey.value && (
-          <PassphraseInput setEncryptionKey={setEncryptionKey} />
-        )}
+            {accessToken.value && !encryptionKey.value && (
+              <PassphraseInput setEncryptionKey={setEncryptionKey} />
+            )}
 
-        {error && (
-          <Alert status="error" variant="subtle" marginTop="1rem">
-            <AlertIcon />
-            <Flex direction="column">
-              <AlertTitle>Connection failed</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Flex>
-          </Alert>
-        )}
-      </Box>
-    </VStack>
+            {error && (
+              <Alert status="error" variant="subtle" marginTop="1rem">
+                <AlertIcon />
+                <Flex direction="column">
+                  <AlertTitle>Connection failed</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Flex>
+              </Alert>
+            )}
+          </Box>
+        </VStack>
+        
+      </Flex>
+    </Flex>
   );
 };
 
