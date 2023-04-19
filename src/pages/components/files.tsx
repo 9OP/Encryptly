@@ -201,7 +201,7 @@ const FilesList = (props: { search: string }): JSX.Element => {
   const [selected, setSelected] = useState(1);
   const { data, isLoading, isValidating } = useListFiles();
 
-  const pagination = 15;
+  const pagination = 12;
 
   const isFetching = useMemo(
     () => isLoading || isValidating,

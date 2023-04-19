@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import {
   Box,
   Text,
@@ -9,13 +9,22 @@ import {
   InputLeftElement,
   InputRightElement,
   VStack,
+  useToast,
+  ToastId,
 } from "@chakra-ui/react";
 import StorageQuota from "@app/pages/components/storage";
 import { CloseIcon, SearchIcon } from "@app/pages/components/icons";
 import FilesList from "./components/files";
-import { revalidateListFiles, useEncryptFile, useUploadFile, useUserInfo } from "@app/hooks";
+import {
+  revalidateListFiles,
+  useEncryptFile,
+  useUploadFile,
+  useUserInfo,
+} from "@app/hooks";
 import LogoutButton from "./components/logoutButton";
 import DropZone from "./components/dropZone";
+import files from "./components/files";
+import UploadFeedback from "./components/uploadFeedback";
 
 interface props {
   search: string;
@@ -49,33 +58,89 @@ const SearchBar: FC<props> = (props: props) => {
   );
 };
 
+type UploadStep = "ENCRYPTING" | "UPLOADING";
+
 const Index: FC = () => {
   const [search, setSearch] = useState("");
   const { data: user } = useUserInfo();
   const uploadFile = useUploadFile();
   const encryptFile = useEncryptFile();
 
+  const toast = useToast();
+  const [submitCount, setSubmitCount] = useState(0);
+  const [steps, setSteps] = useState<{ [name: string]: UploadStep }>({});
+  const [progress, setProgress] = useState<{ [name: string]: number }>({});
+  const [toastId, setToastId] = useState<ToastId>("");
+  const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    if (toastId) {
+      toast.update(toastId, {
+        render: () => (
+          <UploadFeedback files={files} steps={steps} progress={progress} />
+        ),
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [steps, progress, files]);
+
+  useEffect(() => {
+    if (submitCount === 0 && toastId) {
+      toast.close(toastId);
+      toast({
+        position: "bottom-right",
+        duration: 5000,
+        isClosable: true,
+        title: `${files.length} files uploaded`,
+        status: "success",
+      });
+
+      setToastId("");
+      setProgress({});
+      setSteps({});
+      setFiles([]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submitCount]);
+
   const onSubmit = async (fls: File[]) => {
     if (!fls.length) {
       return;
     }
 
+    setSubmitCount((count) => count + 1);
+    setFiles((prev) => [...prev, ...fls]);
+
+    if (!toastId) {
+      setToastId(
+        toast({
+          position: "bottom-right",
+          duration: null,
+          isClosable: true,
+          render: () => (
+            <UploadFeedback files={files} steps={steps} progress={progress} />
+          ),
+        })
+      );
+    }
+
     await Promise.all(
       fls.map(async (file) => {
-        // setSteps((prev) => ({ ...prev, [file.name]: "ENCRYPTING" }));
+        setSteps((prev) => ({ ...prev, [file.name]: "ENCRYPTING" }));
         const data = await encryptFile(file);
 
-        // setSteps((prev) => ({ ...prev, [file.name]: "UPLOADING" }));
+        setSteps((prev) => ({ ...prev, [file.name]: "UPLOADING" }));
         const gen = await uploadFile({ name: file.name, data });
 
         for await (const value of gen) {
-          // setProgress((prev) => ({ ...prev, [file.name]: value }));
+          setProgress((prev) => ({ ...prev, [file.name]: value }));
         }
       })
     );
 
     await revalidateListFiles();
-    // setSubmitCount((count) => count - 1);
+    setSubmitCount((count) => count - 1);
   };
 
   return (
