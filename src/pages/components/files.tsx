@@ -232,6 +232,7 @@ const FilesList = (props: { search: string }): JSX.Element => {
   return (
     <Box width="100%">
       <FileListView files={rangeFiles} isFetching={isFetching} />
+
       {pages > 1 && (
         <Pagination
           range={pages}

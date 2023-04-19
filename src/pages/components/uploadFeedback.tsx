@@ -12,11 +12,9 @@ import formatBytes from "@app/lib/formatBytes";
 import { ShieldLockIcon, CheckIcon } from "./icons";
 import { FC } from "react";
 
-type UploadStep = "ENCRYPTING" | "UPLOADING";
-
 interface props {
   files: File[];
-  steps: { [name: string]: UploadStep };
+  steps: { [name: string]: "ENCRYPTING" | "UPLOADING" };
   progress: { [name: string]: number };
 }
 
@@ -24,13 +22,20 @@ const UploadFeedback: FC<props> = (props: props) => {
   const { files, progress, steps } = props;
 
   return (
-    <Alert status="info" variant="solid" boxShadow="lg" width="100%">
+    <Alert
+      status="info"
+      variant="solid"
+      boxShadow="lg"
+      width="100%"
+      borderRadius="6px"
+    >
       <AlertIcon />
       <VStack spacing={0} alignItems="flex-start" justifyContent="center">
         <AlertTitle>Uploading ...</AlertTitle>
         <AlertDescription>
           {files.map((f, i) => {
             const value = progress[f.name] || 0;
+
             return (
               <HStack key={i} alignItems="center" justifyContent="flex-start">
                 {steps[f.name] === "ENCRYPTING" && (
