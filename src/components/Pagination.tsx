@@ -1,5 +1,5 @@
 import { Button, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@app/pages/components/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@app/components/Icons";
 import { FC } from "react";
 
 interface props {

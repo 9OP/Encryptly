@@ -1,7 +1,7 @@
 import { Box, HStack, Text, Flex, Progress, Spinner } from "@chakra-ui/react";
 import formatBytes from "@app/lib/formatBytes";
 import { useDriveQuota } from "@app/hooks";
-import { CloudIcon } from "@app/pages/components/icons";
+import { CloudIcon } from "@app/components/Icons";
 
 const StorageQuota = () => {
   const { data } = useDriveQuota();

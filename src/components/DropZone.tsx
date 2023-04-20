@@ -1,7 +1,7 @@
 import { Box, ToastId, useToast } from "@chakra-ui/react";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { revalidateListFiles, useEncryptFile, useUploadFile } from "@app/hooks";
-import UploadFeedback from "./uploadFeedback";
+import UploadFeedback from "./UploadToast";
 
 interface props {
   children: ReactNode;

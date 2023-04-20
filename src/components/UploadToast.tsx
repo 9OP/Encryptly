@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import formatBytes from "@app/lib/formatBytes";
-import { ShieldLockIcon, CheckIcon } from "./icons";
+import { ShieldLockIcon, CheckIcon } from "./Icons";
 import { FC } from "react";
 
 interface props {

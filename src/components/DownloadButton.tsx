@@ -1,6 +1,6 @@
 import { IconButton, Spinner } from "@chakra-ui/react";
 import { useCallback, useRef, useState, FC } from "react";
-import { DownloadIcon, ShieldLockIcon } from "./icons";
+import { DownloadIcon, ShieldLockIcon } from "./Icons";
 import { useDecryptFile, useDownloadFile } from "@app/hooks";
 
 interface props {

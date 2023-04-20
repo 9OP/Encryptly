@@ -27,9 +27,9 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   DocumentIcon,
-} from "@app/pages/components/icons";
-import Pagination from "@app/pages/components/pagination";
-import DownloadButton from "@app/pages/components/downloadFileButton";
+} from "@app/components/Icons";
+import Pagination from "@app/components/Pagination";
+import DownloadButton from "@app/components/DownloadButton";
 
 interface FileViewProps {
   files: FileMetadata[];
@@ -38,7 +38,7 @@ interface FileViewProps {
 
 type SortOrder = "ASC" | "DESC";
 
-const FileListView = ({ files, isFetching }: FileViewProps) => {
+const FileTable = ({ files, isFetching }: FileViewProps) => {
   const [sortedFiles, setSortedFiles] = useState<FileMetadata[]>(files);
   const [nameOrder, setNameOrder] = useState<SortOrder>("DESC");
   const [dateOrder, setDateOrder] = useState<SortOrder>("DESC");
@@ -196,7 +196,7 @@ const FileListView = ({ files, isFetching }: FileViewProps) => {
   );
 };
 
-const FilesList = (props: { search: string }): JSX.Element => {
+const PaginatedFileTable = (props: { search: string }): JSX.Element => {
   const { search } = props;
   const [selected, setSelected] = useState(1);
   const { data, isLoading, isValidating } = useListFiles();
@@ -231,7 +231,7 @@ const FilesList = (props: { search: string }): JSX.Element => {
 
   return (
     <Box width="100%">
-      <FileListView files={rangeFiles} isFetching={isFetching} />
+      <FileTable files={rangeFiles} isFetching={isFetching} />
 
       {pages > 1 && (
         <Pagination
@@ -244,4 +244,4 @@ const FilesList = (props: { search: string }): JSX.Element => {
   );
 };
 
-export default FilesList;
+export default PaginatedFileTable;

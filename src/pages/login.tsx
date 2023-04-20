@@ -20,8 +20,8 @@ import {
 import { AppData } from "@app/models";
 import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 
-import GoogleLoginButton from "@app/pages/components/googleLoginButton";
-import PassphraseInput from "@app/pages/components/passphraseInput";
+import GoogleLoginButton from "@app/components/LoginButton";
+import PassphraseInput from "@app/components/PassphraseInput";
 
 const Login: FC = () => {
   const url = getAuthorizationUrl();

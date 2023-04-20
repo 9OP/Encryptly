@@ -2,10 +2,10 @@ import { Route, useLocation, Routes, useNavigate } from "react-router-dom";
 import { FC, useContext, useEffect } from "react";
 import { AppContext } from "@app/context";
 import { useLogout } from "@app/hooks";
-import IndexPage from "@app/pages/index.page";
-import LoginPage from "@app/pages/login.page";
-import AuthGuard from "@app/pages/guard/authentication.guard";
-import LoginGuard from "@app/pages/guard/login.guard";
+import IndexPage from "@app/pages";
+import LoginPage from "@app/pages/login";
+import AuthGuard from "@app/guard/authenticationGuard";
+import LoginGuard from "@app/guard/loginGuard";
 
 const Logout: FC = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);

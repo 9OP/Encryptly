@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { GoogleIcon } from "@app/pages/components/icons";
+import { GoogleIcon } from "@app/components/Icons";
 
 interface props {
   url: string;
@@ -8,7 +8,7 @@ interface props {
   onFailure: (err: string) => void;
 }
 
-const GoogleLoginButton = ({ url, onSuccess, onFailure }: props) => {
+const LoginButton = ({ url, onSuccess, onFailure }: props) => {
   const openConsentScreen = useCallback(() => {
     const width = 400;
     const height = 600;
@@ -97,4 +97,4 @@ const GoogleLoginButton = ({ url, onSuccess, onFailure }: props) => {
   );
 };
 
-export default GoogleLoginButton;
+export default LoginButton;

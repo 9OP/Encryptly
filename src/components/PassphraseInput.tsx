@@ -2,7 +2,7 @@ import { useState, FC } from "react";
 import { FormControl, FormLabel, Input, Button, VStack } from "@chakra-ui/react";
 
 import { useAppData } from "@app/hooks";
-import { ShieldLockIcon } from "@app/pages/components/icons";
+import { ShieldLockIcon } from "@app/components/Icons";
 import { AppData } from "@app/models";
 
 const PassphraseInput = (props: {

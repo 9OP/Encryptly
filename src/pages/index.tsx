@@ -9,21 +9,15 @@ import {
   InputLeftElement,
   InputRightElement,
   VStack,
-  useToast,
-  ToastId,
 } from "@chakra-ui/react";
-import StorageQuota from "@app/pages/components/storage";
-import { CloseIcon, SearchIcon } from "@app/pages/components/icons";
-import FilesList from "./components/files";
+import StorageQuota from "@app/components/StorageQuota";
+import { CloseIcon, SearchIcon } from "@app/components/Icons";
+import FilesList from "../components/FileTable";
 import {
-  revalidateListFiles,
-  useEncryptFile,
-  useUploadFile,
   useUserInfo,
 } from "@app/hooks";
-import LogoutButton from "./components/logoutButton";
-import DropZone from "./components/dropZone";
-import UploadFeedback from "./components/uploadFeedback";
+import LogoutButton from "@app/components/LogoutButton";
+import DropZone from "@app/components/DropZone";
 
 interface props {
   search: string;

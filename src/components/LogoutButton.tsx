@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { LogoutIcon } from "./icons";
+import { LogoutIcon } from "./Icons";
 import { useLogout } from "@app/hooks";
 
 const LogoutButton = () => {
