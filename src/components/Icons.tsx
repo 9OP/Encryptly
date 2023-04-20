@@ -20,7 +20,7 @@ import {
   MdChevronLeft,
   MdChevronRight,
 } from "react-icons/md";
-import { BsShieldLockFill } from "react-icons/bs";
+import { BsGoogle, BsShieldLockFill } from "react-icons/bs";
 import { IoDocumentOutline, IoFolderOutline, IoFolderOpenOutline } from "react-icons/io5";
 
 const iconFactory = (icon: IconType) => {
@@ -31,7 +31,7 @@ const iconFactory = (icon: IconType) => {
   return IconFactory;
 };
 
-export const GoogleIcon = iconFactory(FcGoogle);
+export const GoogleIcon = iconFactory(BsGoogle);
 export const CloudIcon = iconFactory(MdOutlineCloud);
 export const DownloadIcon = iconFactory(MdDownload);
 export const UploadIcon = iconFactory(MdUpload);
