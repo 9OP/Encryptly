@@ -5,7 +5,9 @@ import {
   AlertTitle,
   Box,
   Flex,
+  HStack,
   Heading,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { FC, useContext, useState } from "react";
@@ -51,24 +53,47 @@ const Login: FC = () => {
   };
 
   return (
-    <Flex margin="2rem">
-      <Flex flexDirection="row">
+    <Flex>
+      <Flex flexDirection="row" width="45%">
         <VStack
+          margin="2rem"
           spacing="2rem"
           width="100%"
           height="100%"
           alignItems="center"
-          justifyContent="center"
+          justifyContent="space-between"
         >
           <Box>
             {!accessToken.value && (
-              <VStack spacing="1rem">
-                <Heading size="2xl">Sign in to continue</Heading>
-                <GoogleLoginButton
-                  url={url}
-                  onSuccess={setAccessToken}
-                  onFailure={setError}
-                />
+              <VStack spacing="5rem">
+                <Box
+                  width="150%"
+                  height="15rem"
+                  // backgroundColor="#e5e5f7"
+                  opacity="0.6"
+                  backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
+                  backgroundSize="60px 60px;"
+                >
+                </Box>
+
+                <Heading
+                  size="4xl"
+                  fontWeight="semibold"
+                  lineHeight="5rem"
+                  marginBottom="3rem"
+                >
+                  → Keep your data safe
+                </Heading>
+                <HStack spacing="3rem">
+                  <GoogleLoginButton
+                    url={url}
+                    onSuccess={setAccessToken}
+                    onFailure={setError}
+                  />
+                  <Text fontSize="2xl" fontWeight="semibold">
+                    Encryptly seamlessly encrypt your Google Drive documents
+                  </Text>
+                </HStack>
               </VStack>
             )}
 
@@ -87,7 +112,9 @@ const Login: FC = () => {
             )}
           </Box>
         </VStack>
-        
+      </Flex>
+      <Flex backgroundColor="rgb(209,252,135)" width="55%" height="100vh">
+        test
       </Flex>
     </Flex>
   );

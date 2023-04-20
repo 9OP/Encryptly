@@ -14,14 +14,12 @@ root.render(
   <StrictMode>
     <ChakraProvider theme={theme}>
       <Fonts />
-      <Container>
-        <Router>
-          <ContextProvider>
-            <App />
-            {/* <ToastContainer /> */}
-          </ContextProvider>
-        </Router>
-      </Container>
+      <Router>
+        <ContextProvider>
+          <App />
+          {/* <ToastContainer /> */}
+        </ContextProvider>
+      </Router>
     </ChakraProvider>
   </StrictMode>
 );

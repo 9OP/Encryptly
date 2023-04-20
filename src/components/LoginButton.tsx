@@ -82,7 +82,7 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
   return (
     <Button
       width="100%"
-      size="lg"
+      height="4rem"
       fontSize="xl"
       // fontWeight="thin"
       leftIcon={<GoogleIcon />}
@@ -93,7 +93,7 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
       borderWidth="3px"
       borderColor="black"
       backgroundColor="rgb(209,252,135)"
-      boxShadow="-5px 5px 0px 0px #000"
+      boxShadow="-8px 8px 0px 0px #000"
     >
       Signin with Google
     </Button>
