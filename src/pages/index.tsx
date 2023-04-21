@@ -1,4 +1,11 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   Box,
   Text,
@@ -13,9 +20,7 @@ import {
 import StorageQuota from "@app/components/StorageQuota";
 import { CloseIcon, SearchIcon } from "@app/components/Icons";
 import FilesList from "../components/FileTable";
-import {
-  useUserInfo,
-} from "@app/hooks";
+import { useListFiles, useUserInfo } from "@app/hooks";
 import LogoutButton from "@app/components/LogoutButton";
 import DropZone from "@app/components/DropZone";
 
@@ -26,58 +31,101 @@ interface props {
 
 const SearchBar: FC<props> = (props: props) => {
   const { search, setSearch } = props;
+  const { data: files } = useListFiles();
+
+  const nbFiles = useMemo(() => files?.length || 0, [files]);
 
   return (
-    <InputGroup width="18rem" size="sm">
-      <InputLeftElement pointerEvents="none" paddingLeft=".4rem">
-        <SearchIcon color="gray.400" boxSize="1.2rem" />
-      </InputLeftElement>
-      <Input
-        bg="white"
-        placeholder="search..."
-        value={search}
-        borderRadius="6px"
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <InputRightElement
-        hidden={search === ""}
-        color="gray.400"
-        onClick={() => setSearch("")}
-        cursor="pointer"
-      >
-        <CloseIcon />
-      </InputRightElement>
-    </InputGroup>
+    <VStack
+      height="100%"
+      padding="1.5rem"
+      borderWidth="3px"
+      borderRadius="6px"
+      borderColor="black"
+      boxShadow="-4px 4px 0px 0px #000"
+      backgroundColor="rgb(209,252,135)"
+    >
+      <InputGroup width="18rem" size="sm">
+        <InputLeftElement pointerEvents="none" paddingLeft=".4rem">
+          <SearchIcon color="gray.400" boxSize="1.2rem" />
+        </InputLeftElement>
+        <Input
+          bg="white"
+          placeholder="search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          //
+          _hover={{ boxShadow: "none" }}
+          borderRadius="6px"
+          borderWidth="2px"
+          borderColor="black"
+          boxShadow="-4px 4px 0px 0px #000"
+        />
+        <InputRightElement
+          hidden={search === ""}
+          color="gray.400"
+          onClick={() => setSearch("")}
+          cursor="pointer"
+        >
+          <CloseIcon />
+        </InputRightElement>
+      </InputGroup>
+      <Text fontWeight="semibold">Files: {nbFiles}</Text>
+    </VStack>
+  );
+};
+
+const UserCard: FC = () => {
+  const { data: user } = useUserInfo();
+
+  return (
+    <VStack
+      spacing="1.5rem"
+      align="flex-end"
+      justifyContent="flex-end"
+      height="100%"
+      padding="1.5rem"
+      borderWidth="3px"
+      borderRadius="6px"
+      borderColor="black"
+      boxShadow="-4px 4px 0px 0px #000"
+      backgroundColor="rgb(209,252,135)"
+    >
+      <Text fontSize="md" fontWeight="semibold">
+        [{user?.email}]
+      </Text>
+      <LogoutButton />
+    </VStack>
   );
 };
 
 const Index: FC = () => {
   const [search, setSearch] = useState("");
-  const { data: user } = useUserInfo();
 
   return (
     <DropZone>
-      <Flex margin="2rem" w="100%" justifyContent="center">
+      <Flex
+        padding="2rem"
+        w="100%"
+        justifyContent="center"
+        backgroundImage="radial-gradient(#444cf7 1px, #fff 1px);"
+        backgroundSize="30px 30px;"
+      >
         <VStack w="60%" spacing="1rem">
-          <HStack
-            w="100%"
-            justifyContent="space-between"
-            borderWidth="1px"
-            padding="1.5rem"
-            borderRadius="6px"
-          >
+          <HStack w="100%" justifyContent="space-between" spacing="1.5rem">
             <StorageQuota />
-            <VStack align="flex-end">
-              <HStack>
-                <Text fontSize="sm" fontWeight="medium" opacity="0.7">
-                  {user?.email}
-                </Text>
-                <LogoutButton />
-              </HStack>
-              <SearchBar search={search} setSearch={setSearch} />
-            </VStack>
+            <SearchBar search={search} setSearch={setSearch} />
+            <UserCard />
           </HStack>
-          <Flex w="100%" borderWidth="1px" padding="1.5rem" borderRadius="6px">
+          <Flex
+            w="100%"
+            padding="1.5rem"
+            borderWidth="3px"
+            borderRadius="6px"
+            borderColor="black"
+            boxShadow="-4px 4px 0px 0px #000"
+            backgroundColor="rgb(209,252,135)"
+          >
             <FilesList search={search} />
           </Flex>
         </VStack>

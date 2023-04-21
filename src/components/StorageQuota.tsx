@@ -7,21 +7,27 @@ const StorageQuota = () => {
   const { data } = useDriveQuota();
 
   return (
-    <Box color="gray.500">
+    <Box
+      height="100%"
+      padding="1.5rem"
+      borderWidth="3px"
+      borderRadius="6px"
+      borderColor="black"
+      boxShadow="-4px 4px 0px 0px #000"
+      backgroundColor="rgb(209,252,135)"
+    >
       <HStack marginBottom="0.5rem">
         <CloudIcon boxSize="1.2rem" />
-        <Text fontWeight="semibold" fontSize="sm">
-          Storage quota
-        </Text>
+        <Text fontWeight="semibold">Storage quota</Text>
       </HStack>
       <Flex justifyContent="center">
         {data ? (
           <Flex flexDirection="column" width="100%" alignItems="center">
             <Progress
-              bg="#e0e0e0"
+              backgroundColor="transparent"
+              colorScheme="purple"
               width="100%"
               value={(data?.usage / data?.limit) * 100}
-              borderRadius="2px"
               size="xs"
             />
             <Text fontWeight="semibold" fontSize="xs" marginTop="0.2rem">
