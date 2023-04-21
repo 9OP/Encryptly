@@ -21,7 +21,12 @@ import {
   MdChevronRight,
 } from "react-icons/md";
 import { BsGoogle, BsShieldLockFill } from "react-icons/bs";
-import { IoDocumentOutline, IoFolderOutline, IoFolderOpenOutline } from "react-icons/io5";
+import {
+  IoDocumentOutline,
+  IoFolderOutline,
+  IoFolderOpenOutline,
+} from "react-icons/io5";
+import { SiGithub, SiLinkedin } from "react-icons/si";
 
 const iconFactory = (icon: IconType) => {
   const IconFactory = (props: IconProps) => {
@@ -53,3 +58,5 @@ export const FolderIcon = iconFactory(IoFolderOutline);
 export const CreateFolderIcon = iconFactory(IoFolderOpenOutline);
 export const ChevronLeftIcon = iconFactory(MdChevronLeft);
 export const ChevronRightIcon = iconFactory(MdChevronRight);
+export const GithubIcon = iconFactory(SiGithub);
+export const LinkedinIcon = iconFactory(SiLinkedin);

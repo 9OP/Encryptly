@@ -4,6 +4,7 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
+  Button,
   Flex,
   HStack,
   Heading,
@@ -24,6 +25,7 @@ import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 
 import GoogleLoginButton from "@app/components/LoginButton";
 import PassphraseInput from "@app/components/PassphraseInput";
+import { GithubIcon, LinkedinIcon } from "@app/components/Icons";
 
 const Login: FC = () => {
   const url = getAuthorizationUrl();
@@ -56,7 +58,7 @@ const Login: FC = () => {
     <Flex>
       <Flex flexDirection="row" width="45%">
         <VStack
-          margin="2rem"
+          padding="2rem"
           spacing="2rem"
           width="100%"
           height="100%"
@@ -65,22 +67,20 @@ const Login: FC = () => {
         >
           <Box>
             {!accessToken.value && (
-              <VStack spacing="5rem">
+              <VStack spacing="3rem">
                 <Box
-                  width="150%"
+                  width="100%"
                   height="15rem"
-                  // backgroundColor="#e5e5f7"
                   opacity="0.6"
                   backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
                   backgroundSize="60px 60px;"
-                >
-                </Box>
+                />
 
                 <Heading
                   size="4xl"
                   fontWeight="semibold"
                   lineHeight="5rem"
-                  marginBottom="3rem"
+                  marginBottom="2rem"
                 >
                   → Keep your data safe
                 </Heading>
@@ -102,7 +102,15 @@ const Login: FC = () => {
             )}
 
             {error && (
-              <Alert status="error" variant="subtle" marginTop="1rem">
+              <Alert
+                status="error"
+                variant="subtle"
+                marginTop="2rem"
+                borderRadius="6px"
+                borderWidth="3px"
+                borderColor="black"
+                boxShadow="-8px 8px 0px 0px #000"
+              >
                 <AlertIcon />
                 <Flex direction="column">
                   <AlertTitle>Connection failed</AlertTitle>
@@ -111,10 +119,52 @@ const Login: FC = () => {
               </Alert>
             )}
           </Box>
+
+          <HStack justifyContent="space-between" width="100%">
+            <Button leftIcon={<GithubIcon />} variant="link">
+              Fork Encryptly
+            </Button>
+            <Button leftIcon={<LinkedinIcon />} variant="link">
+              Connect with me
+            </Button>
+          </HStack>
         </VStack>
       </Flex>
-      <Flex backgroundColor="rgb(209,252,135)" width="55%" height="100vh">
-        test
+      <Flex
+        padding="2rem"
+        backgroundColor="rgb(209,252,135)"
+        width="55%"
+        height="100vh"
+        justifyContent="center"
+      >
+        <Alert
+          width="fit-content"
+          height="fit-content"
+          status="info"
+          variant="subtle"
+          borderRadius="6px"
+          borderWidth="3px"
+          borderColor="black"
+          boxShadow="-8px 8px 0px 0px #000"
+        >
+          <AlertIcon />
+          <Flex direction="column">
+            <AlertTitle>
+              Automatic end-to-end encryption of your files !
+            </AlertTitle>
+          </Flex>
+        </Alert>
+
+        <Box
+          position="absolute"
+          bottom={0}
+          right={0}
+          width="15rem"
+          height="30rem"
+          opacity="0.6"
+          backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
+          backgroundSize="60px 60px;"
+        />
       </Flex>
     </Flex>
   );
