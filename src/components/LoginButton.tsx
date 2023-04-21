@@ -86,7 +86,7 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
       fontSize="xl"
       // fontWeight="thin"
       leftIcon={<GoogleIcon />}
-      _hover={{ boxShadow: "sm" }}
+      _hover={{ boxShadow: "none" }}
       onClick={handleClick}
       //
       borderRadius={0}

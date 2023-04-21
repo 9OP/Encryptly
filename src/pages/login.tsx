@@ -11,7 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useMemo, useState } from "react";
 import getAuthorizationUrl from "@app/lib/authorizationUrl";
 import { AppContext } from "@app/context";
 import { getUserInfo } from "@app/hooks/http";
@@ -34,6 +34,7 @@ const Login: FC = () => {
 
   const setAccessToken = async (token: string) => {
     try {
+      setError("");
       await getUserInfo(token);
       accessToken.setValue(token);
       setStorageAccessToken(token);
@@ -45,6 +46,7 @@ const Login: FC = () => {
 
   const setEncryptionKey = async (passphrase: string, data: AppData) => {
     try {
+      setError("");
       const digest = await sha256(passphrase);
       const key = await unwrapEncryptionKey(data, digest);
       const exportKey = await exportEncryptionKey(key);
@@ -53,6 +55,15 @@ const Login: FC = () => {
       setError("Failed generating the encryption key");
     }
   };
+
+  const showLoginButton = useMemo(
+    () => !accessToken.value,
+    [accessToken.value]
+  );
+  const showPassphraseInput = useMemo(
+    () => !showLoginButton && !encryptionKey.value,
+    [showLoginButton, encryptionKey]
+  );
 
   return (
     <Flex>
@@ -66,40 +77,41 @@ const Login: FC = () => {
           justifyContent="space-between"
         >
           <Box>
-            {!accessToken.value && (
-              <VStack spacing="3rem">
-                <Box
-                  width="100%"
-                  height="15rem"
-                  opacity="0.6"
-                  backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
-                  backgroundSize="60px 60px;"
-                />
+            <VStack spacing="3rem">
+              <Box
+                width="100%"
+                height="15rem"
+                opacity="0.6"
+                backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
+                backgroundSize="60px 60px;"
+              />
 
-                <Heading
-                  size="4xl"
-                  fontWeight="semibold"
-                  lineHeight="5rem"
-                  marginBottom="2rem"
-                >
-                  → Keep your data safe
-                </Heading>
-                <HStack spacing="3rem">
-                  <GoogleLoginButton
-                    url={url}
-                    onSuccess={setAccessToken}
-                    onFailure={setError}
-                  />
-                  <Text fontSize="2xl" fontWeight="semibold">
-                    Encryptly seamlessly encrypt your Google Drive documents
-                  </Text>
-                </HStack>
-              </VStack>
-            )}
-
-            {accessToken.value && !encryptionKey.value && (
-              <PassphraseInput setEncryptionKey={setEncryptionKey} />
-            )}
+              <Heading
+                size="4xl"
+                fontWeight="semibold"
+                lineHeight="5rem"
+                marginBottom="2rem"
+              >
+                → Keep your data safe
+              </Heading>
+              <HStack spacing="3rem">
+                <Box w="50%">
+                  {showLoginButton && (
+                    <GoogleLoginButton
+                      url={url}
+                      onSuccess={setAccessToken}
+                      onFailure={setError}
+                    />
+                  )}
+                  {showPassphraseInput && (
+                    <PassphraseInput setEncryptionKey={setEncryptionKey} />
+                  )}
+                </Box>
+                <Text w="50%" fontSize="2xl" fontWeight="semibold">
+                  Encryptly seamlessly encrypt your Google Drive documents
+                </Text>
+              </HStack>
+            </VStack>
 
             {error && (
               <Alert

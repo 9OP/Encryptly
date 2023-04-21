@@ -1,7 +1,13 @@
 import { useState, FC } from "react";
-import { FormControl, FormLabel, Input, Button, VStack } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  VStack,
+} from "@chakra-ui/react";
 
-import { useAppData } from "@app/hooks";
+import { useAppData, useUserInfo } from "@app/hooks";
 import { ShieldLockIcon } from "@app/components/Icons";
 import { AppData } from "@app/models";
 
@@ -10,9 +16,12 @@ const PassphraseInput = (props: {
 }) => {
   const [passphrase, setPassphrase] = useState("");
   const { setEncryptionKey } = props;
+  const { data: userInfo } = useUserInfo();
   const { data } = useAppData();
 
-  const handleClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleClick = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -24,25 +33,38 @@ const PassphraseInput = (props: {
   return (
     <VStack spacing="1rem">
       <FormControl>
-        <FormLabel>Passphrase</FormLabel>
+        <FormLabel fontSize="md" fontWeight="semibold">
+          Passphrase [{userInfo?.email || "..."}]
+        </FormLabel>
         <Input
           autoFocus
+          placeholder="passphrase..."
           size="md"
           type="password"
           value={passphrase}
           onChange={(e) => setPassphrase(e.target.value.trim())}
+          //
+          _hover={{ boxShadow: "none" }}
+          borderRadius="6px"
+          borderWidth="2px"
+          borderColor="black"
+          boxShadow="-4px 4px 0px 0px #000"
         />
       </FormControl>
 
       <Button
         leftIcon={<ShieldLockIcon />}
-        variant="solid"
-        colorScheme="blue"
-        boxShadow="base"
         size="lg"
         width="100%"
         onClick={handleClick}
         disabled={!passphrase}
+        //
+        _hover={{ boxShadow: "none" }}
+        borderRadius={0}
+        borderWidth="2px"
+        borderColor="black"
+        backgroundColor="rgb(209,252,135)"
+        boxShadow="-4px 4px 0px 0px #000"
       >
         Unlock
       </Button>
