@@ -13,16 +13,6 @@ const JSONtoUserInfo = (json: any): UserInfo => {
 };
 
 const JSONtoFileMetadata = (json: any): FileMetadata => {
-  let kind: "FILE" | "FOLDER";
-  switch (json["mimeType"]) {
-    case "application/vnd.google-apps.folder":
-      kind = "FOLDER";
-      break;
-
-    default:
-      kind = "FILE";
-      break;
-  }
   const fileMetadata: FileMetadata = {
     id: json["id"],
     name: json["name"],

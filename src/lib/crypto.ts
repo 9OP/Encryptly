@@ -2,25 +2,19 @@ import { AppData } from "@app/models";
 
 // Recommended nonce byte lenght for AES-GCM 256bytes
 const NONCE_SIZE = 12;
+
 // Store a 1 byte VERSION flag in
 // for backward compatibility
-const VERSION = new Uint8Array([0x01]);
+const VERSION = 0x01;
 const VERSION_SIZE = 1;
-
-function compare(a: Uint8Array, b: Uint8Array) {
-  for (let i = a.length; -1 < i; i -= 1) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
-}
 
 export const decrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
   const buff = await data.arrayBuffer();
   const version = buff.slice(0, VERSION_SIZE);
-  const iv = buff.slice(VERSION_SIZE, NONCE_SIZE);
-  const cipher = buff.slice(NONCE_SIZE);
+  const iv = buff.slice(VERSION_SIZE, NONCE_SIZE + VERSION_SIZE);
+  const cipher = buff.slice(NONCE_SIZE + VERSION_SIZE);
 
-  if (!compare(VERSION, new Uint8Array(version))) {
+  if (VERSION !== new Uint8Array(version)[0]) {
     throw new Error("File version not recognized");
   }
 
@@ -40,7 +34,7 @@ export const encrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
     key,
     plain
   );
-  return new Blob([VERSION.buffer, iv.buffer, encrypted]);
+  return new Blob([new Uint8Array([VERSION]).buffer, iv.buffer, encrypted]);
 };
 
 export const generateEncryptionKey = async () => {

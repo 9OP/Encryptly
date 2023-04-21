@@ -25,9 +25,12 @@ const UploadFeedback: FC<props> = (props: props) => {
     <Alert
       status="info"
       variant="solid"
-      boxShadow="lg"
       width="100%"
+      //
+      borderWidth="3px"
       borderRadius="6px"
+      borderColor="black"
+      boxShadow="-4px 4px 0px 0px #000"
     >
       <AlertIcon />
       <VStack spacing={0} alignItems="flex-start" justifyContent="center">

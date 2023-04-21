@@ -29,13 +29,14 @@ const DownloadButton: FC<props> = (props: props) => {
         type: metadata.mimeType,
       });
       const objectUrl = URL.createObjectURL(file);
-  
+
       if (ref.current) {
         ref.current.href = objectUrl;
         ref.current.download = metadata.name;
         ref.current.click();
       }
     } catch (err) {
+      console.error(err);
       toast({
         position: "bottom-right",
         duration: 5000,

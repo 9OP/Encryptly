@@ -23,6 +23,7 @@ import FilesList from "../components/FileTable";
 import { useListFiles, useUserInfo } from "@app/hooks";
 import LogoutButton from "@app/components/LogoutButton";
 import DropZone from "@app/components/DropZone";
+import formatBytes from "@app/lib/formatBytes";
 
 interface props {
   search: string;
@@ -34,9 +35,14 @@ const SearchBar: FC<props> = (props: props) => {
   const { data: files } = useListFiles();
 
   const nbFiles = useMemo(() => files?.length || 0, [files]);
+  const quantity = useMemo(
+    () => files?.reduce((acc, { size }) => acc + size, 0),
+    [files]
+  );
 
   return (
     <VStack
+      flex={1}
       height="100%"
       padding="1.5rem"
       borderWidth="3px"
@@ -44,6 +50,7 @@ const SearchBar: FC<props> = (props: props) => {
       borderColor="black"
       boxShadow="-4px 4px 0px 0px #000"
       backgroundColor="rgb(209,252,135)"
+      spacing="1.5rem"
     >
       <InputGroup width="18rem" size="sm">
         <InputLeftElement pointerEvents="none" paddingLeft=".4rem">
@@ -70,7 +77,12 @@ const SearchBar: FC<props> = (props: props) => {
           <CloseIcon />
         </InputRightElement>
       </InputGroup>
-      <Text fontWeight="semibold">Files: {nbFiles}</Text>
+      <HStack>
+        <Text fontWeight="semibold">Files: {nbFiles}</Text>
+        <Text fontWeight="semibold">
+          Encrypted content: {formatBytes(quantity || 0)}
+        </Text>
+      </HStack>
     </VStack>
   );
 };
@@ -112,7 +124,7 @@ const Index: FC = () => {
         backgroundSize="30px 30px;"
       >
         <VStack w="60%" spacing="1rem">
-          <HStack w="100%" justifyContent="space-between" spacing="1.5rem">
+          <HStack w="100%" justifyContent="space-between" spacing="1rem">
             <StorageQuota />
             <SearchBar search={search} setSearch={setSearch} />
             <UserCard />
