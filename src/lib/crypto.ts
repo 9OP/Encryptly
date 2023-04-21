@@ -2,20 +2,45 @@ import { AppData } from "@app/models";
 
 // Recommended nonce byte lenght for AES-GCM 256bytes
 const NONCE_SIZE = 12;
+// Store a 1 byte VERSION flag in
+// for backward compatibility
+const VERSION = new Uint8Array([0x01]);
+const VERSION_SIZE = 1;
+
+function compare(a: Uint8Array, b: Uint8Array) {
+  for (let i = a.length; -1 < i; i -= 1) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
 
 export const decrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
   const buff = await data.arrayBuffer();
-  const iv = buff.slice(0, NONCE_SIZE);
+  const version = buff.slice(0, VERSION_SIZE);
+  const iv = buff.slice(VERSION_SIZE, NONCE_SIZE);
   const cipher = buff.slice(NONCE_SIZE);
-  const decrypted = await self.crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, cipher);
+
+  if (!compare(VERSION, new Uint8Array(version))) {
+    throw new Error("File version not recognized");
+  }
+
+  const decrypted = await self.crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    key,
+    cipher
+  );
   return new Blob([decrypted]);
 };
 
 export const encrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
   const iv = self.crypto.getRandomValues(new Uint8Array(NONCE_SIZE));
   const plain = await data.arrayBuffer();
-  const encrypted = await self.crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, plain);
-  return new Blob([iv.buffer, encrypted]);
+  const encrypted = await self.crypto.subtle.encrypt(
+    { name: "AES-GCM", iv },
+    key,
+    plain
+  );
+  return new Blob([VERSION.buffer, iv.buffer, encrypted]);
 };
 
 export const generateEncryptionKey = async () => {
@@ -32,10 +57,13 @@ export const generateEncryptionKey = async () => {
 
 const getKeyMaterial = async (passphrase: string): Promise<CryptoKey> => {
   const enc = new TextEncoder();
-  return self.crypto.subtle.importKey("raw", enc.encode(passphrase), { name: "PBKDF2" }, false, [
-    "deriveBits",
-    "deriveKey",
-  ]);
+  return self.crypto.subtle.importKey(
+    "raw",
+    enc.encode(passphrase),
+    { name: "PBKDF2" },
+    false,
+    ["deriveBits", "deriveKey"]
+  );
 };
 
 const getWrapKey = async (keyMaterial: CryptoKey, salt: Uint8Array) => {
@@ -60,7 +88,12 @@ export const wrapEncryptionKey = async (
   const keyMaterial = await getKeyMaterial(passphrase);
   const salt = self.crypto.getRandomValues(new Uint8Array(16));
   const wrapKey = await getWrapKey(keyMaterial, salt);
-  const key = await self.crypto.subtle.wrapKey("raw", encryptionKey, wrapKey, "AES-KW");
+  const key = await self.crypto.subtle.wrapKey(
+    "raw",
+    encryptionKey,
+    wrapKey,
+    "AES-KW"
+  );
   return {
     key: toB64(key),
     salt: [...salt],
@@ -88,11 +121,15 @@ export const unwrapEncryptionKey = async (
   );
 };
 
-export const exportEncryptionKey = async (encryptionKey: CryptoKey): Promise<string> => {
+export const exportEncryptionKey = async (
+  encryptionKey: CryptoKey
+): Promise<string> => {
   return toB64(await self.crypto.subtle.exportKey("raw", encryptionKey));
 };
 
-export const importEncryptionKey = async (encryptionKey: string): Promise<CryptoKey> => {
+export const importEncryptionKey = async (
+  encryptionKey: string
+): Promise<CryptoKey> => {
   return self.crypto.subtle.importKey(
     "raw",
     fromB64(encryptionKey),
@@ -112,12 +149,18 @@ export const sha256 = async (str: string): Promise<string> => {
 
 const toB64 = (buf: ArrayBuffer): string => {
   return self.btoa(
-    new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), "")
+    new Uint8Array(buf).reduce(
+      (data, byte) => data + String.fromCharCode(byte),
+      ""
+    )
   );
 };
 
 const fromB64 = (buf: string): ArrayBuffer => {
   return new Uint8Array(
-    [...self.atob(buf)].reduce((data, char) => data.concat([char.charCodeAt(0)]), [] as number[])
+    [...self.atob(buf)].reduce(
+      (data, char) => data.concat([char.charCodeAt(0)]),
+      [] as number[]
+    )
   ).buffer;
 };

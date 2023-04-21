@@ -60,10 +60,6 @@ const Login: FC = () => {
     () => !accessToken.value,
     [accessToken.value]
   );
-  const showPassphraseInput = useMemo(
-    () => !showLoginButton && !encryptionKey.value,
-    [showLoginButton, encryptionKey]
-  );
 
   return (
     <Flex>
@@ -96,14 +92,13 @@ const Login: FC = () => {
               </Heading>
               <HStack spacing="3rem">
                 <Box w="50%">
-                  {showLoginButton && (
+                  {showLoginButton ? (
                     <GoogleLoginButton
                       url={url}
                       onSuccess={setAccessToken}
                       onFailure={setError}
                     />
-                  )}
-                  {showPassphraseInput && (
+                  ) : (
                     <PassphraseInput setEncryptionKey={setEncryptionKey} />
                   )}
                 </Box>

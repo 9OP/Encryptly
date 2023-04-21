@@ -11,6 +11,7 @@ const JSONtoUserInfo = (json: any): UserInfo => {
   };
   return userInfo;
 };
+
 const JSONtoFileMetadata = (json: any): FileMetadata => {
   let kind: "FILE" | "FOLDER";
   switch (json["mimeType"]) {
@@ -32,6 +33,7 @@ const JSONtoFileMetadata = (json: any): FileMetadata => {
   };
   return fileMetadata;
 };
+
 const JSONtoFilesMetadata = (json: any): FileMetadata[] => {
   return json
     .map((file: any): FileMetadata | undefined => {
@@ -45,6 +47,7 @@ const JSONtoFilesMetadata = (json: any): FileMetadata[] => {
       a.createdTime && b.createdTime ? a.createdTime > b.createdTime : 0
     );
 };
+
 const JSONtoAppData = (json: any): AppData => {
   const appData: AppData = {
     key: json["key"],
@@ -52,6 +55,7 @@ const JSONtoAppData = (json: any): AppData => {
   };
   return appData;
 };
+
 const JSONtoStorageQuota = (json: any): StorageQuota => {
   const storageQuota: StorageQuota = {
     limit: parseInt(json["limit"]),
@@ -106,6 +110,7 @@ const createConfigFile = async (token: string): Promise<string> => {
   const json = await res.json();
   return json["id"];
 };
+
 const uploadConfigFile = async (
   token: string,
   configFileId: string,
@@ -123,6 +128,7 @@ const uploadConfigFile = async (
     }
   );
 };
+
 export const saveAppData = async (
   token: string,
   data: AppData
@@ -175,45 +181,6 @@ export const deleteAppFolder = async (token: string): Promise<void> => {
   await Promise.all(promises);
 };
 
-export const createFolder = async (
-  token: string,
-  name: string,
-  parent: string
-): Promise<any> => {
-  const res = await fetch("https://www.googleapis.com/drive/v3/files", {
-    method: "POST",
-    body: JSON.stringify({
-      name: name,
-      mimeType: "application/vnd.google-apps.folder",
-      parents: [parent],
-    }),
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-  const json = await res.json();
-  return json;
-};
-export const moveFile = async (
-  token: string,
-  fileId: string,
-  parentId: string
-): Promise<any> => {
-  const res = await fetch(
-    `https://www.googleapis.com/drive/v3/files/${fileId}?addParents=${parentId}`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const json = await res.json();
-  return json;
-};
-
 export const getStorageQuota = async (token: string): Promise<StorageQuota> => {
   const res = await fetch(
     "https://www.googleapis.com/drive/v3/about?fields=storageQuota",
@@ -236,19 +203,6 @@ export const getUserFiles = async (token: string): Promise<FileMetadata[]> => {
   );
   const json = await res.json();
   return JSONtoFilesMetadata(json["files"]);
-};
-
-const toDataURL = async (url: string): Promise<string> => {
-  const res = await fetch(url);
-  const data = await res.blob();
-
-  // return Buffer.from(await data.arrayBuffer()).toString("base64")
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(data);
-  });
 };
 
 const uploadFileMetadata = async (

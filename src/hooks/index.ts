@@ -11,11 +11,9 @@ import {
   getStorageQuota,
   deleteAppFolder,
   downloadFile,
-  moveFile,
   uploadFile,
 } from "./http";
 import promisify from "@app/lib/promisify";
-
 
 export const useIsAuthenticated = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
@@ -70,7 +68,8 @@ export const useEncryptFile = () => {
   return useCallback(
     (file: File): Promise<Blob> => {
       const worker = new Worker(
-        new URL("../lib/webworkers/encrypt.worker.ts", import.meta.url), {type: "module"}
+        new URL("../lib/webworkers/encrypt.worker.ts", import.meta.url),
+        { type: "module" }
       );
       return promisify(worker, { file, key: encryptionKey.value });
     },
@@ -84,7 +83,8 @@ export const useDecryptFile = () => {
   return useCallback(
     async (data: Blob): Promise<Blob> => {
       const worker = new Worker(
-        new URL("../lib/webworkers/decrypt.worker.ts", import.meta.url), {type: "module"}
+        new URL("../lib/webworkers/decrypt.worker.ts", import.meta.url),
+        { type: "module" }
       );
       return promisify(worker, { data, key: encryptionKey.value });
     },
@@ -92,35 +92,11 @@ export const useDecryptFile = () => {
   );
 };
 
-// export const useCreateFolder = () => {
-//   const { accessToken, currentFolder } = useContext(AppContext);
-
-//   return async (name: string) => {
-//     const res = await createFolder(accessToken.value, name, currentFolder.value || "root");
-//     await revalidateListFiles();
-//     return res;
-//   };
-// };
-
-export const useMoveFile = () => {
-  const { accessToken } = useContext(AppContext);
-
-  return async (fileId: string, parentId: string) => {
-    const res = await moveFile(accessToken.value, fileId, parentId);
-    await revalidateListFiles();
-    return res;
-  };
-};
-
 export const useUploadFile = () => {
   const { accessToken } = useContext(AppContext);
 
   return async (file: { data: Blob; name: string }) => {
-    const generator = await uploadFile(
-      accessToken.value,
-      file.name,
-      file.data
-    );
+    const generator = await uploadFile(accessToken.value, file.name, file.data);
     return generator;
   };
 };
