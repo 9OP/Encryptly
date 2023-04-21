@@ -11,7 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FC, useContext, useMemo, useState } from "react";
+import { FC, useContext, useEffect, useMemo, useState } from "react";
 import getAuthorizationUrl from "@app/lib/authorizationUrl";
 import { AppContext } from "@app/context";
 import { getUserInfo } from "@app/hooks/http";
@@ -26,11 +26,17 @@ import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 import GoogleLoginButton from "@app/components/LoginButton";
 import PassphraseInput from "@app/components/PassphraseInput";
 import { GithubIcon, LinkedinIcon } from "@app/components/Icons";
+import { useRecoverAccessToken } from "@app/hooks";
 
 const Login: FC = () => {
   const url = getAuthorizationUrl();
   const [error, setError] = useState("");
   const { accessToken, encryptionKey } = useContext(AppContext);
+  const recoverAccessToken = useRecoverAccessToken();
+
+  useEffect(() => {
+    recoverAccessToken();
+  }, []);
 
   const setAccessToken = async (token: string) => {
     try {
@@ -52,7 +58,7 @@ const Login: FC = () => {
       const exportKey = await exportEncryptionKey(key);
       encryptionKey.setValue(exportKey);
     } catch (err) {
-      setError("Failed generating the encryption key");
+      setError(`Failed unwrapping your encryption key`);
     }
   };
 

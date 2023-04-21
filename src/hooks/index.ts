@@ -14,6 +14,7 @@ import {
   uploadFile,
 } from "./http";
 import promisify from "@app/lib/promisify";
+import { delStorageAccessToken, getStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 
 export const useIsAuthenticated = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
@@ -21,6 +22,28 @@ export const useIsAuthenticated = () => {
   const hasEncryptionKey =
     encryptionKey.value != "" && encryptionKey.value != null;
   return hasAccessToken && hasEncryptionKey;
+};
+
+export const useRecoverAccessToken = () => {
+  const { accessToken } = useContext(AppContext);
+
+  return async () => {
+    const token = getStorageAccessToken();
+
+    if (token) {
+      try {
+        await getUserInfo(token);
+        accessToken.setValue(token);
+        setStorageAccessToken(token);
+        return true;
+      } catch (err) {
+        accessToken.setValue("");
+        delStorageAccessToken();
+      }
+    }
+
+    return false;
+  };
 };
 
 export const useUserInfo = () => {

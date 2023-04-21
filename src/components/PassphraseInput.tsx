@@ -5,6 +5,8 @@ import {
   Input,
   Button,
   VStack,
+  HStack,
+  Text,
 } from "@chakra-ui/react";
 
 import { useAppData, useUserInfo } from "@app/hooks";
@@ -34,7 +36,10 @@ const PassphraseInput = (props: {
     <VStack spacing="1rem">
       <FormControl>
         <FormLabel fontSize="md" fontWeight="semibold">
-          Passphrase [{userInfo?.email || "..."}]
+          <HStack justifyContent="space-between">
+            <Text>Passphrase</Text>
+            <Text>{userInfo?.email ? `[${userInfo.email}]` : ""}</Text>
+          </HStack>
         </FormLabel>
         <Input
           autoFocus

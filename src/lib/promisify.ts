@@ -13,8 +13,8 @@ const promisify = <T, K>(worker: Worker, args: T): Promise<K> => {
 
       worker.postMessage(args);
     } catch (error) {
-      worker.terminate();
       reject(error);
+      worker.terminate();
     }
   });
 };

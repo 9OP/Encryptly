@@ -1,4 +1,4 @@
-import { IconButton, Spinner } from "@chakra-ui/react";
+import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { useCallback, useRef, useState, FC } from "react";
 import { DownloadIcon, ShieldLockIcon } from "./Icons";
 import { useDecryptFile, useDownloadFile } from "@app/hooks";
@@ -9,6 +9,7 @@ interface props {
 
 const DownloadButton: FC<props> = (props: props) => {
   const { fileId } = props;
+  const toast = useToast();
   const [downloading, setDownloading] = useState(false);
   const [decrypting, setDecrypting] = useState(false);
   const downloadFile = useDownloadFile();
@@ -22,18 +23,29 @@ const DownloadButton: FC<props> = (props: props) => {
     setDownloading(false);
 
     setDecrypting(true);
-    const fileData = await decryptFile(data);
-    setDecrypting(false);
-
-    const file = new File([fileData], metadata.name, {
-      type: metadata.mimeType,
-    });
-    const objectUrl = URL.createObjectURL(file);
-
-    if (ref.current) {
-      ref.current.href = objectUrl;
-      ref.current.download = metadata.name;
-      ref.current.click();
+    try {
+      const fileData = await decryptFile(data);
+      const file = new File([fileData], metadata.name, {
+        type: metadata.mimeType,
+      });
+      const objectUrl = URL.createObjectURL(file);
+  
+      if (ref.current) {
+        ref.current.href = objectUrl;
+        ref.current.download = metadata.name;
+        ref.current.click();
+      }
+    } catch (err) {
+      toast({
+        position: "bottom-right",
+        duration: 5000,
+        isClosable: true,
+        title: "Error decrypting file",
+        description: (err as Error).message,
+        status: "error",
+      });
+    } finally {
+      setDecrypting(false);
     }
   }, [decryptFile, downloadFile, fileId]);
 
