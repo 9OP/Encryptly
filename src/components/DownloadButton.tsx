@@ -55,17 +55,16 @@ const DownloadButton: FC<props> = (props: props) => {
       <IconButton
         id={`d-${fileId}`}
         visibility={downloading || decrypting ? "visible" : "hidden"}
-        size="sm"
-        variant="ghost"
-        color="gray.500"
+        variant="none"
+        color="blue.500"
         aria-label="download"
         icon={
           downloading ? (
             <Spinner />
           ) : decrypting ? (
-            <ShieldLockIcon boxSize="1.2rem" />
+            <ShieldLockIcon boxSize="1.5rem" />
           ) : (
-            <DownloadIcon boxSize="1.2rem" />
+            <DownloadIcon boxSize="1.5rem" />
           )
         }
         onClick={handleClick}

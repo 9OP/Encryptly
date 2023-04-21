@@ -54,19 +54,16 @@ const FileTable = ({ files, isFetching }: FileViewProps) => {
     order: SortOrder;
     setOrder: Dispatch<SetStateAction<SortOrder>>;
   }) => (
-    <Th
-      padding={0}
-      color="gray.500"
-      fontWeight="semibold"
-      textTransform="capitalize"
-    >
+    <Th padding={0} textTransform="capitalize">
       <HStack spacing={1} marginBottom="0.6rem">
-        <Text>{title}</Text>
+        <Text fontSize="md" color="black">
+          {title}
+        </Text>
         <IconButton
-          borderRadius="0.2rem"
-          variant="ghost"
+          color="black"
+          variant="none"
+          backgroundColor="transparent"
           size="xs"
-          boxSize="1.1rem"
           aria-label="sort"
           onClick={() => {
             setOrder((prev) => (prev === "ASC" ? "DESC" : "ASC"));
@@ -75,9 +72,9 @@ const FileTable = ({ files, isFetching }: FileViewProps) => {
           }}
           icon={
             order === "DESC" ? (
-              <ArrowUpIcon boxSize="1.3rem" />
+              <ArrowUpIcon boxSize="1rem" />
             ) : (
-              <ArrowDownIcon boxSize="1.3rem" />
+              <ArrowDownIcon boxSize="1rem" />
             )
           }
         />
@@ -120,7 +117,7 @@ const FileTable = ({ files, isFetching }: FileViewProps) => {
   return (
     <TableContainer overflowX="hidden">
       <Table variant="simple" size="sm">
-        <Thead>
+        <Thead borderColor="black" borderBottomWidth="2px">
           <Tr padding={0}>
             <ColHeader title="name" order={nameOrder} setOrder={setNameOrder} />
             <ColHeader title="date" order={dateOrder} setOrder={setDateOrder} />
@@ -131,7 +128,7 @@ const FileTable = ({ files, isFetching }: FileViewProps) => {
                 alignItems="center"
                 marginBottom="0.6rem"
               >
-                {isFetching ? <Spinner color="gray.400" size="sm" /> : <></>}
+                {isFetching ? <Spinner size="md" /> : <></>}
               </HStack>
             </Td>
           </Tr>
@@ -145,19 +142,18 @@ const FileTable = ({ files, isFetching }: FileViewProps) => {
               }}
               cursor="pointer"
             >
-              <Td paddingX={0} paddingY="0.8rem">
+              <Td paddingX={0} paddingY="0.8rem" border="0">
                 <HStack
                   draggable={true}
                   onDragStart={(e) => {
                     e.dataTransfer.setData("text/plain", file.id);
                   }}
                 >
-                  <DocumentIcon boxSize="1.3rem" color="blue.500" />
+                  {/* <DocumentIcon boxSize="1.3rem" color="blue.500" /> */}
 
                   <Text
-                    color="gray.800"
-                    fontSize="sm"
-                    fontWeight="medium"
+                    color="black"
+                    fontWeight="semibold"
                     whiteSpace="nowrap"
                     overflow="hidden"
                     textOverflow="ellipsis"
@@ -167,23 +163,13 @@ const FileTable = ({ files, isFetching }: FileViewProps) => {
                   </Text>
                 </HStack>
               </Td>
-              <Td
-                fontSize="xs"
-                color="gray.500"
-                fontWeight="medium"
-                paddingX={0}
-              >
+              <Td fontSize="sm" fontWeight="medium" paddingX={0} border="0">
                 {file?.createdTime?.toLocaleString()}
               </Td>
-              <Td
-                fontSize="xs"
-                color="gray.500"
-                fontWeight="medium"
-                paddingX={0}
-              >
+              <Td fontSize="sm" fontWeight="medium" paddingX={0} border="0">
                 {formatBytes(file?.size || 0)}
               </Td>
-              <Td>
+              <Td border="0">
                 <HStack justifyContent="flex-end">
                   <DownloadButton fileId={file.id} />
                 </HStack>

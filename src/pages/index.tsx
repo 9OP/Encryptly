@@ -55,7 +55,7 @@ const SearchBar: FC<props> = (props: props) => {
       borderRadius="6px"
       borderColor="black"
       boxShadow="-4px 4px 0px 0px #000"
-      backgroundColor="rgb(209,252,135)"
+      backgroundColor="yellow.200"
     >
       <HStack w="100%">
         <Tag size="md" colorScheme="purple" fontWeight="semibold">
@@ -176,7 +176,7 @@ const Index: FC = () => {
             borderRadius="6px"
             borderColor="black"
             boxShadow="-4px 4px 0px 0px #000"
-            backgroundColor="rgb(209,252,135)"
+            backgroundColor="purple.200"
           >
             <FilesList search={search} />
           </Flex>

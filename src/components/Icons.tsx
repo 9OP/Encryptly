@@ -27,6 +27,7 @@ import {
 } from "react-icons/io5";
 import { IoMdKey } from "react-icons/io";
 import { SiGithub, SiLinkedin } from "react-icons/si";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const iconFactory = (icon: IconType) => {
   const IconFactory = (props: IconProps) => {
@@ -51,8 +52,8 @@ export const ListIcon = iconFactory(MdList);
 export const CloseIcon = iconFactory(MdOutlineClose);
 export const ShieldLockIcon = iconFactory(BsShieldLockFill);
 export const CheckIcon = iconFactory(MdCheck);
-export const ArrowUpIcon = iconFactory(MdArrowDropUp);
-export const ArrowDownIcon = iconFactory(MdArrowDropDown);
+export const ArrowUpIcon = iconFactory(FaChevronUp);
+export const ArrowDownIcon = iconFactory(FaChevronDown);
 export const DocumentIcon = iconFactory(IoDocumentOutline);
 export const FolderIcon = iconFactory(IoFolderOutline);
 export const CreateFolderIcon = iconFactory(IoFolderOpenOutline);

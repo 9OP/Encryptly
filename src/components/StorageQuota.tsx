@@ -14,7 +14,7 @@ const StorageQuota = () => {
       borderRadius="6px"
       borderColor="black"
       boxShadow="-4px 4px 0px 0px #000"
-      backgroundColor="rgb(209,252,135)"
+      backgroundColor="blue.100"
     >
       <HStack marginBottom="0.5rem">
         <CloudIcon boxSize="1.2rem" />
