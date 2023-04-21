@@ -25,10 +25,11 @@ const StorageQuota = () => {
           <Flex flexDirection="column" width="100%" alignItems="center">
             <Progress
               backgroundColor="transparent"
-              colorScheme="purple"
+              colorScheme="pink"
               width="100%"
               value={(data?.usage / data?.limit) * 100}
               size="xs"
+              borderRadius="6px"
             />
             <Text fontWeight="semibold" fontSize="xs" marginTop="0.2rem">
               {formatBytes(data?.usage)} used on {formatBytes(data?.limit)}

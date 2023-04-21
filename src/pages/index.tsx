@@ -2,8 +2,10 @@ import {
   Dispatch,
   FC,
   SetStateAction,
+  useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -16,14 +18,18 @@ import {
   InputLeftElement,
   InputRightElement,
   VStack,
+  Badge,
+  Tag,
+  Button,
 } from "@chakra-ui/react";
 import StorageQuota from "@app/components/StorageQuota";
-import { CloseIcon, SearchIcon } from "@app/components/Icons";
+import { CloseIcon, SearchIcon, SecretIcon } from "@app/components/Icons";
 import FilesList from "../components/FileTable";
 import { useListFiles, useUserInfo } from "@app/hooks";
 import LogoutButton from "@app/components/LogoutButton";
 import DropZone from "@app/components/DropZone";
 import formatBytes from "@app/lib/formatBytes";
+import { AppContext } from "@app/context";
 
 interface props {
   search: string;
@@ -50,9 +56,16 @@ const SearchBar: FC<props> = (props: props) => {
       borderColor="black"
       boxShadow="-4px 4px 0px 0px #000"
       backgroundColor="rgb(209,252,135)"
-      spacing="1.5rem"
     >
-      <InputGroup width="18rem" size="sm">
+      <HStack w="100%">
+        <Tag size="md" colorScheme="purple" fontWeight="semibold">
+          Files: {nbFiles}
+        </Tag>
+        <Tag size="md" colorScheme="blue" fontWeight="semibold">
+          Content: {formatBytes(quantity || 0)}
+        </Tag>
+      </HStack>
+      <InputGroup width="18rem" size="sm" w="100%">
         <InputLeftElement pointerEvents="none" paddingLeft=".4rem">
           <SearchIcon color="gray.400" boxSize="1.2rem" />
         </InputLeftElement>
@@ -77,18 +90,33 @@ const SearchBar: FC<props> = (props: props) => {
           <CloseIcon />
         </InputRightElement>
       </InputGroup>
-      <HStack>
-        <Text fontWeight="semibold">Files: {nbFiles}</Text>
-        <Text fontWeight="semibold">
-          Encrypted content: {formatBytes(quantity || 0)}
-        </Text>
-      </HStack>
     </VStack>
   );
 };
 
 const UserCard: FC = () => {
   const { data: user } = useUserInfo();
+  const { encryptionKey } = useContext(AppContext);
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const name = `${user?.email}_key.txt`;
+
+    const file = new File([encryptionKey.value], name, {
+      type: "text/plain",
+    });
+
+    const objectUrl = URL.createObjectURL(file);
+
+    if (ref.current) {
+      ref.current.href = objectUrl;
+      ref.current.download = name;
+      ref.current.click();
+    }
+  };
 
   return (
     <VStack
@@ -106,7 +134,19 @@ const UserCard: FC = () => {
       <Text fontSize="md" fontWeight="semibold">
         [{user?.email}]
       </Text>
-      <LogoutButton />
+      <HStack justifyContent="space-between" w="100%">
+        <Button
+          colorScheme="black"
+          size="md"
+          leftIcon={<SecretIcon boxSize="1.5rem"/>}
+          variant="link"
+          onClick={handleClick}
+        >
+          key
+        </Button>
+        <a hidden ref={ref} />
+        <LogoutButton />
+      </HStack>
     </VStack>
   );
 };
@@ -120,7 +160,7 @@ const Index: FC = () => {
         padding="2rem"
         w="100%"
         justifyContent="center"
-        backgroundImage="radial-gradient(#444cf7 1px, #fff 1px);"
+        backgroundImage="radial-gradient(#444cf7 1.25px, #fff 1.25px);"
         backgroundSize="30px 30px;"
       >
         <VStack w="60%" spacing="1rem">

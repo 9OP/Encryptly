@@ -1,6 +1,5 @@
 import { Icon, IconProps, useStyleConfig } from "@chakra-ui/react";
 import { IconType } from "react-icons";
-import { FcGoogle } from "react-icons/fc";
 import { VscNewFile } from "react-icons/vsc";
 import {
   MdOutlineCloud,
@@ -26,6 +25,7 @@ import {
   IoFolderOutline,
   IoFolderOpenOutline,
 } from "react-icons/io5";
+import { IoMdKey } from "react-icons/io";
 import { SiGithub, SiLinkedin } from "react-icons/si";
 
 const iconFactory = (icon: IconType) => {
@@ -60,3 +60,4 @@ export const ChevronLeftIcon = iconFactory(MdChevronLeft);
 export const ChevronRightIcon = iconFactory(MdChevronRight);
 export const GithubIcon = iconFactory(SiGithub);
 export const LinkedinIcon = iconFactory(SiLinkedin);
+export const SecretIcon = iconFactory(IoMdKey);
