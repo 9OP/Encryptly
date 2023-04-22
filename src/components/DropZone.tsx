@@ -77,7 +77,6 @@ const DropZone: FC<props> = (props: props) => {
         title: "Error uploading file",
         description: (err as Error).message,
         status: "error",
-        variant: "toast",
       });
     }
   };

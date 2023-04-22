@@ -36,7 +36,6 @@ const DownloadButton: FC<props> = (props: props) => {
         title: "Error decrypting file",
         description: (err as Error).message,
         status: "error",
-        variant: "toast",
       });
     } finally {
       setDecrypting(false);

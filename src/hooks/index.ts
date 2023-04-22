@@ -58,18 +58,7 @@ export const useUserInfo = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  return useSWR("UserInfo", () => getUserInfo(accessToken.value), {
-    onError: (err: Error) => {
-      // 401 UNAUTHORIZED error, when token is outdated
-      if (err.status === 401) {
-        accessToken.setValue("");
-
-        if (location.pathname !== "/login") {
-          navigate("/login");
-        }
-      }
-    },
-  });
+  return useSWR("UserInfo", () => getUserInfo(accessToken.value));
 };
 
 export const useLogout = () => {

@@ -7,25 +7,25 @@ const AlertStyle: ComponentStyleConfig = {
       borderWidth: "3px",
       borderRadius: "6px",
       borderColor: "black",
-      boxShadow: "-4px 4px 0px 0px #000",
+      maxWidth: "25rem",
+      padding: "1rem",
+      boxShadow: "none",
+    },
+    title: {
+      fontWeight: "bold",
+      fontSize: "lg",
+      marginBottom: ".8rem",
+    },
+    description: {
+      fontSize: "sm",
+      fontWeight: "medium",
+      lineHeight: "1rem",
     },
   },
   // styles for different sizes ("sm", "md", "lg")
   sizes: {},
   // styles for different visual variants ("outline", "solid")
-  variants: {
-    toast: (P: any) => {
-      return {
-        container: {
-          ...P.theme.components.Alert.variants.solid(P).container,
-          borderWidth: "3px",
-          borderRadius: "6px",
-          borderColor: "black",
-          boxShadow: "-4px 4px 0px 0px #000!important",
-        },
-      };
-    },
-  },
+  variants: {},
   // default values for 'size', 'variant' and 'colorScheme'
   defaultProps: {
     variant: "solid",

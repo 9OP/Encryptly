@@ -2,8 +2,9 @@ const getAuthorizationUrl = (): string => {
   // Documentation:
   // https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow#creatingclient
 
-  const clientId = "828562980720-bri8rf8in7g48bs4mlk708u6oipil1ph.apps.googleusercontent.com";
-  const redirectUri = "http://localhost:3000";
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const redirectUri = import.meta.env.VITE_REDIRECT_URI;
+
   const scopes = [
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive.appdata",

@@ -1,5 +1,3 @@
-import { BlobReader, BlobWriter, ZipWriter } from "@zip.js/zip.js";
-
 export const saveFile = (
   fileData: BlobPart[],
   name: string,
@@ -93,6 +91,8 @@ const readEntries = (reader: FileSystemDirectoryReader): Promise<FileSystemEntry
  * Check for better/lighter library for archiving multiple File into a single one
  */
 const createArchive = async (files: File[]) => {
+  const { BlobReader, BlobWriter, ZipWriter } = await import("@zip.js/zip.js");
+
   const zipFileWriter = new BlobWriter();
   const zipWriter = new ZipWriter(zipFileWriter);
 

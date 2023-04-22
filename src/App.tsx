@@ -1,11 +1,13 @@
-import { Route, useLocation, Routes, useNavigate } from "react-router-dom";
-import { FC, useContext, useEffect } from "react";
 import { AppContext } from "@app/context";
+import AuthGuard from "@app/guard/authenticationGuard";
+import LoginGuard from "@app/guard/loginGuard";
 import { useLogout } from "@app/hooks";
 import IndexPage from "@app/pages";
 import LoginPage from "@app/pages/login";
-import AuthGuard from "@app/guard/authenticationGuard";
-import LoginGuard from "@app/guard/loginGuard";
+import { useToast } from "@chakra-ui/react";
+import { FC, useContext, useEffect } from "react";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { SWRConfig } from "swr";
 
 const Logout: FC = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
@@ -49,20 +51,50 @@ const NotFound: FC = () => {
 };
 
 export default function App() {
+  const toast = useToast();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   return (
-    <Routes>
-      <Route>
-        <Route path="/login" element={<LoginGuard />}>
-          <Route index element={<LoginPage />} />
-        </Route>
+    <SWRConfig
+      value={{
+        onError: async (error: Error, key) => {
+          if (error?.status === 401 && location.pathname !== "/login") {
+            toast({
+              status: "warning",
+              title: "Session expired",
+              duration: 3000,
+              isClosable: true,
+              position: "top-right",
+            });
+            navigate("/login");
+          } else {
+            toast({
+              status: "warning",
+              title: error?.info,
+              description: error?.message,
+              duration: 3000,
+              isClosable: true,
+              position: "top-right",
+            });
+          }
+        },
+      }}
+    >
+      <Routes>
+        <Route>
+          <Route path="/login" element={<LoginGuard />}>
+            <Route index element={<LoginPage />} />
+          </Route>
 
-        <Route path="/" element={<AuthGuard />}>
-          <Route index element={<IndexPage />} />
-        </Route>
+          <Route path="/" element={<AuthGuard />}>
+            <Route index element={<IndexPage />} />
+          </Route>
 
-        <Route path="/logout" element={<Logout />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+          <Route path="/logout" element={<Logout />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </SWRConfig>
   );
 }
