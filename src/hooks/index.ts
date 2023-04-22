@@ -9,6 +9,7 @@ import {
 import DecryptWorker from "@app/lib/webworkers/decrypt.worker?worker";
 import EncryptWorker from "@app/lib/webworkers/encrypt.worker?worker";
 import { useCallback, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import useSWR, { mutate } from "swr";
 import {
   deleteAppFolder,
@@ -54,11 +55,18 @@ export const useRecoverAccessToken = () => {
 
 export const useUserInfo = () => {
   const { accessToken } = useContext(AppContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return useSWR("UserInfo", () => getUserInfo(accessToken.value), {
     onError: (err: Error) => {
       // 401 UNAUTHORIZED error, when token is outdated
       if (err.status === 401) {
         accessToken.setValue("");
+
+        if (location.pathname !== "/login") {
+          navigate("/login");
+        }
       }
     },
   });

@@ -17,7 +17,7 @@ const Index: FC = () => {
         position="absolute"
         top="5rem"
         left="5rem"
-        sx={{ "text-orientation": "upright", "writing-mode": "sideways-lr" }}
+        sx={{ textOrientation: "upright", writingMode: "sideways-lr" }}
       >
         Drop your files anywhere!
       </Heading>

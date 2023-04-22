@@ -1,5 +1,5 @@
 import { useDecryptFile, useDownloadFile } from "@app/hooks";
-import { saveFile } from "@app/lib/fileSaver";
+import { saveFile } from "@app/lib/files";
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { FC, useCallback, useRef, useState } from "react";
 import { DownloadIcon, ShieldLockIcon } from "./Icons";
@@ -28,6 +28,7 @@ const DownloadButton: FC<props> = (props: props) => {
       const fileData = await decryptFile(data);
       saveFile([fileData], metadata.name, metadata.mimeType, ref);
     } catch (err) {
+      toast.closeAll();
       toast({
         position: "bottom-right",
         duration: 5000,

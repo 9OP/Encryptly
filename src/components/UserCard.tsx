@@ -1,6 +1,6 @@
 import { AppContext } from "@app/context";
 import { useUserInfo } from "@app/hooks";
-import { saveFile } from "@app/lib/fileSaver";
+import { saveFile } from "@app/lib/files";
 import {
   Button,
   HStack,

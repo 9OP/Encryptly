@@ -1,6 +1,7 @@
+import { revalidateListFiles, useEncryptFile, useUploadFile } from "@app/hooks";
+import { handleDataItem } from "@app/lib/files";
 import { Box, ToastId, useToast } from "@chakra-ui/react";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { revalidateListFiles, useEncryptFile, useUploadFile } from "@app/hooks";
 import UploadFeedback from "./UploadToast";
 
 interface props {
@@ -18,6 +19,8 @@ const DropZone: FC<props> = (props: props) => {
   const [progress, setProgress] = useState<{ [name: string]: number }>({});
   const [toastId, setToastId] = useState<ToastId>("");
   const [files, setFiles] = useState<File[]>([]);
+
+  // const ref = useRef<HTMLAnchorElement>(null);
 
   const uploadFile = useUploadFile();
   const encryptFile = useEncryptFile();
@@ -52,13 +55,30 @@ const DropZone: FC<props> = (props: props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitCount]);
 
-  const handleDrop = (event: React.DragEvent<HTMLInputElement>) => {
+  const handleDrop = async (event: React.DragEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const files = event.dataTransfer.files;
     setDragOver(false);
 
-    if ([...files].length) {
-      onSubmit([...files]);
+    const items = [...event.dataTransfer.items];
+    const files = await handleDataItem(items);
+
+    // saveFile([files[0]], files[0].name, "application/zip", ref);
+
+    try {
+      if ([...files].length) {
+        await onSubmit([...files]);
+      }
+    } catch (err) {
+      toast.closeAll();
+      toast({
+        position: "bottom-right",
+        duration: 5000,
+        isClosable: true,
+        title: "Error uploading file",
+        description: (err as Error).message,
+        status: "error",
+        variant: "toast",
+      });
     }
   };
 
@@ -127,6 +147,7 @@ const DropZone: FC<props> = (props: props) => {
         ></Box>
       )}
       <>{children}</>
+      {/* <a ref={ref} /> */}
     </Box>
   );
 };
