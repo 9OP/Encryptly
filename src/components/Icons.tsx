@@ -1,33 +1,32 @@
 import { Icon, IconProps, useStyleConfig } from "@chakra-ui/react";
 import { IconType } from "react-icons";
-import { VscNewFile } from "react-icons/vsc";
-import {
-  MdOutlineCloud,
-  MdDownload,
-  MdUpload,
-  MdClose,
-  MdLogout,
-  MdDarkMode,
-  MdLightMode,
-  MdSearch,
-  MdGridView,
-  MdList,
-  MdOutlineClose,
-  MdCheck,
-  MdArrowDropUp,
-  MdArrowDropDown,
-  MdChevronLeft,
-  MdChevronRight,
-} from "react-icons/md";
 import { BsGoogle, BsShieldLockFill } from "react-icons/bs";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { IoMdKey } from "react-icons/io";
 import {
   IoDocumentOutline,
-  IoFolderOutline,
   IoFolderOpenOutline,
+  IoFolderOutline,
+  IoTrashBin,
 } from "react-icons/io5";
-import { IoMdKey } from "react-icons/io";
+import {
+  MdCheck,
+  MdChevronLeft,
+  MdChevronRight,
+  MdClose,
+  MdDarkMode,
+  MdDownload,
+  MdGridView,
+  MdLightMode,
+  MdList,
+  MdLogout,
+  MdOutlineClose,
+  MdOutlineCloud,
+  MdSearch,
+  MdUpload,
+} from "react-icons/md";
 import { SiGithub, SiLinkedin } from "react-icons/si";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { VscNewFile } from "react-icons/vsc";
 
 const iconFactory = (icon: IconType) => {
   const IconFactory = (props: IconProps) => {
@@ -62,3 +61,4 @@ export const ChevronRightIcon = iconFactory(MdChevronRight);
 export const GithubIcon = iconFactory(SiGithub);
 export const LinkedinIcon = iconFactory(SiLinkedin);
 export const SecretIcon = iconFactory(IoMdKey);
+export const TrashIcon = iconFactory(IoTrashBin);

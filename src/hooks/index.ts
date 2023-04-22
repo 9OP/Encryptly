@@ -1,26 +1,27 @@
-import { useCallback, useContext } from "react";
-import useSWR, { mutate } from "swr";
 import { AppContext } from "@app/context";
 import { generateEncryptionKey, wrapEncryptionKey } from "@app/lib/crypto";
-import {
-  getUserInfo,
-  revokeToken,
-  saveAppData,
-  loadAppData,
-  getUserFiles,
-  getStorageQuota,
-  deleteAppFolder,
-  downloadFile,
-  uploadFile,
-} from "./http";
 import promisify from "@app/lib/promisify";
 import {
   delStorageAccessToken,
   getStorageAccessToken,
   setStorageAccessToken,
 } from "@app/lib/storage";
-import EncryptWorker from "@app/lib/webworkers/encrypt.worker?worker";
 import DecryptWorker from "@app/lib/webworkers/decrypt.worker?worker";
+import EncryptWorker from "@app/lib/webworkers/encrypt.worker?worker";
+import { useCallback, useContext } from "react";
+import useSWR, { mutate } from "swr";
+import {
+  deleteAppFolder,
+  deleteFile,
+  downloadFile,
+  getStorageQuota,
+  getUserFiles,
+  getUserInfo,
+  loadAppData,
+  revokeToken,
+  saveAppData,
+  uploadFile,
+} from "./http";
 
 export const useIsAuthenticated = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
@@ -129,6 +130,15 @@ export const useDownloadFile = () => {
   return async (fileId: string) => {
     const { metadata, data } = await downloadFile(accessToken.value, fileId);
     return { data, metadata };
+  };
+};
+
+export const useDeleteFile = () => {
+  const { accessToken } = useContext(AppContext);
+
+  return async (fileId: string) => {
+    await deleteFile(accessToken.value, fileId);
+    await revalidateListFiles();
   };
 };
 

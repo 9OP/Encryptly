@@ -1,8 +1,8 @@
-import { IconButton, Spinner, useToast } from "@chakra-ui/react";
-import { useCallback, useRef, useState, FC } from "react";
-import { DownloadIcon, ShieldLockIcon } from "./Icons";
 import { useDecryptFile, useDownloadFile } from "@app/hooks";
 import { saveFile } from "@app/lib/fileSaver";
+import { IconButton, Spinner, useToast } from "@chakra-ui/react";
+import { FC, useCallback, useRef, useState } from "react";
+import { DownloadIcon, ShieldLockIcon } from "./Icons";
 
 interface props {
   fileId: string;
@@ -45,10 +45,10 @@ const DownloadButton: FC<props> = (props: props) => {
   return (
     <>
       <IconButton
-        id={`d-${fileId}`}
+        id={`download-${fileId}`}
         visibility={downloading || decrypting ? "visible" : "hidden"}
         variant="none"
-        color="blue.500"
+        color="purple.500"
         aria-label="download"
         icon={
           downloading ? (
