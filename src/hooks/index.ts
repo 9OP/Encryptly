@@ -54,7 +54,14 @@ export const useRecoverAccessToken = () => {
 
 export const useUserInfo = () => {
   const { accessToken } = useContext(AppContext);
-  return useSWR("UserInfo", () => getUserInfo(accessToken.value));
+  return useSWR("UserInfo", () => getUserInfo(accessToken.value), {
+    onError: (err: Error) => {
+      // 401 UNAUTHORIZED error, when token is outdated
+      if (err.status === 401) {
+        accessToken.setValue("");
+      }
+    },
+  });
 };
 
 export const useLogout = () => {

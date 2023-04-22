@@ -1,8 +1,3 @@
-import {
-  ERR_CONFIG_FILE_MISSING,
-  ERR_RESUMABLE_SESSION,
-  ERR_USER_INFO_MISSING,
-} from "../lib/errors";
 import { AppData, FileMetadata, StorageQuota, UserInfo } from "../models";
 
 const JSONtoUserInfo = (json: any): UserInfo => {
@@ -62,9 +57,14 @@ export const getUserInfo = async (token: string): Promise<UserInfo> => {
     headers: { Authorization: `Bearer ${token}` },
   });
   const json = await res.json();
+
   if (!res.ok) {
-    throw ERR_USER_INFO_MISSING;
+    const error = new Error("Failed fetching user.");
+    error.info = await res.json();
+    error.status = res.status;
+    throw error;
   }
+
   return JSONtoUserInfo(json["user"]);
 };
 
@@ -141,7 +141,7 @@ export const loadAppData = async (token: string): Promise<AppData> => {
   const files = await getAppFiles(token);
   const configFile = files.find((f) => f.name == CONFIG_FILE_NAME);
   if (!configFile) {
-    throw ERR_CONFIG_FILE_MISSING;
+    throw new Error(`Config file <${CONFIG_FILE_NAME}> not found`);
   }
   return await loadConfigFile(token, configFile.id);
 };
@@ -192,7 +192,10 @@ const uploadFileMetadata = async (token: string, name: string): Promise<string> 
   });
   const location = res.headers.get("location");
   if (!res.ok || !location) {
-    throw ERR_RESUMABLE_SESSION;
+    const error = new Error("Failed upload session resume.");
+    error.info = await res.json();
+    error.status = res.status;
+    throw error;
   }
   return location;
 };
