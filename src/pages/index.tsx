@@ -1,13 +1,15 @@
 import DropZone from "@app/components/DropZone";
+import FileTable from "@app/components/FileTable";
 import SearchBar from "@app/components/SearchBar";
 import StorageQuota from "@app/components/StorageQuota";
 import UserCard from "@app/components/UserCard";
 import { Flex, HStack, VStack } from "@chakra-ui/react";
 import { FC, useState } from "react";
-import FilesList from "../components/FileTable";
 
 const Index: FC = () => {
   const [search, setSearch] = useState("");
+  const [filesCount, setFilesCount] = useState(0);
+  const [storageCount, setStorageCount] = useState(0);
 
   return (
     <DropZone>
@@ -21,7 +23,12 @@ const Index: FC = () => {
         <VStack w="60%" spacing="1rem">
           <HStack w="100%" justifyContent="space-between" spacing="1rem">
             <StorageQuota />
-            <SearchBar search={search} setSearch={setSearch} />
+            <SearchBar
+              search={search}
+              setSearch={setSearch}
+              filesCount={filesCount}
+              storageCount={storageCount}
+            />
             <UserCard />
           </HStack>
           <Flex
@@ -33,7 +40,11 @@ const Index: FC = () => {
             boxShadow="-4px 4px 0px 0px #000"
             backgroundColor="purple.200"
           >
-            <FilesList search={search} />
+            <FileTable
+              search={search}
+              setFilesCount={setFilesCount}
+              setStorageCount={setStorageCount}
+            />
           </Flex>
         </VStack>
       </Flex>

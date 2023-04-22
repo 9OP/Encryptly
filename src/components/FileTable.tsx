@@ -167,8 +167,14 @@ const FileTable: FC<props> = (props: props) => {
   );
 };
 
-const PaginatedFileTable = (props: { search: string }): JSX.Element => {
-  const { search } = props;
+interface PropsTable {
+  search: string;
+  setFilesCount: React.Dispatch<React.SetStateAction<number>>;
+  setStorageCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const PaginatedFileTable: FC<PropsTable> = (props: PropsTable): JSX.Element => {
+  const { search, setFilesCount, setStorageCount } = props;
   const [selected, setSelected] = useState(1);
   const { data, isLoading, isValidating } = useListFiles();
 
@@ -193,6 +199,11 @@ const PaginatedFileTable = (props: { search: string }): JSX.Element => {
     const endIndex = selected * pagination + 1;
     return filteredFiles?.slice(startIndex - 1, endIndex - 1);
   }, [filteredFiles, selected, pagination]);
+
+  useEffect(() => {
+    setFilesCount(rangeFiles?.length || 0);
+    setStorageCount(rangeFiles?.reduce((acc, { size }) => acc + size, 0));
+  }, [rangeFiles]);
 
   return (
     <Box width="100%">

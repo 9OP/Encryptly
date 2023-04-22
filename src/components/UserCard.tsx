@@ -46,10 +46,10 @@ const InfoModal: FC<PropsModal> = (props: PropsModal) => {
       >
         <ModalHeader>Info</ModalHeader>
         <ModalBody>
-          Backup your encryption key securely. Anyone can decrypt your files with your key.
+          Backup your encryption key securely. Anyone with your key is able to decrypt your files.
           <br />
           <br />
-          <Tag colorScheme="blue">Do not store your key on Google Drive.</Tag>
+          <Tag colorScheme="blue">Do not store your key on Google Drive !</Tag>
         </ModalBody>
 
         <ModalFooter>

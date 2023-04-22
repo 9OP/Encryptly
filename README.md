@@ -3,7 +3,6 @@
 Simple web app for end-to-end on the fly encryption of Google Drive documents.
 
 TODO:
-- file/content update in search bar
 - text "Drop here" in index page
 - upload folder (zip)
 

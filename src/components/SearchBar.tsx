@@ -9,20 +9,19 @@ import {
   Tag,
   VStack,
 } from "@chakra-ui/react";
-import { Dispatch, FC, SetStateAction, useMemo } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { CloseIcon, SearchIcon } from "./Icons";
 
 interface props {
+  storageCount: number;
+  filesCount: number;
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
 }
 
 const SearchBar: FC<props> = (props: props) => {
-  const { search, setSearch } = props;
+  const { search, setSearch, filesCount, storageCount } = props;
   const { data: files } = useListFiles();
-
-  const nbFiles = useMemo(() => files?.length || 0, [files]);
-  const quantity = useMemo(() => files?.reduce((acc, { size }) => acc + size, 0), [files]);
 
   return (
     <VStack
@@ -37,10 +36,10 @@ const SearchBar: FC<props> = (props: props) => {
     >
       <HStack w="100%">
         <Tag size="md" colorScheme="purple" fontWeight="semibold">
-          Files: {nbFiles}
+          Files: {filesCount}
         </Tag>
         <Tag size="md" colorScheme="blue" fontWeight="semibold">
-          Content: {formatBytes(quantity || 0)}
+          Content: {formatBytes(storageCount)}
         </Tag>
       </HStack>
       <InputGroup width="18rem" size="sm" w="100%">
