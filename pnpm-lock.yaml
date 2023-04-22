@@ -22,9 +22,9 @@ dependencies:
   swr:
     specifier: ^2.1.3
     version: 2.1.3(react@18.2.0)
-  vite-plugin-comlink:
-    specifier: ^3.0.5
-    version: 3.0.5(comlink@4.4.1)(vite@4.2.1)
+  vite-plugin-chunk-split:
+    specifier: ^0.4.7
+    version: 0.4.7(vite@4.2.1)
 
 devDependencies:
   '@types/node':
@@ -1842,10 +1842,6 @@ packages:
     resolution: {integrity: sha512-kJhwH5nAwb34tmyuqq/lgjEKzlFXn1U99NlnB6Ws4qVaERcRUYeYP1cBw6BJ4vxaWStAUEef4WMr7WjOCnBt8w==}
     dev: false
 
-  /comlink@4.4.1:
-    resolution: {integrity: sha512-+1dlx0aY5Jo1vHy/tSsIGpSkN4tS9rZSW8FIhG0JH/crs9wwweswIo/POr451r7bZww3hFbPAKnTpimzL/mm4Q==}
-    dev: false
-
   /compute-scroll-into-view@1.0.20:
     resolution: {integrity: sha512-UCB0ioiyj8CRjtrvaceBLqqhZCVP+1B8+NWQhmdsm0VXOJtobBCf1dBQmebCCo34qZmUwZfIH2MZLqNHazrfjg==}
     dev: false
@@ -1924,6 +1920,10 @@ packages:
     resolution: {integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==}
     dependencies:
       is-arrayish: 0.2.1
+    dev: false
+
+  /es-module-lexer@1.2.1:
+    resolution: {integrity: sha512-9978wrXM50Y4rTMmW5kXIC09ZdXQZqkE4mxhwkd8VbzsGkXGPgV4zWuqQJgCEzYngdo2dYDa0l8xhX4fkSwJSg==}
     dev: false
 
   /esbuild@0.17.17:
@@ -2308,12 +2308,6 @@ packages:
   /json-stable-stringify-without-jsonify@1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
     dev: true
-
-  /json5@2.2.1:
-    resolution: {integrity: sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==}
-    engines: {node: '>=6'}
-    hasBin: true
-    dev: false
 
   /levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -2824,14 +2818,12 @@ packages:
       react: 18.2.0
     dev: false
 
-  /vite-plugin-comlink@3.0.5(comlink@4.4.1)(vite@4.2.1):
-    resolution: {integrity: sha512-my8BE9GFJEaLc7l3e2SfRUL8JJsN9On8PiW7q4Eyq3g6DHUsNqo5WlS7Butuzc8ngrs24Tf1RC8Xfdda+E5T9w==}
+  /vite-plugin-chunk-split@0.4.7(vite@4.2.1):
+    resolution: {integrity: sha512-BGPMTxlC6Z+VNY1t/51F1ablkt4UQqdEPvAmCKRBsEPIpKAlW3sioQwK4klS14ievsGNaeALAKdko7n3oPJ8BQ==}
     peerDependencies:
-      comlink: ^4.3.1
-      vite: '>=2.9.6'
+      vite: ^3.1.0
     dependencies:
-      comlink: 4.4.1
-      json5: 2.2.1
+      es-module-lexer: 1.2.1
       magic-string: 0.26.7
       vite: 4.2.1(@types/node@18.15.11)
     dev: false

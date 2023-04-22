@@ -3,7 +3,7 @@ import FileTable from "@app/components/FileTable";
 import SearchBar from "@app/components/SearchBar";
 import StorageQuota from "@app/components/StorageQuota";
 import UserCard from "@app/components/UserCard";
-import { Flex, HStack, VStack } from "@chakra-ui/react";
+import { Flex, HStack, Heading, VStack } from "@chakra-ui/react";
 import { FC, useState } from "react";
 
 const Index: FC = () => {
@@ -13,6 +13,14 @@ const Index: FC = () => {
 
   return (
     <DropZone>
+      <Heading
+        position="absolute"
+        top="5rem"
+        left="5rem"
+        sx={{ "text-orientation": "upright", "writing-mode": "sideways-lr" }}
+      >
+        Drop your files anywhere!
+      </Heading>
       <Flex
         padding="2rem"
         w="100%"
