@@ -1,4 +1,4 @@
-import * as JSzip from "jszip";
+import { BlobReader, BlobWriter, ZipWriter } from "@zip.js/zip.js";
 
 export const saveFile = (
   fileData: BlobPart[],
@@ -37,19 +37,9 @@ export const handleDataItem = async (items: DataTransferItem[]) => {
       case item.isDirectory:
         const tree: File[] = [];
         await traverseFileTree(item as FileSystemDirectoryEntry, "", tree);
-        let zip = new JSzip();
-        console.log("tree", tree);
-        for (var i = 0; i < tree.length; i++) {
-          const file = tree[i];
-          console.log(file);
-          zip.file(file.name, file);
-        }
-        console.log("zip", zip);
-        const archive = await zip.generateAsync({
-          type: "blob",
-          platform: window.navigator.platform.toLowerCase().includes("win") ? "DOS" : "UNIX",
-        });
-        files.push(new File([archive], item.name + ".zip", { type: "application/zip" }));
+        const archive = await createArchive(tree);
+        const archiveFile = new File([archive], item.name + ".zip", { type: "application/zip" });
+        files.push(archiveFile);
         break;
 
       default:
@@ -96,4 +86,21 @@ const readEntries = (reader: FileSystemDirectoryReader): Promise<FileSystemEntry
       resolve(entries);
     });
   });
+};
+
+/**
+ * Investigate which format to use: .zip or .tar
+ * Check for better/lighter library for archiving multiple File into a single one
+ */
+const createArchive = async (files: File[]) => {
+  const zipFileWriter = new BlobWriter();
+  const zipWriter = new ZipWriter(zipFileWriter);
+
+  for (const file of files) {
+    await zipWriter.add(file.name, new BlobReader(file));
+  }
+
+  await zipWriter.close();
+  const zipFileBlob = await zipFileWriter.getData();
+  return zipFileBlob;
 };

@@ -219,7 +219,6 @@ const generateChunks = (data: Blob): Chunk[] => {
    *  For example, Content-Range: bytes 0-524287/2000000 shows that you
    *  upload the first 524,288 bytes (256 x 1024 x 2) in a 2,000,000 byte file.
    */
-  console.log("chunks", data);
   const chunkSize = 256 * 1024 * 16;
   const dataSize = data.size;
   const chunks: Chunk[] = [];

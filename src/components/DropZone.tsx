@@ -1,7 +1,7 @@
 import { revalidateListFiles, useEncryptFile, useUploadFile } from "@app/hooks";
-import { handleDataItem } from "@app/lib/files";
+import { handleDataItem, saveFile } from "@app/lib/files";
 import { Box, ToastId, useToast } from "@chakra-ui/react";
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useRef, useState } from "react";
 import UploadFeedback from "./UploadToast";
 
 interface props {
@@ -20,7 +20,7 @@ const DropZone: FC<props> = (props: props) => {
   const [toastId, setToastId] = useState<ToastId>("");
   const [files, setFiles] = useState<File[]>([]);
 
-  // const ref = useRef<HTMLAnchorElement>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
 
   const uploadFile = useUploadFile();
   const encryptFile = useEncryptFile();
@@ -62,7 +62,7 @@ const DropZone: FC<props> = (props: props) => {
     const items = [...event.dataTransfer.items];
     const files = await handleDataItem(items);
 
-    // saveFile([files[0]], files[0].name, "application/zip", ref);
+    saveFile([files[0]], files[0].name, "application/zip", ref);
 
     try {
       if ([...files].length) {
@@ -147,7 +147,7 @@ const DropZone: FC<props> = (props: props) => {
         ></Box>
       )}
       <>{children}</>
-      {/* <a ref={ref} /> */}
+      <a ref={ref} />
     </Box>
   );
 };
