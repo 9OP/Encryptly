@@ -19,12 +19,13 @@ import {
   getStorageAccessToken,
   setStorageAccessToken,
 } from "@app/lib/storage";
+import EncryptWorker from "@app/lib/webworkers/encrypt.worker?worker";
+import DecryptWorker from "@app/lib/webworkers/decrypt.worker?worker";
 
 export const useIsAuthenticated = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
   const hasAccessToken = accessToken.value != "" && accessToken.value != null;
-  const hasEncryptionKey =
-    encryptionKey.value != "" && encryptionKey.value != null;
+  const hasEncryptionKey = encryptionKey.value != "" && encryptionKey.value != null;
   return hasAccessToken && hasEncryptionKey;
 };
 
@@ -94,10 +95,7 @@ export const useEncryptFile = () => {
 
   return useCallback(
     (file: File): Promise<Blob> => {
-      const worker = new Worker(
-        new URL("../lib/webworkers/encrypt.worker.ts", import.meta.url),
-        { type: "module" }
-      );
+      const worker = new EncryptWorker();
       return promisify(worker, { file, key: encryptionKey.value });
     },
     [encryptionKey.value]
@@ -109,10 +107,7 @@ export const useDecryptFile = () => {
 
   return useCallback(
     async (data: Blob): Promise<Blob> => {
-      const worker = new Worker(
-        new URL("../lib/webworkers/decrypt.worker.ts", import.meta.url),
-        { type: "module" }
-      );
+      const worker = new DecryptWorker();
       return promisify(worker, { data, key: encryptionKey.value });
     },
     [encryptionKey.value]

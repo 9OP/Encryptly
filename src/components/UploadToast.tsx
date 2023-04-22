@@ -22,16 +22,7 @@ const UploadFeedback: FC<props> = (props: props) => {
   const { files, progress, steps } = props;
 
   return (
-    <Alert
-      status="info"
-      variant="solid"
-      width="100%"
-      //
-      borderWidth="3px"
-      borderRadius="6px"
-      borderColor="black"
-      boxShadow="-4px 4px 0px 0px #000"
-    >
+    <Alert status="info" width="100%">
       <AlertIcon />
       <VStack spacing={0} alignItems="flex-start" justifyContent="center">
         <AlertTitle>Uploading ...</AlertTitle>
@@ -41,9 +32,7 @@ const UploadFeedback: FC<props> = (props: props) => {
 
             return (
               <HStack key={i} alignItems="center" justifyContent="flex-start">
-                {steps[f.name] === "ENCRYPTING" && (
-                  <ShieldLockIcon boxSize="1rem" color="white" />
-                )}
+                {steps[f.name] === "ENCRYPTING" && <ShieldLockIcon boxSize="1rem" color="white" />}
                 {steps[f.name] === "UPLOADING" &&
                   (value < 100 ? (
                     <CircularProgress

@@ -1,35 +1,25 @@
+import DropZone from "@app/components/DropZone";
+import { CloseIcon, SearchIcon, SecretIcon } from "@app/components/Icons";
+import LogoutButton from "@app/components/LogoutButton";
+import StorageQuota from "@app/components/StorageQuota";
+import { AppContext } from "@app/context";
+import { useListFiles, useUserInfo } from "@app/hooks";
+import { saveFile } from "@app/lib/fileSaver";
+import formatBytes from "@app/lib/formatBytes";
 import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {
-  Box,
-  Text,
+  Button,
   Flex,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  VStack,
-  Badge,
   Tag,
-  Button,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
-import StorageQuota from "@app/components/StorageQuota";
-import { CloseIcon, SearchIcon, SecretIcon } from "@app/components/Icons";
+import { Dispatch, FC, SetStateAction, useContext, useMemo, useRef, useState } from "react";
 import FilesList from "../components/FileTable";
-import { useListFiles, useUserInfo } from "@app/hooks";
-import LogoutButton from "@app/components/LogoutButton";
-import DropZone from "@app/components/DropZone";
-import formatBytes from "@app/lib/formatBytes";
-import { AppContext } from "@app/context";
 
 interface props {
   search: string;
@@ -41,10 +31,7 @@ const SearchBar: FC<props> = (props: props) => {
   const { data: files } = useListFiles();
 
   const nbFiles = useMemo(() => files?.length || 0, [files]);
-  const quantity = useMemo(
-    () => files?.reduce((acc, { size }) => acc + size, 0),
-    [files]
-  );
+  const quantity = useMemo(() => files?.reduce((acc, { size }) => acc + size, 0), [files]);
 
   return (
     <VStack
@@ -99,23 +86,9 @@ const UserCard: FC = () => {
   const { encryptionKey } = useContext(AppContext);
   const ref = useRef<HTMLAnchorElement>(null);
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    const name = `${user?.email}_key.txt`;
-
-    const file = new File([encryptionKey.value], name, {
-      type: "text/plain",
-    });
-
-    const objectUrl = URL.createObjectURL(file);
-
-    if (ref.current) {
-      ref.current.href = objectUrl;
-      ref.current.download = name;
-      ref.current.click();
-    }
+    saveFile([encryptionKey.value], `${user?.email}_key.txt`, "text/plain", ref);
   };
 
   return (
@@ -138,7 +111,7 @@ const UserCard: FC = () => {
         <Button
           colorScheme="black"
           size="md"
-          leftIcon={<SecretIcon boxSize="1.5rem"/>}
+          leftIcon={<SecretIcon boxSize="1.5rem" />}
           variant="link"
           onClick={handleClick}
         >

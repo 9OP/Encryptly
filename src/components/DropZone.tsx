@@ -25,9 +25,7 @@ const DropZone: FC<props> = (props: props) => {
   useEffect(() => {
     if (toastId) {
       toast.update(toastId, {
-        render: () => (
-          <UploadFeedback files={files} steps={steps} progress={progress} />
-        ),
+        render: () => <UploadFeedback files={files} steps={steps} progress={progress} />,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,6 +40,7 @@ const DropZone: FC<props> = (props: props) => {
         isClosable: true,
         title: `${files.length} files uploaded`,
         status: "success",
+        variant: "toast",
       });
 
       setToastId("");
@@ -77,9 +76,7 @@ const DropZone: FC<props> = (props: props) => {
           position: "bottom-right",
           duration: null,
           isClosable: true,
-          render: () => (
-            <UploadFeedback files={files} steps={steps} progress={progress} />
-          ),
+          render: () => <UploadFeedback files={files} steps={steps} progress={progress} />,
         })
       );
     }

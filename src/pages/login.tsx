@@ -15,11 +15,7 @@ import { FC, useContext, useEffect, useMemo, useState } from "react";
 import getAuthorizationUrl from "@app/lib/authorizationUrl";
 import { AppContext } from "@app/context";
 import { getUserInfo } from "@app/hooks/http";
-import {
-  exportEncryptionKey,
-  sha256,
-  unwrapEncryptionKey,
-} from "@app/lib/crypto";
+import { exportEncryptionKey, sha256, unwrapEncryptionKey } from "@app/lib/crypto";
 import { AppData } from "@app/models";
 import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 
@@ -62,10 +58,7 @@ const Login: FC = () => {
     }
   };
 
-  const showLoginButton = useMemo(
-    () => !accessToken.value,
-    [accessToken.value]
-  );
+  const showLoginButton = useMemo(() => !accessToken.value, [accessToken.value]);
 
   return (
     <Flex>
@@ -88,22 +81,13 @@ const Login: FC = () => {
                 backgroundSize="60px 60px;"
               />
 
-              <Heading
-                size="4xl"
-                fontWeight="semibold"
-                lineHeight="5rem"
-                marginBottom="2rem"
-              >
+              <Heading size="4xl" fontWeight="semibold" lineHeight="5rem" marginBottom="2rem">
                 → Keep your data safe
               </Heading>
               <HStack spacing="3rem">
                 <Box w="50%">
                   {showLoginButton ? (
-                    <GoogleLoginButton
-                      url={url}
-                      onSuccess={setAccessToken}
-                      onFailure={setError}
-                    />
+                    <GoogleLoginButton url={url} onSuccess={setAccessToken} onFailure={setError} />
                   ) : (
                     <PassphraseInput setEncryptionKey={setEncryptionKey} />
                   )}
@@ -115,15 +99,7 @@ const Login: FC = () => {
             </VStack>
 
             {error && (
-              <Alert
-                status="error"
-                variant="subtle"
-                marginTop="2rem"
-                borderRadius="6px"
-                borderWidth="3px"
-                borderColor="black"
-                boxShadow="-8px 8px 0px 0px #000"
-              >
+              <Alert status="error" variant="subtle" marginTop="2rem">
                 <AlertIcon />
                 <Flex direction="column">
                   <AlertTitle>Connection failed</AlertTitle>
@@ -150,21 +126,10 @@ const Login: FC = () => {
         height="100vh"
         justifyContent="center"
       >
-        <Alert
-          width="fit-content"
-          height="fit-content"
-          status="info"
-          variant="subtle"
-          borderRadius="6px"
-          borderWidth="3px"
-          borderColor="black"
-          boxShadow="-8px 8px 0px 0px #000"
-        >
+        <Alert width="fit-content" height="fit-content" status="info" variant="subtle">
           <AlertIcon />
           <Flex direction="column">
-            <AlertTitle>
-              Automatic end-to-end encryption of your files !
-            </AlertTitle>
+            <AlertTitle>Automatic end-to-end encryption of your files !</AlertTitle>
           </Flex>
         </Alert>
 

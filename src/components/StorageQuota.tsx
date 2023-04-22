@@ -24,8 +24,8 @@ const StorageQuota = () => {
         {data ? (
           <Flex flexDirection="column" width="100%" alignItems="center">
             <Progress
-              backgroundColor="transparent"
-              colorScheme="pink"
+              backgroundColor="white"
+              colorScheme="blue"
               width="100%"
               value={(data?.usage / data?.limit) * 100}
               size="xs"
