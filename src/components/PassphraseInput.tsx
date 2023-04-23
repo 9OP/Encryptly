@@ -1,16 +1,8 @@
-import { useState, FC } from "react";
-import {
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  VStack,
-  HStack,
-  Text,
-} from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, HStack, Input, Text, VStack } from "@chakra-ui/react";
+import { useState } from "react";
 
-import { useAppData, useUserInfo } from "@app/hooks";
 import { ShieldLockIcon } from "@app/components/Icons";
+import { useAppData, useUserInfo } from "@app/hooks";
 import { AppData } from "@app/models";
 
 const PassphraseInput = (props: {
@@ -21,9 +13,7 @@ const PassphraseInput = (props: {
   const { data: userInfo } = useUserInfo();
   const { data } = useAppData();
 
-  const handleClick = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -35,13 +25,14 @@ const PassphraseInput = (props: {
   return (
     <VStack spacing="1rem">
       <FormControl>
-        <FormLabel fontSize="md" fontWeight="semibold">
+        <FormLabel fontSize="md" fontWeight="semibold" margin={0}>
           <HStack justifyContent="space-between">
             <Text>Passphrase</Text>
             <Text>{userInfo?.email ? `[${userInfo.email}]` : ""}</Text>
           </HStack>
         </FormLabel>
         <Input
+          marginTop="0.8rem"
           autoFocus
           placeholder="passphrase..."
           size="md"

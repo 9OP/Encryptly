@@ -60,7 +60,7 @@ export const getUserInfo = async (token: string): Promise<UserInfo> => {
 
   if (!res.ok) {
     const error = new Error("Failed fetching user.");
-    error.info = await res.json();
+    error.info = json;
     error.status = res.status;
     throw error;
   }

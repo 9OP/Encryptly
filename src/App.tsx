@@ -58,7 +58,7 @@ export default function App() {
   return (
     <SWRConfig
       value={{
-        onError: async (error: Error, key) => {
+        onError: (error: Error, key) => {
           if (error?.status === 401 && location.pathname !== "/login") {
             toast({
               status: "warning",

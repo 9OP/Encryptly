@@ -1,3 +1,9 @@
+import { AppContext } from "@app/context";
+import { getUserInfo } from "@app/hooks/http";
+import getAuthorizationUrl from "@app/lib/authorizationUrl";
+import { exportEncryptionKey, sha256, unwrapEncryptionKey } from "@app/lib/crypto";
+import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
+import { AppData } from "@app/models";
 import {
   Alert,
   AlertDescription,
@@ -8,20 +14,16 @@ import {
   Flex,
   HStack,
   Heading,
+  Link,
+  Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { FC, useContext, useEffect, useMemo, useState } from "react";
-import getAuthorizationUrl from "@app/lib/authorizationUrl";
-import { AppContext } from "@app/context";
-import { getUserInfo } from "@app/hooks/http";
-import { exportEncryptionKey, sha256, unwrapEncryptionKey } from "@app/lib/crypto";
-import { AppData } from "@app/models";
-import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 
+import { GithubIcon, LinkedinIcon } from "@app/components/Icons";
 import GoogleLoginButton from "@app/components/LoginButton";
 import PassphraseInput from "@app/components/PassphraseInput";
-import { GithubIcon, LinkedinIcon } from "@app/components/Icons";
 import { useRecoverAccessToken } from "@app/hooks";
 
 const Login: FC = () => {
@@ -61,45 +63,52 @@ const Login: FC = () => {
   const showLoginButton = useMemo(() => !accessToken.value, [accessToken.value]);
 
   return (
-    <Flex>
-      <Flex flexDirection="row" width="45%">
+    <Flex flexDirection={{ base: "column", lg: "row" }}>
+      <Flex width={{ base: "100%", lg: "45%" }} height={{ base: "100vh", lg: "none" }}>
         <VStack
           padding="2rem"
-          spacing="2rem"
           width="100%"
           height="100%"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Box>
-            <VStack spacing="3rem">
-              <Box
-                width="100%"
-                height="15rem"
-                opacity="0.6"
-                backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
-                backgroundSize="60px 60px;"
-              />
+          <VStack spacing="2.5rem">
+            <Box
+              width="100%"
+              height={{ base: "10rem", xl: "15rem" }}
+              opacity="0.6"
+              backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
+              backgroundSize="60px 60px;"
+            />
 
-              <Heading size="4xl" fontWeight="semibold" lineHeight="5rem" marginBottom="2rem">
-                → Keep your data safe
-              </Heading>
-              <HStack spacing="3rem">
-                <Box w="50%">
-                  {showLoginButton ? (
-                    <GoogleLoginButton url={url} onSuccess={setAccessToken} onFailure={setError} />
-                  ) : (
-                    <PassphraseInput setEncryptionKey={setEncryptionKey} />
-                  )}
-                </Box>
-                <Text w="50%" fontSize="2xl" fontWeight="semibold">
-                  Encryptly seamlessly encrypt your Google Drive documents
-                </Text>
-              </HStack>
-            </VStack>
+            <Heading
+              size={{ base: "3xl", xl: "4xl" }}
+              fontWeight="bold"
+              lineHeight="5rem"
+              marginBottom="2rem"
+            >
+              → Keep your data safe
+            </Heading>
+            <Stack spacing="2rem" direction={{ base: "column", xl: "row" }}>
+              <Box w={{ base: "100%", xl: "50%" }}>
+                {showLoginButton ? (
+                  <GoogleLoginButton url={url} onSuccess={setAccessToken} onFailure={setError} />
+                ) : (
+                  <PassphraseInput setEncryptionKey={setEncryptionKey} />
+                )}
+              </Box>
+              <Text
+                w={{ base: "100%", xl: "50%" }}
+                fontSize="xl"
+                fontWeight="semibold"
+                textAlign="justify"
+              >
+                Encryptly seamlessly encrypt your Google Drive documents
+              </Text>
+            </Stack>
 
             {error && (
-              <Alert status="error" variant="subtle" marginTop="2rem">
+              <Alert minWidth="100%" status="error" variant="subtle">
                 <AlertIcon />
                 <Flex direction="column">
                   <AlertTitle>Connection failed</AlertTitle>
@@ -107,29 +116,34 @@ const Login: FC = () => {
                 </Flex>
               </Alert>
             )}
-          </Box>
+          </VStack>
 
           <HStack justifyContent="space-between" width="100%">
-            <Button leftIcon={<GithubIcon />} variant="link">
-              Fork Encryptly
-            </Button>
-            <Button leftIcon={<LinkedinIcon />} variant="link">
-              Connect with me
-            </Button>
+            <Link href="https://github.com/9OP/Encryptly/">
+              <Button leftIcon={<GithubIcon />} variant="link">
+                Show me the code
+              </Button>
+            </Link>
+            <Link href="https://www.linkedin.com/in/martin-guyard-105b74150/">
+              <Button leftIcon={<LinkedinIcon />} variant="link">
+                Martin
+              </Button>
+            </Link>
           </HStack>
         </VStack>
       </Flex>
+
       <Flex
+        width={{ base: "100%", lg: "55%" }}
         padding="2rem"
         backgroundColor="rgb(209,252,135)"
-        width="55%"
         height="100vh"
         justifyContent="center"
       >
-        <Alert width="fit-content" height="fit-content" status="info" variant="subtle">
+        <Alert width="fit-content" height="fit-content" status="info" variant="subtle" maxW="100%">
           <AlertIcon />
           <Flex direction="column">
-            <AlertTitle>Automatic end-to-end encryption of your files !</AlertTitle>
+            <AlertTitle margin={0}>Automatic end-to-end encryption of your files !</AlertTitle>
           </Flex>
         </Alert>
 
