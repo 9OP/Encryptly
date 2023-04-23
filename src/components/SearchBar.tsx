@@ -30,7 +30,7 @@ const SearchBar: FC<props> = (props: props) => {
       height="100%"
       padding="1.5rem"
       borderWidth="3px"
-      borderRadius="6px"
+      borderRadius="10px"
       borderColor="black"
       boxShadow="-4px 4px 0px 0px #000"
       backgroundColor="yellow.200"
@@ -54,7 +54,7 @@ const SearchBar: FC<props> = (props: props) => {
           onChange={(e) => setSearch(e.target.value)}
           //
           _hover={{ boxShadow: "none" }}
-          borderRadius="6px"
+          borderRadius="10px"
           borderWidth="2px"
           borderColor="black"
           boxShadow="-4px 4px 0px 0px #000"

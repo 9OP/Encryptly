@@ -40,7 +40,7 @@ const InfoModal: FC<PropsModal> = (props: PropsModal) => {
         backgroundColor="blue.500"
         color="white"
         borderWidth="3px"
-        borderRadius="6px"
+        borderRadius="10px"
         borderColor="black"
         boxShadow="-4px 4px 0px 0px #000"
       >
@@ -89,10 +89,10 @@ const UserCard: FC = () => {
       height="100%"
       padding="1.5rem"
       borderWidth="3px"
-      borderRadius="6px"
+      borderRadius="10px"
       borderColor="black"
       boxShadow="-4px 4px 0px 0px #000"
-      backgroundColor="rgb(209,252,135)"
+      backgroundColor="teal.200"
     >
       <Text fontSize="md" fontWeight="semibold">
         [{user?.email}]

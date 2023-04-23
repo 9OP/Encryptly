@@ -1,7 +1,7 @@
-import { Box, HStack, Text, Flex, Progress, Spinner } from "@chakra-ui/react";
-import formatBytes from "@app/lib/formatBytes";
-import { useDriveQuota } from "@app/hooks";
 import { CloudIcon } from "@app/components/Icons";
+import { useDriveQuota } from "@app/hooks";
+import formatBytes from "@app/lib/formatBytes";
+import { Box, Flex, HStack, Progress, Spinner, Text } from "@chakra-ui/react";
 
 const StorageQuota = () => {
   const { data } = useDriveQuota();
@@ -11,7 +11,7 @@ const StorageQuota = () => {
       height="100%"
       padding="1.5rem"
       borderWidth="3px"
-      borderRadius="6px"
+      borderRadius="10px"
       borderColor="black"
       boxShadow="-4px 4px 0px 0px #000"
       backgroundColor="blue.100"
@@ -29,7 +29,7 @@ const StorageQuota = () => {
               width="100%"
               value={(data?.usage / data?.limit) * 100}
               size="xs"
-              borderRadius="6px"
+              borderRadius="10px"
             />
             <Text fontWeight="semibold" fontSize="xs" marginTop="0.2rem">
               {formatBytes(data?.usage)} used on {formatBytes(data?.limit)}

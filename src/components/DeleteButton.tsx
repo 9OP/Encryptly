@@ -44,7 +44,7 @@ const DeleteModal: FC<PropsModal> = (props: PropsModal) => {
         backgroundColor="red.500"
         color="white"
         borderWidth="3px"
-        borderRadius="6px"
+        borderRadius="10px"
         borderColor="black"
         boxShadow="-4px 4px 0px 0px #000"
       >

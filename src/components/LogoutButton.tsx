@@ -1,6 +1,6 @@
+import { useLogout } from "@app/hooks";
 import { Button } from "@chakra-ui/react";
 import { LogoutIcon } from "./Icons";
-import { useLogout } from "@app/hooks";
 
 const LogoutButton = () => {
   const logout = useLogout();
@@ -19,7 +19,7 @@ const LogoutButton = () => {
       fontWeight="semibold"
       //
       // _hover={{ boxShadow: "none" }}
-      // borderRadius="6px"
+      // borderRadius="10px"
       // borderWidth="2px"
       // borderColor="black"
       // boxShadow="-4px 4px 0px 0px #000"

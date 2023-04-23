@@ -41,7 +41,7 @@ const PassphraseInput = (props: {
           onChange={(e) => setPassphrase(e.target.value.trim())}
           //
           _hover={{ boxShadow: "none" }}
-          borderRadius="6px"
+          borderRadius="10px"
           borderWidth="2px"
           borderColor="black"
           boxShadow="-4px 4px 0px 0px #000"

@@ -1,59 +1,16 @@
-import { revalidateListFiles, useEncryptFile, useUploadFile } from "@app/hooks";
-import { handleDataItem, saveFile } from "@app/lib/files";
-import { Box, ToastId, useToast } from "@chakra-ui/react";
-import React, { FC, ReactNode, useEffect, useRef, useState } from "react";
-import UploadFeedback from "./UploadToast";
+import { handleDataItem } from "@app/lib/files";
+import { Box, useToast } from "@chakra-ui/react";
+import React, { FC, ReactNode, useState } from "react";
 
-interface props {
+interface DropZoneProps {
+  onUpload: (files: File[]) => Promise<void>;
   children: ReactNode;
 }
 
-const DropZone: FC<props> = (props: props) => {
-  const { children } = props;
+const DropZone: FC<DropZoneProps> = (props: DropZoneProps) => {
+  const { children, onUpload } = props;
   const [dragOver, setDragOver] = useState(false);
   const toast = useToast();
-  const [submitCount, setSubmitCount] = useState(0);
-  const [steps, setSteps] = useState<{
-    [name: string]: "ENCRYPTING" | "UPLOADING";
-  }>({});
-  const [progress, setProgress] = useState<{ [name: string]: number }>({});
-  const [toastId, setToastId] = useState<ToastId>("");
-  const [files, setFiles] = useState<File[]>([]);
-
-  const ref = useRef<HTMLAnchorElement>(null);
-
-  const uploadFile = useUploadFile();
-  const encryptFile = useEncryptFile();
-
-  useEffect(() => {
-    if (toastId) {
-      toast.update(toastId, {
-        render: () => <UploadFeedback files={files} steps={steps} progress={progress} />,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [steps, progress, files]);
-
-  useEffect(() => {
-    if (submitCount === 0 && toastId) {
-      toast.close(toastId);
-      toast({
-        position: "bottom-right",
-        duration: 5000,
-        isClosable: true,
-        title: `${files.length} files uploaded`,
-        status: "success",
-        variant: "toast",
-      });
-
-      setToastId("");
-      setProgress({});
-      setSteps({});
-      setFiles([]);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [submitCount]);
 
   const handleDrop = async (event: React.DragEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -62,11 +19,9 @@ const DropZone: FC<props> = (props: props) => {
     const items = [...event.dataTransfer.items];
     const files = await handleDataItem(items);
 
-    saveFile([files[0]], files[0].name, "application/zip", ref);
-
     try {
       if ([...files].length) {
-        await onSubmit([...files]);
+        await onUpload([...files]);
       }
     } catch (err) {
       toast.closeAll();
@@ -79,43 +34,6 @@ const DropZone: FC<props> = (props: props) => {
         status: "error",
       });
     }
-  };
-
-  const onSubmit = async (fls: File[]) => {
-    if (!fls.length) {
-      return;
-    }
-
-    setSubmitCount((count) => count + 1);
-    setFiles((prev) => [...prev, ...fls]);
-
-    if (!toastId) {
-      setToastId(
-        toast({
-          position: "bottom-right",
-          duration: null,
-          isClosable: true,
-          render: () => <UploadFeedback files={files} steps={steps} progress={progress} />,
-        })
-      );
-    }
-
-    await Promise.all(
-      fls.map(async (file) => {
-        setSteps((prev) => ({ ...prev, [file.name]: "ENCRYPTING" }));
-        const data = await encryptFile(file);
-
-        setSteps((prev) => ({ ...prev, [file.name]: "UPLOADING" }));
-        const gen = await uploadFile({ name: file.name, data });
-
-        for await (const value of gen) {
-          setProgress((prev) => ({ ...prev, [file.name]: value }));
-        }
-      })
-    );
-
-    await revalidateListFiles();
-    setSubmitCount((count) => count - 1);
   };
 
   return (
@@ -146,7 +64,6 @@ const DropZone: FC<props> = (props: props) => {
         ></Box>
       )}
       <>{children}</>
-      <a ref={ref} />
     </Box>
   );
 };
