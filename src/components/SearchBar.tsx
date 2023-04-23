@@ -26,6 +26,7 @@ const SearchBar: FC<props> = (props: props) => {
   return (
     <VStack
       flex={1}
+      width="100%"
       height="100%"
       padding="1.5rem"
       borderWidth="3px"

@@ -3,24 +3,17 @@ import FileTable from "@app/components/FileTable";
 import SearchBar from "@app/components/SearchBar";
 import StorageQuota from "@app/components/StorageQuota";
 import UserCard from "@app/components/UserCard";
-import { Flex, HStack, Heading, VStack } from "@chakra-ui/react";
+import { Flex, Stack, VStack, useBreakpoint } from "@chakra-ui/react";
 import { FC, useState } from "react";
 
 const Index: FC = () => {
   const [search, setSearch] = useState("");
   const [filesCount, setFilesCount] = useState(0);
   const [storageCount, setStorageCount] = useState(0);
+  const value = useBreakpoint();
 
   return (
     <DropZone>
-      <Heading
-        position="absolute"
-        top="5rem"
-        left="5rem"
-        sx={{ textOrientation: "upright", writingMode: "sideways-lr" }}
-      >
-        Drop your files anywhere!
-      </Heading>
       <Flex
         padding="2rem"
         w="100%"
@@ -28,8 +21,13 @@ const Index: FC = () => {
         backgroundImage="radial-gradient(#444cf7 1.25px, #fff 1.25px);"
         backgroundSize="30px 30px;"
       >
-        <VStack w="60%" spacing="1rem">
-          <HStack w="100%" justifyContent="space-between" spacing="1rem">
+        <VStack w={{ base: "100%", md: "90%", lg: "80%", xl: "60%" }} spacing="1rem">
+          <Stack
+            w="100%"
+            justifyContent="space-between"
+            spacing="1rem"
+            direction={{ base: "column", md: "row" }}
+          >
             <StorageQuota />
             <SearchBar
               search={search}
@@ -38,7 +36,7 @@ const Index: FC = () => {
               storageCount={storageCount}
             />
             <UserCard />
-          </HStack>
+          </Stack>
           <Flex
             w="100%"
             padding="1.5rem"

@@ -102,7 +102,7 @@ const FileTable: FC<props> = (props: props) => {
   }, [files, handleSorting, sort]);
 
   return (
-    <TableContainer overflowX="hidden">
+    <TableContainer overflow="auto">
       <Table variant="simple" size="sm">
         <Thead borderColor="black" borderBottomWidth="2px">
           <Tr padding={0}>
