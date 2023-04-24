@@ -1,7 +1,11 @@
 import { AppContext } from "@app/context";
 import { getUserInfo } from "@app/hooks/http";
 import getAuthorizationUrl from "@app/lib/authorizationUrl";
-import { exportEncryptionKey, sha256, unwrapEncryptionKey } from "@app/lib/crypto";
+import {
+  exportEncryptionKey,
+  sha256,
+  unwrapEncryptionKey,
+} from "@app/lib/crypto";
 import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 import { AppData } from "@app/models";
 import {
@@ -60,11 +64,18 @@ const Login: FC = () => {
     }
   };
 
-  const showLoginButton = useMemo(() => !accessToken.value, [accessToken.value]);
+  const showLoginButton = useMemo(
+    () => !accessToken.value,
+    [accessToken.value]
+  );
 
   return (
     <Flex flexDirection={{ base: "column", lg: "row" }}>
-      <Flex width={{ base: "100%", lg: "45%" }} height={{ base: "100vh", lg: "none" }}>
+      {/* <DeleteAppDataFolder /> */}
+      <Flex
+        width={{ base: "100%", lg: "45%" }}
+        height={{ base: "100vh", lg: "none" }}
+      >
         <VStack
           padding="2rem"
           width="100%"
@@ -92,7 +103,11 @@ const Login: FC = () => {
             <Stack spacing="2rem" direction={{ base: "column", xl: "row" }}>
               <Box w={{ base: "100%", xl: "50%" }}>
                 {showLoginButton ? (
-                  <GoogleLoginButton url={url} onSuccess={setAccessToken} onFailure={setError} />
+                  <GoogleLoginButton
+                    url={url}
+                    onSuccess={setAccessToken}
+                    onFailure={setError}
+                  />
                 ) : (
                   <PassphraseInput setEncryptionKey={setEncryptionKey} />
                 )}
@@ -140,10 +155,18 @@ const Login: FC = () => {
         height="100vh"
         justifyContent="center"
       >
-        <Alert width="fit-content" height="fit-content" status="info" variant="subtle" maxW="100%">
+        <Alert
+          width="fit-content"
+          height="fit-content"
+          status="info"
+          variant="subtle"
+          maxW="100%"
+        >
           <AlertIcon />
           <Flex direction="column">
-            <AlertTitle margin={0}>Automatic end-to-end encryption of your files !</AlertTitle>
+            <AlertTitle margin={0}>
+              Automatic end-to-end encryption of your files !
+            </AlertTitle>
           </Flex>
         </Alert>
 

@@ -69,14 +69,14 @@ export default function App() {
             });
             navigate("/login");
           } else {
-            toast({
-              status: "warning",
-              title: error?.info,
-              description: error?.message,
-              duration: 3000,
-              isClosable: true,
-              position: "top-right",
-            });
+            // toast({
+            //   status: "warning",
+            //   title: error?.info,
+            //   description: error?.message,
+            //   duration: 3000,
+            //   isClosable: true,
+            //   position: "top-right",
+            // });
           }
         },
       }}

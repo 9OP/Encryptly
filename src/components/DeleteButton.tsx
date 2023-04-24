@@ -38,7 +38,7 @@ const DeleteModal: FC<PropsModal> = (props: PropsModal) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal closeOnOverlayClick={!deleting} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent
         backgroundColor="red.500"
@@ -115,7 +115,14 @@ const DeleteButton: FC<PropsButton> = (props: PropsButton) => {
         icon={<TrashIcon />}
         onClick={onOpen}
       />
-      {file && <DeleteModal file={file} onDelete={onDelete} onClose={onClose} isOpen={isOpen} />}
+      {file && (
+        <DeleteModal
+          file={file}
+          onDelete={onDelete}
+          onClose={onClose}
+          isOpen={isOpen}
+        />
+      )}
     </>
   );
 };
