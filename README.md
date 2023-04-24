@@ -10,7 +10,6 @@ DEPLOY:
 - Github action deploy
 - domain name
 - google validation
-- policy terms
 
 LONGTERM:
 - dark theme

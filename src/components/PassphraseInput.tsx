@@ -2,12 +2,14 @@ import {
   Alert,
   AlertDescription,
   AlertIcon,
+  Box,
   Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
   HStack,
   Input,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -173,17 +175,32 @@ const PassphraseForm: FC<props> = (props: props) => {
 };
 
 const PassphraseInput: FC<props> = (props: props) => {
-  const { data } = useAppData();
+  const { data, isLoading } = useAppData();
   const { setEncryptionKey } = props;
 
   const configExists = useMemo(() => data != null, [data]);
+  const loading = useMemo(() => isLoading && !data, [isLoading, data]);
 
   return (
     <>
-      {configExists ? (
-        <PassphraseForm setEncryptionKey={setEncryptionKey} />
+      {loading ? (
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <Spinner
+            emptyColor="gray.200"
+            thickness="3px"
+            size="lg"
+            color="blue.500"
+            speed="0.4s"
+          />
+        </Box>
       ) : (
-        <SetPassphrase />
+        <>
+          {configExists ? (
+            <PassphraseForm setEncryptionKey={setEncryptionKey} />
+          ) : (
+            <SetPassphrase />
+          )}
+        </>
       )}
     </>
   );
