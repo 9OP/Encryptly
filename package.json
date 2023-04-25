@@ -1,6 +1,7 @@
 {
   "name": "encryptly",
   "type": "module",
+  "homepage": "https://github.com/9op/Encryptly",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
