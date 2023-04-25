@@ -8,7 +8,7 @@ const projectRootDir = resolve(__dirname);
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), chunkSplitPlugin({ strategy: "default" })],
-  base: "/Encryptly/",
+  // base: "/Encryptly/",
   resolve: {
     alias: { "@app": resolve(projectRootDir, "/src") },
   },

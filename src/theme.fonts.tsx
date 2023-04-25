@@ -11,6 +11,13 @@ const Fonts = () => (
         font-weight: 400;
         font-display: swap;
       }
+      @font-face {
+        font-family: 'Cispeo';
+        src: url('./fonts/Cispeo-Bold.woff') format('woff'), url('./fonts/Cispeo-Bold.woff2') format('woff2');
+        font-style: bold;
+        font-weight: 800;
+        font-display: swap;
+      }
       `}
   />
 );

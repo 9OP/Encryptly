@@ -153,9 +153,8 @@ const FileTable: FC<props> = (props: props) => {
                     e.dataTransfer.setData("text/plain", file.id);
                   }}
                 >
-                  {/* <DocumentIcon boxSize="1.3rem" color="blue.500" /> */}
-
                   <Text
+                    maxW="15rem"
                     color="black"
                     fontWeight="semibold"
                     whiteSpace="nowrap"

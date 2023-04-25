@@ -8,10 +8,8 @@ TODO:
 - login page schema
 
 DEPLOY:
-- domain name
 - make repo public
-- Github action deploy
-- google validation
+- google validation (need a domain name)
 
 LONGTERM:
 - dark theme

@@ -14,7 +14,7 @@ root.render(
   <StrictMode>
     <ChakraProvider theme={theme}>
       <Fonts />
-      <Router basename="/Encryptly/">
+      <Router>
         <ContextProvider>
           <App />
         </ContextProvider>
