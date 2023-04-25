@@ -8,6 +8,7 @@ const projectRootDir = resolve(__dirname);
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), chunkSplitPlugin({ strategy: "default" })],
+  base: "https://9op.github.io/Encryptly",
   resolve: {
     alias: { "@app": resolve(projectRootDir, "/src") },
   },
@@ -28,7 +29,11 @@ export default defineConfig({
         // Separate node_modules/ from src/
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            return id.toString().split("node_modules/")[1].split("/")[0].toString();
+            return id
+              .toString()
+              .split("node_modules/")[1]
+              .split("/")[0]
+              .toString();
           }
         },
       },
