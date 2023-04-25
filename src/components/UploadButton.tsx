@@ -27,6 +27,7 @@ const UploadButton: FC<UploadButtonProps> = (props: UploadButtonProps) => {
     <>
       <Button
         size="lg"
+        minH="3rem"
         w="100%"
         _hover={{ boxShadow: "none" }}
         onClick={handleClick}

@@ -18,7 +18,15 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Dispatch, FC, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import DeleteButton from "./DeleteButton";
 
 interface props {
@@ -62,7 +70,11 @@ const FileTable: FC<props> = (props: props) => {
             setSort(title);
           }}
           icon={
-            order === "DESC" ? <ArrowUpIcon boxSize="1rem" /> : <ArrowDownIcon boxSize="1rem" />
+            order === "DESC" ? (
+              <ArrowUpIcon boxSize="1rem" />
+            ) : (
+              <ArrowDownIcon boxSize="1rem" />
+            )
           }
         />
       </HStack>
@@ -110,7 +122,11 @@ const FileTable: FC<props> = (props: props) => {
             <ColHeader title="date" order={dateOrder} setOrder={setDateOrder} />
             <ColHeader title="size" order={sizeOrder} setOrder={setSizeOrder} />
             <Td padding={0}>
-              <HStack justifyContent="flex-end" alignItems="center" marginBottom="0.6rem">
+              <HStack
+                justifyContent="flex-end"
+                alignItems="center"
+                marginBottom="0.6rem"
+              >
                 {isFetching ? <Spinner size="md" /> : <></>}
               </HStack>
             </Td>
@@ -121,8 +137,12 @@ const FileTable: FC<props> = (props: props) => {
             <Tr
               key={file.id}
               sx={{
-                [`&:hover #download-${file.id}`]: { visibility: "visible!important" },
-                [`&:hover #delete-${file.id}`]: { visibility: "visible!important" },
+                [`&:hover #download-${file.id}`]: {
+                  visibility: "visible!important",
+                },
+                [`&:hover #delete-${file.id}`]: {
+                  visibility: "visible!important",
+                },
               }}
               cursor="pointer"
             >
@@ -178,14 +198,20 @@ const PaginatedFileTable: FC<PropsTable> = (props: PropsTable): JSX.Element => {
   const [selected, setSelected] = useState(1);
   const { data, isLoading, isValidating } = useListFiles();
 
-  const pagination = 12;
+  const pagination = 8;
 
-  const isFetching = useMemo(() => isLoading || isValidating, [isLoading, isValidating]);
+  const isFetching = useMemo(
+    () => isLoading || isValidating,
+    [isLoading, isValidating]
+  );
 
   const filteredFiles = useMemo(() => {
     let filtered = data || [];
     if (search) {
-      filtered = filtered.filter((f) => f.name.toLowerCase().includes(search.toLowerCase())) || [];
+      filtered =
+        filtered.filter((f) =>
+          f.name.toLowerCase().includes(search.toLowerCase())
+        ) || [];
     }
     return filtered;
   }, [data, search]);
@@ -209,7 +235,13 @@ const PaginatedFileTable: FC<PropsTable> = (props: PropsTable): JSX.Element => {
     <Box width="100%">
       <FileTable files={rangeFiles} isFetching={isFetching} />
 
-      {pages > 1 && <Pagination range={pages} selected={selected} setSelected={setSelected} />}
+      {pages > 1 && (
+        <Pagination
+          range={pages}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      )}
     </Box>
   );
 };
