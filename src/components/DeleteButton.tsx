@@ -12,6 +12,7 @@ import {
   Spinner,
   Tag,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { FC, useMemo, useState } from "react";
 import { TrashIcon } from "./Icons";
@@ -72,13 +73,22 @@ interface PropsButton {
 const DeleteButton: FC<PropsButton> = (props: PropsButton) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const { fileId } = props;
-  const deleteFile = useDeleteFile();
   const { data: files } = useListFiles();
+  const deleteFile = useDeleteFile();
+  const toast = useToast();
 
   const file = useMemo(() => files?.find(({ id }) => id === fileId), [files]);
 
   const onDelete = async () => {
     await deleteFile(fileId);
+    toast({
+      status: "info",
+      duration: 3000,
+      position: "bottom-right",
+      isClosable: true,
+      title: "File deleted",
+      description: file?.name,
+    });
   };
 
   return (

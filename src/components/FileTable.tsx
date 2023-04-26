@@ -229,9 +229,15 @@ const PaginatedFileTable: FC<PropsTable> = (props: PropsTable): JSX.Element => {
   }, [filteredFiles, selected, pagination]);
 
   useEffect(() => {
-    setFilesCount(rangeFiles?.length || 0);
-    setStorageCount(rangeFiles?.reduce((acc, { size }) => acc + size, 0));
-  }, [rangeFiles]);
+    setFilesCount(filteredFiles?.length || 0);
+    setStorageCount(filteredFiles?.reduce((acc, { size }) => acc + size, 0));
+  }, [filteredFiles]);
+
+  useEffect(() => {
+    if (selected > pages && pages != 0) {
+      setSelected(pages);
+    }
+  }, [pages]);
 
   return (
     <Box width="100%">
