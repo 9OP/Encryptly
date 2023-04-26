@@ -40,14 +40,7 @@ const DeleteModal: FC<PropsModal> = (props: PropsModal) => {
   return (
     <Modal closeOnOverlayClick={!deleting} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent
-        backgroundColor="red.500"
-        color="white"
-        borderWidth="3px"
-        borderRadius="10px"
-        borderColor="black"
-        boxShadow="-4px 4px 0px 0px #000"
-      >
+      <ModalContent backgroundColor="red.500">
         <ModalHeader>Delete</ModalHeader>
         <ModalBody>
           Are your sure to delete <Tag colorScheme="red">{file.name}</Tag> ?
@@ -58,28 +51,12 @@ const DeleteModal: FC<PropsModal> = (props: PropsModal) => {
             autoFocus
             mr={3}
             onClick={onClose}
-            borderRadius={0}
-            borderWidth="3px"
-            borderColor="black"
-            backgroundColor="white"
             color="black"
-            boxShadow="-2px 2px 0px 0px #000"
-            _hover={{ boxShadow: "none" }}
             disabled={deleting}
           >
             Cancel
           </Button>
-          <Button
-            borderRadius={0}
-            borderWidth="3px"
-            borderColor="black"
-            backgroundColor="red.600"
-            color="white"
-            boxShadow="-2px 2px 0px 0px #000"
-            _hover={{ boxShadow: "none" }}
-            onClick={handleDelete}
-            disabled={deleting}
-          >
+          <Button onClick={handleDelete} disabled={deleting} colorScheme="red">
             {deleting ? <Spinner /> : "Delete"}
           </Button>
         </ModalFooter>
@@ -110,7 +87,7 @@ const DeleteButton: FC<PropsButton> = (props: PropsButton) => {
         id={`delete-${fileId}`}
         visibility="hidden"
         variant="none"
-        color="black"
+        color="purple.400"
         aria-label="delete"
         icon={<TrashIcon />}
         onClick={onOpen}

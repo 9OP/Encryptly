@@ -29,14 +29,9 @@ const UploadButton: FC<UploadButtonProps> = (props: UploadButtonProps) => {
         size="lg"
         minH="3rem"
         w="100%"
-        _hover={{ boxShadow: "none" }}
+        colorScheme="yellow"
+        backgroundColor="yellow.200"
         onClick={handleClick}
-        //
-        borderRadius={0}
-        borderWidth="3px"
-        borderColor="black"
-        backgroundColor="rgb(209,252,135)"
-        boxShadow="-4px 4px 0px 0px #000"
       >
         Upload 🚀
       </Button>

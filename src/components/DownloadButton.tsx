@@ -48,7 +48,7 @@ const DownloadButton: FC<props> = (props: props) => {
         id={`download-${fileId}`}
         visibility={downloading || decrypting ? "visible" : "hidden"}
         variant="none"
-        color="purple.500"
+        color="purple.600"
         aria-label="download"
         icon={
           downloading ? (

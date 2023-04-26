@@ -2,7 +2,9 @@
 
 On the fly encryption of Google Drive files.
 
+bug count searh bar
+delete toast 
+
 TODO:
-- clean use of chakra theme
-- login page schema
+- schema
 - dark theme

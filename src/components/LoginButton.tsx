@@ -84,16 +84,10 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
       width="100%"
       height="4rem"
       fontSize="xl"
-      // fontWeight="thin"
       leftIcon={<GoogleIcon />}
-      _hover={{ boxShadow: "none" }}
       onClick={handleClick}
-      //
-      borderRadius={0}
-      borderWidth="3px"
-      borderColor="black"
-      backgroundColor="rgb(209,252,135)"
-      boxShadow="-8px 8px 0px 0px #000"
+      colorScheme="yellow"
+      backgroundColor="yellow.200"
     >
       Signin with Google
     </Button>
