@@ -88,7 +88,7 @@ const Login: FC = () => {
               width="100%"
               height={{ base: "10rem", xl: "15rem" }}
               opacity="0.6"
-              backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
+              backgroundImage="radial-gradient(purple.500 4px, #fff0 0px);"
               backgroundSize="60px 60px;"
             />
 
@@ -151,7 +151,7 @@ const Login: FC = () => {
       <Flex
         width={{ base: "100%", lg: "55%" }}
         padding="2rem"
-        backgroundColor="rgb(209,252,135)"
+        backgroundColor="yellow.200"
         height="100vh"
         justifyContent="center"
       >
@@ -177,7 +177,7 @@ const Login: FC = () => {
           width="15rem"
           height="30rem"
           opacity="0.6"
-          backgroundImage="radial-gradient(#444cf7 4px, #fff0 0px);"
+          backgroundImage="radial-gradient(purple.500 4px, #fff0 0px);"
           backgroundSize="60px 60px;"
         />
       </Flex>

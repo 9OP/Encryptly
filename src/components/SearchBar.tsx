@@ -7,9 +7,9 @@ import {
   InputLeftElement,
   InputRightElement,
   Tag,
-  VStack,
 } from "@chakra-ui/react";
 import { Dispatch, FC, SetStateAction } from "react";
+import Card from "./Card";
 import { CloseIcon, SearchIcon } from "./Icons";
 
 interface props {
@@ -24,16 +24,14 @@ const SearchBar: FC<props> = (props: props) => {
   const { data: files } = useListFiles();
 
   return (
-    <VStack
+    <Card
+      display="flex"
       flex={1}
       width="100%"
       height="100%"
-      padding="1.5rem"
-      borderWidth="3px"
-      borderRadius="10px"
-      borderColor="black"
-      boxShadow="-4px 4px 0px 0px #000"
+      flexDirection="column"
       backgroundColor="yellow.200"
+      justifyContent="space-between"
     >
       <HStack w="100%">
         <Tag size="md" colorScheme="purple" fontWeight="semibold">
@@ -68,7 +66,7 @@ const SearchBar: FC<props> = (props: props) => {
           <CloseIcon />
         </InputRightElement>
       </InputGroup>
-    </VStack>
+    </Card>
   );
 };
 

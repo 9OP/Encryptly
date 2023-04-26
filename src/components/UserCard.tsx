@@ -16,6 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { FC, useContext, useRef } from "react";
+import Card from "./Card";
 import { SecretIcon } from "./Icons";
 import LogoutButton from "./LogoutButton";
 
@@ -36,33 +37,18 @@ const InfoModal: FC<PropsModal> = (props: PropsModal) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent
-        backgroundColor="blue.500"
-        color="white"
-        borderWidth="3px"
-        borderRadius="10px"
-        borderColor="black"
-        boxShadow="-4px 4px 0px 0px #000"
-      >
+      <ModalContent backgroundColor="blue.500">
         <ModalHeader>Info</ModalHeader>
         <ModalBody>
-          Backup your encryption key securely. Anyone with your key is able to decrypt your files.
+          Backup your encryption key securely. Anyone with access to your key is
+          able to decrypt your files.
           <br />
           <br />
           <Tag colorScheme="blue">Do not store your key on Google Drive !</Tag>
         </ModalBody>
 
         <ModalFooter>
-          <Button
-            borderRadius={0}
-            borderWidth="3px"
-            borderColor="black"
-            backgroundColor="blue.600"
-            color="white"
-            boxShadow="-2px 2px 0px 0px #000"
-            _hover={{ boxShadow: "none" }}
-            onClick={handleDownload}
-          >
+          <Button onClick={handleDownload} colorScheme="blue">
             Download my key
           </Button>
         </ModalFooter>
@@ -78,41 +64,46 @@ const UserCard: FC = () => {
   const ref = useRef<HTMLAnchorElement>(null);
 
   const onDownload = () => {
-    saveFile([encryptionKey.value], `${user?.email}_key.txt`, "text/plain", ref);
+    saveFile(
+      [encryptionKey.value],
+      `${user?.email}_key.txt`,
+      "text/plain",
+      ref
+    );
   };
 
   return (
-    <VStack
-      spacing="1.5rem"
-      align="flex-end"
-      justifyContent="flex-end"
-      height="100%"
-      padding="1.5rem"
-      borderWidth="3px"
-      borderRadius="10px"
-      borderColor="black"
-      boxShadow="-4px 4px 0px 0px #000"
-      backgroundColor="teal.200"
-    >
-      <Text fontSize="md" fontWeight="semibold">
-        [{user?.email}]
-      </Text>
-      <HStack justifyContent="space-between" w="100%">
-        <Button
-          colorScheme="black"
-          size="md"
-          leftIcon={<SecretIcon boxSize="1.5rem" />}
-          variant="link"
-          onClick={onOpen}
-        >
-          key
-        </Button>
-        <InfoModal onDownload={onDownload} onClose={onClose} isOpen={isOpen} />
-        <a hidden ref={ref} />
+    <Card backgroundColor="teal.200" w="fit-content">
+      <VStack
+        spacing="1.5rem"
+        align="flex-end"
+        justifyContent="flex-end"
+        height="100%"
+      >
+        <Text fontSize="md" fontWeight="semibold">
+          [{user?.email}]
+        </Text>
+        <HStack justifyContent="space-between" w="100%">
+          <Button
+            colorScheme="black"
+            size="md"
+            leftIcon={<SecretIcon boxSize="1.5rem" />}
+            variant="link"
+            onClick={onOpen}
+          >
+            key
+          </Button>
+          <InfoModal
+            onDownload={onDownload}
+            onClose={onClose}
+            isOpen={isOpen}
+          />
+          <a hidden ref={ref} />
 
-        <LogoutButton />
-      </HStack>
-    </VStack>
+          <LogoutButton />
+        </HStack>
+      </VStack>
+    </Card>
   );
 };
 

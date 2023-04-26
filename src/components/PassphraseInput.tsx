@@ -47,15 +47,10 @@ const SetPassphrase = () => {
         <Input
           autoFocus
           size="sm"
+          placeholder="passphrase..."
           type="password"
           value={passphrase}
           onChange={(e) => setPassphrase(e.target.value.trim())}
-          //
-          _hover={{ boxShadow: "none" }}
-          borderRadius="10px"
-          borderWidth="2px"
-          borderColor="black"
-          boxShadow="-4px 4px 0px 0px #000"
         />
       </FormControl>
 
@@ -63,15 +58,10 @@ const SetPassphrase = () => {
         <FormLabel>Confirm passphrase</FormLabel>
         <Input
           size="sm"
+          placeholder="passphrase..."
           type="password"
           value={confirm}
           onChange={(e) => setConfirm(e.target.value.trim())}
-          //
-          _hover={{ boxShadow: "none" }}
-          borderRadius="10px"
-          borderWidth="2px"
-          borderColor="black"
-          boxShadow="-4px 4px 0px 0px #000"
         />
         {isValid ? (
           <></>
@@ -84,13 +74,8 @@ const SetPassphrase = () => {
         width="100%"
         disabled={!isValid}
         onClick={onSetPassphrase}
-        //
-        _hover={{ boxShadow: "none" }}
-        borderRadius={0}
-        borderWidth="2px"
-        borderColor="black"
-        backgroundColor="rgb(209,252,135)"
-        boxShadow="-4px 4px 0px 0px #000"
+        colorScheme="yellow"
+        backgroundColor="yellow.200"
       >
         Set passphrase
       </Button>
@@ -114,8 +99,6 @@ const PassphraseForm: FC<props> = (props: props) => {
   const { setEncryptionKey } = props;
   const { data: userInfo } = useUserInfo();
   const { data } = useAppData();
-
-  const configExists = useMemo(() => data != null, [data]);
 
   const handleClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -145,12 +128,6 @@ const PassphraseForm: FC<props> = (props: props) => {
           type="password"
           value={passphrase}
           onChange={(e) => setPassphrase(e.target.value.trim())}
-          //
-          _hover={{ boxShadow: "none" }}
-          borderRadius="10px"
-          borderWidth="2px"
-          borderColor="black"
-          boxShadow="-4px 4px 0px 0px #000"
         />
       </FormControl>
 
@@ -160,13 +137,8 @@ const PassphraseForm: FC<props> = (props: props) => {
         width="100%"
         onClick={handleClick}
         disabled={!passphrase}
-        //
-        _hover={{ boxShadow: "none" }}
-        borderRadius={0}
-        borderWidth="2px"
-        borderColor="black"
-        backgroundColor="rgb(209,252,135)"
-        boxShadow="-4px 4px 0px 0px #000"
+        colorScheme="yellow"
+        backgroundColor="yellow.200"
       >
         Unlock
       </Button>
@@ -178,12 +150,9 @@ const PassphraseInput: FC<props> = (props: props) => {
   const { data, isLoading } = useAppData();
   const { setEncryptionKey } = props;
 
-  const configExists = useMemo(() => data != null, [data]);
-  const loading = useMemo(() => isLoading && !data, [isLoading, data]);
-
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <Box display="flex" alignItems="center" justifyContent="center">
           <Spinner
             emptyColor="gray.200"
@@ -195,7 +164,7 @@ const PassphraseInput: FC<props> = (props: props) => {
         </Box>
       ) : (
         <>
-          {configExists ? (
+          {data != null ? (
             <PassphraseForm setEncryptionKey={setEncryptionKey} />
           ) : (
             <SetPassphrase />

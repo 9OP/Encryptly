@@ -1,6 +1,6 @@
+import { GoogleIcon } from "@app/components/Icons";
 import { Button } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { GoogleIcon } from "@app/components/Icons";
 
 interface props {
   url: string;
@@ -67,7 +67,7 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
           //
           // console.error(err);
         }
-      }, 100);
+      }, 250);
     },
     [onFailure, onSuccess]
   );
@@ -84,16 +84,10 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
       width="100%"
       height="4rem"
       fontSize="xl"
-      // fontWeight="thin"
       leftIcon={<GoogleIcon />}
-      _hover={{ boxShadow: "none" }}
       onClick={handleClick}
-      //
-      borderRadius={0}
-      borderWidth="3px"
-      borderColor="black"
-      backgroundColor="rgb(209,252,135)"
-      boxShadow="-8px 8px 0px 0px #000"
+      colorScheme="yellow"
+      backgroundColor="yellow.200"
     >
       Signin with Google
     </Button>

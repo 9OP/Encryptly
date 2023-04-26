@@ -32,6 +32,70 @@ const AlertStyle: ComponentStyleConfig = {
   },
 };
 
+const ButtonStyle: ComponentStyleConfig = {
+  baseStyle: {},
+  sizes: {},
+  variants: {
+    solid: {
+      borderRadius: "0",
+      borderWidth: "3px",
+      borderColor: "black",
+      boxShadow: "-8px 8px 0px 0px #000",
+      _hover: {
+        boxShadow: "none",
+      },
+    },
+  },
+  defaultProps: {},
+};
+
+const InputStyle: ComponentStyleConfig = {
+  baseStyle: {
+    field: {
+      borderRadius: "10px",
+      borderWidth: "3px!important",
+      borderColor: "black",
+      boxShadow: "-4px 4px 0px 0px #000",
+      _hover: { boxShadow: "none" },
+    },
+    addon: {
+      border: "3px solid",
+    },
+  },
+  sizes: {},
+  variants: {},
+  defaultProps: {},
+};
+
+const CardStyle: ComponentStyleConfig = {
+  baseStyle: {
+    w: "100%",
+    padding: "1.5rem",
+    borderWidth: "3px",
+    borderRadius: "10px",
+    borderColor: "black",
+    boxShadow: "-4px 4px 0px 0px #000",
+  },
+  sizes: {},
+  variants: {},
+  defaultProps: {},
+};
+
+const ModalStyle: ComponentStyleConfig = {
+  baseStyle: {
+    dialog: {
+      color: "white",
+      borderWidth: "3px",
+      borderRadius: "10px",
+      borderColor: "black",
+      boxShadow: "-4px 4px 0px 0px #000",
+    },
+  },
+  sizes: {},
+  variants: {},
+  defaultProps: {},
+};
+
 const theme = extendTheme({
   fonts: {
     heading: `'Cispeo'`,
@@ -39,6 +103,10 @@ const theme = extendTheme({
   },
   components: {
     Alert: AlertStyle,
+    Button: ButtonStyle,
+    Input: InputStyle,
+    Card: CardStyle,
+    Modal: ModalStyle,
   },
 });
 

@@ -9,7 +9,6 @@ import {
 import DecryptWorker from "@app/lib/webworkers/decrypt.worker?worker";
 import EncryptWorker from "@app/lib/webworkers/encrypt.worker?worker";
 import { useCallback, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import useSWR, { mutate } from "swr";
 import {
   deleteAppFolder,
@@ -27,7 +26,8 @@ import {
 export const useIsAuthenticated = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
   const hasAccessToken = accessToken.value != "" && accessToken.value != null;
-  const hasEncryptionKey = encryptionKey.value != "" && encryptionKey.value != null;
+  const hasEncryptionKey =
+    encryptionKey.value != "" && encryptionKey.value != null;
   return hasAccessToken && hasEncryptionKey;
 };
 
@@ -55,8 +55,6 @@ export const useRecoverAccessToken = () => {
 
 export const useUserInfo = () => {
   const { accessToken } = useContext(AppContext);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   return useSWR("UserInfo", () => getUserInfo(accessToken.value));
 };
@@ -85,7 +83,10 @@ export const useDriveQuota = () => {
 
 export const useListFiles = () => {
   const { accessToken } = useContext(AppContext);
-  return useSWR("listFiles", () => getUserFiles(accessToken.value));
+  return useSWR("listFiles", () => getUserFiles(accessToken.value), {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+  });
 };
 
 export const revalidateListFiles = async () => {
