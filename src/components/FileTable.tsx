@@ -16,6 +16,7 @@ import {
   Text,
   Th,
   Thead,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import {
@@ -153,17 +154,19 @@ const FileTable: FC<props> = (props: props) => {
                     e.dataTransfer.setData("text/plain", file.id);
                   }}
                 >
-                  <Text
-                    maxW="15rem"
-                    color="black"
-                    fontWeight="semibold"
-                    whiteSpace="nowrap"
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    className="txt"
-                  >
-                    {file.name}
-                  </Text>
+                  <Tooltip label={file.name} hasArrow>
+                    <Text
+                      maxW="15rem"
+                      color="black"
+                      fontWeight="semibold"
+                      whiteSpace="nowrap"
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                      className="txt"
+                    >
+                      {file.name}
+                    </Text>
+                  </Tooltip>
                 </HStack>
               </Td>
               <Td fontSize="sm" fontWeight="medium" paddingX={0} border="0">

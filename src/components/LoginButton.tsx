@@ -1,6 +1,6 @@
+import { GoogleIcon } from "@app/components/Icons";
 import { Button } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { GoogleIcon } from "@app/components/Icons";
 
 interface props {
   url: string;
@@ -67,7 +67,7 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
           //
           // console.error(err);
         }
-      }, 100);
+      }, 250);
     },
     [onFailure, onSuccess]
   );

@@ -178,12 +178,9 @@ const PassphraseInput: FC<props> = (props: props) => {
   const { data, isLoading } = useAppData();
   const { setEncryptionKey } = props;
 
-  const configExists = useMemo(() => data != null, [data]);
-  const loading = useMemo(() => isLoading && !data, [isLoading, data]);
-
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <Box display="flex" alignItems="center" justifyContent="center">
           <Spinner
             emptyColor="gray.200"
@@ -195,7 +192,7 @@ const PassphraseInput: FC<props> = (props: props) => {
         </Box>
       ) : (
         <>
-          {configExists ? (
+          {data != null ? (
             <PassphraseForm setEncryptionKey={setEncryptionKey} />
           ) : (
             <SetPassphrase />

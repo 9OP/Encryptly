@@ -32,6 +32,13 @@ const AlertStyle: ComponentStyleConfig = {
   },
 };
 
+const ButtonStyle: ComponentStyleConfig = {
+  baseStyle: {},
+  sizes: {},
+  variants: {},
+  defaultProps: {},
+};
+
 const theme = extendTheme({
   fonts: {
     heading: `'Cispeo'`,
@@ -39,6 +46,7 @@ const theme = extendTheme({
   },
   components: {
     Alert: AlertStyle,
+    Button: ButtonStyle,
   },
 });
 
