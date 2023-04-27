@@ -20,8 +20,6 @@ import {
   Heading,
   Image,
   Link,
-  ListItem,
-  OrderedList,
   Stack,
   Text,
   VStack,
@@ -175,33 +173,18 @@ const Login: FC = () => {
         height="100vh"
         flexDirection="column"
         alignItems="center"
-        justifyContent="space-between"
+        // justifyContent="space-between"
       >
-        <Heading>How it works ?</Heading>
+        <Heading marginBottom="3rem">How it works ?</Heading>
 
         <Image
           src="/schema.png"
           alt="schema"
           maxWidth={{ base: "95%", md: "80%", lg: "80%", xl: "70%" }}
           zIndex="10"
+          marginBottom="4rem"
+          marginRight="3rem"
         />
-
-        <OrderedList
-          fontWeight="semibold"
-          fontSize="md"
-          spacing="0.8rem"
-          zIndex="10"
-        >
-          <ListItem>[USER] Input secret passphrase</ListItem>
-          <ListItem>Fetch app data from user's Drive</ListItem>
-          <ListItem>Unwrap key with passphrase and app data</ListItem>
-          <ListItem>[USER] Upload file</ListItem>
-          <ListItem>Encrypt file</ListItem>
-          <ListItem>Upload encrypted file on user's Drive</ListItem>
-          <ListItem>Download encrypted file from user's Drive</ListItem>
-          <ListItem>Decrypt file</ListItem>
-          <ListItem>[USER] Download file</ListItem>
-        </OrderedList>
 
         <Box
           position="absolute"
