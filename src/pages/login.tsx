@@ -20,6 +20,8 @@ import {
   Heading,
   Image,
   Link,
+  ListItem,
+  OrderedList,
   Stack,
   Text,
   VStack,
@@ -173,18 +175,47 @@ const Login: FC = () => {
         height="100vh"
         flexDirection="column"
         alignItems="center"
+<<<<<<< HEAD
         justifyContent="center"
       >
         <Heading marginBottom="4rem">How it works ?</Heading>
+=======
+        justifyContent="space-between"
+      >
+        <Heading>How it works ?</Heading>
+>>>>>>> b8bc35f (Add schema)
 
         <Image
           src="/schema.png"
           alt="schema"
+<<<<<<< HEAD
           maxWidth={{ base: "95%", md: "90%", lg: "85%", xl: "80%" }}
           zIndex="10"
           marginBottom="4rem"
           marginRight="3rem"
         />
+=======
+          maxWidth={{ base: "95%", md: "80%", lg: "80%", xl: "70%" }}
+          zIndex="10"
+        />
+
+        <OrderedList
+          fontWeight="semibold"
+          fontSize="md"
+          spacing="0.8rem"
+          zIndex="10"
+        >
+          <ListItem>[USER] Input secret passphrase</ListItem>
+          <ListItem>Fetch app data from user's Drive</ListItem>
+          <ListItem>Unwrap key with passphrase and app data</ListItem>
+          <ListItem>[USER] Upload file</ListItem>
+          <ListItem>Encrypt file</ListItem>
+          <ListItem>Upload encrypted file on user's Drive</ListItem>
+          <ListItem>Download encrypted file from user's Drive</ListItem>
+          <ListItem>Decrypt file</ListItem>
+          <ListItem>[USER] Download file</ListItem>
+        </OrderedList>
+>>>>>>> b8bc35f (Add schema)
 
         <Box
           position="absolute"
