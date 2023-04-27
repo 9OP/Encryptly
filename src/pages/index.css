@@ -1,0 +1,21 @@
+h1 {
+    font-weight: 700;
+    font-size: 3rem;
+}
+
+h1 + p {
+    color: green
+}
+
+p + p {
+    margin-top: 1rem;
+}
+
+h2 {
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+p {
+    font-size: 1rem;
+}

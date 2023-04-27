@@ -7,7 +7,7 @@ const AlertStyle: ComponentStyleConfig = {
       borderWidth: "3px",
       borderRadius: "6px",
       borderColor: "black",
-      maxWidth: "25rem",
+      // maxWidth: "25rem",
       padding: "1rem",
       boxShadow: "none",
     },
@@ -69,7 +69,6 @@ const InputStyle: ComponentStyleConfig = {
 
 const CardStyle: ComponentStyleConfig = {
   baseStyle: {
-    w: "100%",
     padding: "1.5rem",
     borderWidth: "3px",
     borderRadius: "10px",

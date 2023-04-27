@@ -8,6 +8,8 @@ import { useToast } from "@chakra-ui/react";
 import { FC, useContext, useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { SWRConfig } from "swr";
+import Privacy from "./pages/privacy";
+import Terms from "./pages/terms";
 
 const Logout: FC = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
@@ -91,6 +93,8 @@ export default function App() {
             <Route index element={<IndexPage />} />
           </Route>
 
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<NotFound />} />
         </Route>

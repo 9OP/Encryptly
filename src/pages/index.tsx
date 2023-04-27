@@ -50,7 +50,7 @@ const Index: FC = () => {
               <UserCard />
             </Stack>
             <UploadButton onUpload={handleUpload} />
-            <Card backgroundColor="purple.200">
+            <Card backgroundColor="purple.200" w="100%">
               <FileTable
                 search={search}
                 setFilesCount={setFilesCount}

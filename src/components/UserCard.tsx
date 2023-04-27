@@ -73,7 +73,7 @@ const UserCard: FC = () => {
   };
 
   return (
-    <Card backgroundColor="teal.200" w="fit-content">
+    <Card backgroundColor="teal.200">
       <VStack
         spacing="1.5rem"
         align="flex-end"

@@ -8,7 +8,7 @@ const StorageQuota = () => {
   const { data } = useDriveQuota();
 
   return (
-    <Card w="fit-content" backgroundColor="blue.100">
+    <Card backgroundColor="blue.100">
       <HStack marginBottom="0.5rem">
         <CloudIcon boxSize="1.2rem" />
         <Text fontWeight="semibold">Storage quota</Text>
