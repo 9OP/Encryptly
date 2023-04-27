@@ -81,6 +81,7 @@ const Login: FC = () => {
       >
         <VStack
           padding="2rem"
+          paddingBottom="0.5rem"
           width="100%"
           height="100%"
           alignItems="center"
@@ -136,18 +137,34 @@ const Login: FC = () => {
             )}
           </VStack>
 
-          <HStack justifyContent="space-between" width="100%">
-            <Link href="https://github.com/9OP/Encryptly/">
-              <Button leftIcon={<GithubIcon />} variant="link">
-                Show me the code
-              </Button>
-            </Link>
-            <Link href="https://www.linkedin.com/in/martin-guyard-105b74150/">
-              <Button leftIcon={<LinkedinIcon />} variant="link">
-                Martin
-              </Button>
-            </Link>
-          </HStack>
+          <VStack w="100%">
+            <HStack justifyContent="space-between" width="100%">
+              <Link href="https://github.com/9OP/Encryptly/">
+                <Button leftIcon={<GithubIcon />} variant="link">
+                  Show me the code
+                </Button>
+              </Link>
+
+              <Link href="https://www.linkedin.com/in/martin-guyard-105b74150/">
+                <Button leftIcon={<LinkedinIcon />} variant="link">
+                  Martin
+                </Button>
+              </Link>
+            </HStack>
+
+            <HStack spacing="2rem" w="100%">
+              <Link href="/terms">
+                <Button variant="link" size="xs">
+                  Terms
+                </Button>
+              </Link>
+              <Link href="/privacy">
+                <Button variant="link" size="xs">
+                  Privacy
+                </Button>
+              </Link>
+            </HStack>
+          </VStack>
         </VStack>
       </Flex>
 
