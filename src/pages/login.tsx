@@ -18,6 +18,7 @@ import {
   Flex,
   HStack,
   Heading,
+  Image,
   Link,
   Stack,
   Text,
@@ -78,6 +79,7 @@ const Login: FC = () => {
       >
         <VStack
           padding="2rem"
+          paddingBottom="0.5rem"
           width="100%"
           height="100%"
           alignItems="center"
@@ -133,18 +135,34 @@ const Login: FC = () => {
             )}
           </VStack>
 
-          <HStack justifyContent="space-between" width="100%">
-            <Link href="https://github.com/9OP/Encryptly/">
-              <Button leftIcon={<GithubIcon />} variant="link">
-                Show me the code
-              </Button>
-            </Link>
-            <Link href="https://www.linkedin.com/in/martin-guyard-105b74150/">
-              <Button leftIcon={<LinkedinIcon />} variant="link">
-                Martin
-              </Button>
-            </Link>
-          </HStack>
+          <VStack w="100%">
+            <HStack justifyContent="space-between" width="100%">
+              <Link href="https://github.com/9OP/Encryptly/">
+                <Button leftIcon={<GithubIcon />} variant="link">
+                  Show me the code
+                </Button>
+              </Link>
+
+              <Link href="https://www.linkedin.com/in/martin-guyard-105b74150/">
+                <Button leftIcon={<LinkedinIcon />} variant="link">
+                  Martin
+                </Button>
+              </Link>
+            </HStack>
+
+            <HStack spacing="2rem" w="100%">
+              <Link href="/terms">
+                <Button variant="link" size="xs">
+                  Terms
+                </Button>
+              </Link>
+              <Link href="/privacy">
+                <Button variant="link" size="xs">
+                  Privacy
+                </Button>
+              </Link>
+            </HStack>
+          </VStack>
         </VStack>
       </Flex>
 
@@ -153,22 +171,20 @@ const Login: FC = () => {
         padding="2rem"
         backgroundColor="yellow.200"
         height="100vh"
-        justifyContent="center"
+        flexDirection="column"
+        alignItems="center"
+        // justifyContent="space-between"
       >
-        <Alert
-          width="fit-content"
-          height="fit-content"
-          status="info"
-          variant="subtle"
-          maxW="100%"
-        >
-          <AlertIcon />
-          <Flex direction="column">
-            <AlertTitle margin={0}>
-              Automatic end-to-end encryption of your files !
-            </AlertTitle>
-          </Flex>
-        </Alert>
+        <Heading marginBottom="3rem">How it works ?</Heading>
+
+        <Image
+          src="/schema.png"
+          alt="schema"
+          maxWidth={{ base: "95%", md: "80%", lg: "80%", xl: "70%" }}
+          zIndex="10"
+          marginBottom="4rem"
+          marginRight="3rem"
+        />
 
         <Box
           position="absolute"

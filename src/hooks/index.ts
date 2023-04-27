@@ -90,7 +90,9 @@ export const useListFiles = () => {
 };
 
 export const revalidateListFiles = async () => {
-  await mutate((key: string) => "listFiles" == key, undefined, {
+  const keys = ["listFiles", "driveQuota"];
+
+  await mutate((key: string) => keys.includes(key), undefined, {
     revalidate: true,
     populateCache: false,
   });
@@ -162,6 +164,7 @@ export const useSaveAppData = () => {
   };
 };
 
+// only for debug
 export const useDeleteAppDataFolder = () => {
   const { accessToken } = useContext(AppContext);
   return () => deleteAppFolder(accessToken.value);
