@@ -18,7 +18,10 @@ import {
   Flex,
   HStack,
   Heading,
+  Image,
   Link,
+  ListItem,
+  OrderedList,
   Stack,
   Text,
   VStack,
@@ -153,22 +156,35 @@ const Login: FC = () => {
         padding="2rem"
         backgroundColor="yellow.200"
         height="100vh"
-        justifyContent="center"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="space-between"
       >
-        <Alert
-          width="fit-content"
-          height="fit-content"
-          status="info"
-          variant="subtle"
-          maxW="100%"
+        <Heading>How it works ?</Heading>
+
+        <Image
+          src="/schema.png"
+          alt="schema"
+          maxWidth={{ base: "95%", md: "80%", lg: "80%", xl: "70%" }}
+          zIndex="10"
+        />
+
+        <OrderedList
+          fontWeight="semibold"
+          fontSize="md"
+          spacing="0.8rem"
+          zIndex="10"
         >
-          <AlertIcon />
-          <Flex direction="column">
-            <AlertTitle margin={0}>
-              Automatic end-to-end encryption of your files !
-            </AlertTitle>
-          </Flex>
-        </Alert>
+          <ListItem>[USER] Input secret passphrase</ListItem>
+          <ListItem>Fetch app data from user's Drive</ListItem>
+          <ListItem>Unwrap key with passphrase and app data</ListItem>
+          <ListItem>[USER] Upload file</ListItem>
+          <ListItem>Encrypt file</ListItem>
+          <ListItem>Upload encrypted file on user's Drive</ListItem>
+          <ListItem>Download encrypted file from user's Drive</ListItem>
+          <ListItem>Decrypt file</ListItem>
+          <ListItem>[USER] Download file</ListItem>
+        </OrderedList>
 
         <Box
           position="absolute"
