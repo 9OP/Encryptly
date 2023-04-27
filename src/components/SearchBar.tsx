@@ -33,7 +33,7 @@ const SearchBar: FC<props> = (props: props) => {
       backgroundColor="yellow.200"
       justifyContent="space-between"
     >
-      <HStack w="100%">
+      <HStack w="100%" marginBottom="1rem">
         <Tag size="md" colorScheme="purple" fontWeight="semibold">
           Files: {filesCount}
         </Tag>
