@@ -161,14 +161,13 @@ const Login: FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Heading marginBottom="4rem">How it works ?</Heading>
+        <Heading marginBottom="3rem">How it works ?</Heading>
 
         <Image
           src="/schema.png"
           alt="schema"
-          maxWidth={{ base: "95%", md: "90%", lg: "85%", xl: "80%" }}
+          maxWidth={{ base: "95%", md: "90%", lg: "85%", xl: "70%" }}
           zIndex="10"
-          marginBottom="4rem"
           marginRight="3rem"
         />
         <Box
