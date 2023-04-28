@@ -1,11 +1,7 @@
 import { AppContext } from "@app/context";
 import { getUserInfo } from "@app/hooks/http";
 import getAuthorizationUrl from "@app/lib/authorizationUrl";
-import {
-  exportEncryptionKey,
-  sha256,
-  unwrapEncryptionKey,
-} from "@app/lib/crypto";
+import { exportEncryptionKey, sha256, unwrapEncryptionKey } from "@app/lib/crypto";
 import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
 import { AppData } from "@app/models";
 import {
@@ -65,18 +61,12 @@ const Login: FC = () => {
     }
   };
 
-  const showLoginButton = useMemo(
-    () => !accessToken.value,
-    [accessToken.value]
-  );
+  const showLoginButton = useMemo(() => !accessToken.value, [accessToken.value]);
 
   return (
     <Flex flexDirection={{ base: "column", lg: "row" }}>
       {/* <DeleteAppDataFolder /> */}
-      <Flex
-        width={{ base: "100%", lg: "45%" }}
-        height={{ base: "100vh", lg: "none" }}
-      >
+      <Flex width={{ base: "100%", lg: "45%" }} height={{ base: "100vh", lg: "none" }}>
         <VStack
           padding="2rem"
           paddingBottom="0.5rem"
@@ -105,11 +95,7 @@ const Login: FC = () => {
             <Stack spacing="2rem" direction={{ base: "column", xl: "row" }}>
               <Box w={{ base: "100%", xl: "50%" }}>
                 {showLoginButton ? (
-                  <GoogleLoginButton
-                    url={url}
-                    onSuccess={setAccessToken}
-                    onFailure={setError}
-                  />
+                  <GoogleLoginButton url={url} onSuccess={setAccessToken} onFailure={setError} />
                 ) : (
                   <PassphraseInput setEncryptionKey={setEncryptionKey} />
                 )}
@@ -175,17 +161,15 @@ const Login: FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Heading marginBottom="4rem">How it works ?</Heading>
+        <Heading marginBottom="3rem">How it works ?</Heading>
 
         <Image
           src="/schema.png"
           alt="schema"
-          maxWidth={{ base: "95%", md: "90%", lg: "85%", xl: "80%" }}
+          maxWidth={{ base: "95%", md: "90%", lg: "85%", xl: "70%" }}
           zIndex="10"
-          marginBottom="4rem"
           marginRight="3rem"
         />
-
         <Box
           position="absolute"
           bottom={0}
