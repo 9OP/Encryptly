@@ -173,14 +173,14 @@ const Login: FC = () => {
         height="100vh"
         flexDirection="column"
         alignItems="center"
-        // justifyContent="space-between"
+        justifyContent="center"
       >
-        <Heading marginBottom="3rem">How it works ?</Heading>
+        <Heading marginBottom="4rem">How it works ?</Heading>
 
         <Image
           src="/schema.png"
           alt="schema"
-          maxWidth={{ base: "95%", md: "80%", lg: "80%", xl: "70%" }}
+          maxWidth={{ base: "95%", md: "90%", lg: "85%", xl: "80%" }}
           zIndex="10"
           marginBottom="4rem"
           marginRight="3rem"

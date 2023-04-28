@@ -1,5 +1,5 @@
 # Terms of Use:
-updated: 27th April 2023
+updated: 28th April 2023
 
 <br />
 
@@ -23,7 +23,9 @@ In no event shall the author of Encryptly be liable for any direct, indirect, in
 <br />
 
 ## 4. Data Collection: 
-Encryptly does not collect any data from its users. The software does not interact with any backend server other than Google servers, and all communication between Encryptly and Google servers is solely for the purpose of encrypting and decrypting Google Drive files.
+Encryptly does not collect Google data from its users (email, photo, files content). 
+However the software does interract with cookie-less web analytics solution Clicky (https://clicky.com/). Clicky is GDPR compliant and privacy-friendly. Cliky role is to collect traffic and origin of users on Encryptly. The software does interact only with Google servers and Clicky servers, all communication between Encryptly and Google servers is solely for the purpose of encrypting and decrypting Google Drive files and authenticating the user via Google Oauth2.
+
 
 <br />
 
