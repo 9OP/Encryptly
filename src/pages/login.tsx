@@ -161,7 +161,7 @@ const Login: FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Heading marginBottom="3rem">How it works ?</Heading>
+        <Heading marginBottom="4rem">How it works ?</Heading>
 
         <Image
           src="/schema.png"
