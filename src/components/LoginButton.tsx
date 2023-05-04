@@ -83,13 +83,18 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
     <Button
       width="100%"
       height="4rem"
-      fontSize="xl"
-      leftIcon={<GoogleIcon />}
+      fontSize="lg"
+      leftIcon={
+        <GoogleIcon boxSize="2rem" backgroundColor="white" borderRadius="25px" padding="0.1rem" />
+      }
       onClick={handleClick}
-      colorScheme="yellow"
-      backgroundColor="yellow.200"
+      backgroundColor="white"
+      _active={{
+        backgroundColor: "#4285F4",
+        color: "white",
+      }}
     >
-      Signin with Google
+      Sign in with Google
     </Button>
   );
 };
