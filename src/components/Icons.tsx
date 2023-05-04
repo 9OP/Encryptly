@@ -1,7 +1,8 @@
 import { Icon, IconProps, useStyleConfig } from "@chakra-ui/react";
 import { IconType } from "react-icons";
-import { BsGoogle, BsShieldLockFill } from "react-icons/bs";
+import { BsShieldLockFill } from "react-icons/bs";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { IoMdKey } from "react-icons/io";
 import {
   IoDocumentOutline,
@@ -36,7 +37,7 @@ const iconFactory = (icon: IconType) => {
   return IconFactory;
 };
 
-export const GoogleIcon = iconFactory(BsGoogle);
+export const GoogleIcon = iconFactory(FcGoogle);
 export const CloudIcon = iconFactory(MdOutlineCloud);
 export const DownloadIcon = iconFactory(MdDownload);
 export const UploadIcon = iconFactory(MdUpload);

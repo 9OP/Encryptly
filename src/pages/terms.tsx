@@ -5,7 +5,7 @@ import "./index.css";
 
 const Terms: FC = () => {
   const [md, setMd] = useState("");
-  const url = "https://raw.githubusercontent.com/9OP/Encryptly/master/TERMS.MD";
+  const url = "/TERMS.MD";
 
   useEffect(() => {
     const fetchMd = async () => {
@@ -23,11 +23,7 @@ const Terms: FC = () => {
   };
 
   return (
-    <Box
-      padding="2rem"
-      width={{ base: "100%", md: "80%", lg: "70%", xl: "60%" }}
-      margin="auto"
-    >
+    <Box padding="2rem" width={{ base: "100%", md: "80%", lg: "70%", xl: "60%" }} margin="auto">
       <div dangerouslySetInnerHTML={getMarkdown()} />
     </Box>
   );
