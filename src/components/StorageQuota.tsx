@@ -1,8 +1,8 @@
-import { CloudIcon } from "@app/components/Icons";
-import { useDriveQuota } from "@app/hooks";
-import formatBytes from "@app/lib/formatBytes";
-import { Flex, HStack, Progress, Spinner, Text } from "@chakra-ui/react";
-import Card from "./Card";
+import { CloudIcon } from '@app/components/Icons';
+import { useDriveQuota } from '@app/hooks';
+import formatBytes from '@app/lib/formatBytes';
+import { Flex, HStack, Progress, Spinner, Text } from '@chakra-ui/react';
+import Card from './Card';
 
 const StorageQuota = () => {
   const { data } = useDriveQuota();

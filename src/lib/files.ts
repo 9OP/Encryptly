@@ -2,7 +2,7 @@ export const saveFile = (
   fileData: BlobPart[],
   name: string,
   type: string,
-  ref: React.RefObject<HTMLAnchorElement>
+  ref: React.RefObject<HTMLAnchorElement>,
 ) => {
   const file = new File(fileData, name, {
     type,
@@ -34,9 +34,11 @@ export const handleDataItem = async (items: DataTransferItem[]) => {
 
       case item.isDirectory:
         const tree: File[] = [];
-        await traverseFileTree(item as FileSystemDirectoryEntry, "", tree);
+        await traverseFileTree(item as FileSystemDirectoryEntry, '', tree);
         const archive = await createArchive(tree);
-        const archiveFile = new File([archive], item.name + ".zip", { type: "application/zip" });
+        const archiveFile = new File([archive], item.name + '.zip', {
+          type: 'application/zip',
+        });
         files.push(archiveFile);
         break;
 
@@ -55,9 +57,9 @@ const getFile = async (fileEntry: FileSystemFileEntry): Promise<File> => {
 const traverseFileTree = async (
   item: FileSystemFileEntry | FileSystemDirectoryEntry | FileSystemEntry,
   path: string,
-  acc: File[]
+  acc: File[],
 ) => {
-  path = path || "";
+  path = path || '';
 
   switch (true) {
     case item.isFile:
@@ -69,7 +71,7 @@ const traverseFileTree = async (
       const dirReader = (item as FileSystemDirectoryEntry).createReader();
       const entries = await readEntries(dirReader);
       for (var entry of entries) {
-        await traverseFileTree(entry, path + item.name + "/", acc);
+        await traverseFileTree(entry, path + item.name + '/', acc);
       }
       return;
 
@@ -91,7 +93,7 @@ const readEntries = (reader: FileSystemDirectoryReader): Promise<FileSystemEntry
  * Check for better/lighter library for archiving multiple File into a single one
  */
 const createArchive = async (files: File[]) => {
-  const { BlobReader, BlobWriter, ZipWriter } = await import("@zip.js/zip.js");
+  const { BlobReader, BlobWriter, ZipWriter } = await import('@zip.js/zip.js');
 
   const zipFileWriter = new BlobWriter();
   const zipWriter = new ZipWriter(zipFileWriter);

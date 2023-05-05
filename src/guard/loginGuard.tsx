@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useIsAuthenticated } from "@app/hooks";
+import { useIsAuthenticated } from '@app/hooks';
+import { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const LoginGuard = () => {
   const navigate = useNavigate();
@@ -8,8 +8,8 @@ const LoginGuard = () => {
 
   const isAuthenticated = useIsAuthenticated();
 
-  const fromPathname = (state as any)?.from?.pathname || "/";
-  const fromParams = (state as any)?.from?.search || "";
+  const fromPathname = state?.from?.pathname || '/';
+  const fromParams = state?.from?.search || '';
   const from = fromPathname + fromParams;
 
   useEffect(() => {

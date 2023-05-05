@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { createContext } from "react";
+import React, { createContext, useState } from 'react';
 
 interface Entity<T> {
   value: T;
@@ -13,11 +12,11 @@ interface Context {
 
 const DEFAULT_CONTEXT: Context = {
   accessToken: {
-    value: "",
+    value: '',
     setValue: () => null,
   },
   encryptionKey: {
-    value: "",
+    value: '',
     setValue: () => null,
   },
 };
@@ -33,10 +32,10 @@ function useProvider<T>(initial: T) {
 export const AppContext = createContext<Context>(DEFAULT_CONTEXT);
 
 export const ContextProvider = (props: { children: React.ReactNode }) => {
-  const accessToken = useProvider("");
-  const encryptionKey = useProvider("");
+  const accessToken = useProvider('');
+  const encryptionKey = useProvider('');
 
-  var providers: Context = {
+  const providers: Context = {
     accessToken,
     encryptionKey,
   };

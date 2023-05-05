@@ -12,18 +12,18 @@ import {
   Spinner,
   Text,
   VStack,
-} from "@chakra-ui/react";
-import { FC, useMemo, useState } from "react";
+} from '@chakra-ui/react';
+import { FC, useMemo, useState } from 'react';
 
-import { ShieldLockIcon } from "@app/components/Icons";
-import { useAppData, useSaveAppData, useUserInfo } from "@app/hooks";
-import { sha256 } from "@app/lib/crypto";
-import { AppData } from "@app/models";
-import { useNavigate } from "react-router-dom";
+import { ShieldLockIcon } from '@app/components/Icons';
+import { useAppData, useSaveAppData, useUserInfo } from '@app/hooks';
+import { sha256 } from '@app/lib/crypto';
+import { AppData } from '@app/models';
+import { useNavigate } from 'react-router-dom';
 
 const SetPassphrase = () => {
-  const [passphrase, setPassphrase] = useState("");
-  const [confirm, setConfirm] = useState("");
+  const [passphrase, setPassphrase] = useState('');
+  const [confirm, setConfirm] = useState('');
   const saveAppData = useSaveAppData();
   const navigate = useNavigate();
 
@@ -31,18 +31,18 @@ const SetPassphrase = () => {
     if (isValid) {
       const digest = await sha256(passphrase);
       await saveAppData(digest);
-      navigate("/login");
+      navigate('/login');
     }
   };
 
   const isValid = useMemo(
-    () => passphrase != "" && passphrase === confirm,
-    [passphrase, confirm]
+    () => passphrase != '' && passphrase === confirm,
+    [passphrase, confirm],
   );
 
   return (
     <VStack spacing="1rem">
-      <FormControl isInvalid={passphrase === ""} isRequired>
+      <FormControl isInvalid={passphrase === ''} isRequired>
         <FormLabel>Passphrase</FormLabel>
         <Input
           autoFocus
@@ -95,14 +95,12 @@ interface props {
 }
 
 const PassphraseForm: FC<props> = (props: props) => {
-  const [passphrase, setPassphrase] = useState("");
+  const [passphrase, setPassphrase] = useState('');
   const { setEncryptionKey } = props;
   const { data: userInfo } = useUserInfo();
   const { data } = useAppData();
 
-  const handleClick = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -117,7 +115,7 @@ const PassphraseForm: FC<props> = (props: props) => {
         <FormLabel fontSize="md" fontWeight="semibold" margin={0}>
           <HStack justifyContent="space-between">
             <Text>Passphrase</Text>
-            <Text>{userInfo?.email ? `[${userInfo.email}]` : ""}</Text>
+            <Text>{userInfo?.email ? `[${userInfo.email}]` : ''}</Text>
           </HStack>
         </FormLabel>
         <Input

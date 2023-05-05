@@ -1,4 +1,4 @@
-import { AppData } from "@app/models";
+import { AppData } from '@app/models';
 
 // Recommended nonce byte lenght for AES-GCM 256bytes
 const NONCE_SIZE = 12;
@@ -15,13 +15,13 @@ export const decrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
   const cipher = buff.slice(NONCE_SIZE + VERSION_SIZE);
 
   if (VERSION !== new Uint8Array(version)[0]) {
-    throw new Error("File version not recognized");
+    throw new Error('File version not recognized');
   }
 
   const decrypted = await self.crypto.subtle.decrypt(
-    { name: "AES-GCM", iv },
+    { name: 'AES-GCM', iv },
     key,
-    cipher
+    cipher,
   );
   return new Blob([decrypted]);
 };
@@ -29,22 +29,18 @@ export const decrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
 export const encrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
   const iv = self.crypto.getRandomValues(new Uint8Array(NONCE_SIZE));
   const plain = await data.arrayBuffer();
-  const encrypted = await self.crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
-    key,
-    plain
-  );
+  const encrypted = await self.crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plain);
   return new Blob([new Uint8Array([VERSION]).buffer, iv.buffer, encrypted]);
 };
 
 export const generateEncryptionKey = async () => {
   const key = await self.crypto.subtle.generateKey(
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       length: 256,
     },
     true,
-    ["encrypt", "decrypt"]
+    ['encrypt', 'decrypt'],
   );
   return key;
 };
@@ -52,42 +48,37 @@ export const generateEncryptionKey = async () => {
 const getKeyMaterial = async (passphrase: string): Promise<CryptoKey> => {
   const enc = new TextEncoder();
   return self.crypto.subtle.importKey(
-    "raw",
+    'raw',
     enc.encode(passphrase),
-    { name: "PBKDF2" },
+    { name: 'PBKDF2' },
     false,
-    ["deriveBits", "deriveKey"]
+    ['deriveBits', 'deriveKey'],
   );
 };
 
 const getWrapKey = async (keyMaterial: CryptoKey, salt: Uint8Array) => {
   return self.crypto.subtle.deriveKey(
     {
-      name: "PBKDF2",
+      name: 'PBKDF2',
       salt,
       iterations: 100000,
-      hash: "SHA-256",
+      hash: 'SHA-256',
     },
     keyMaterial,
-    { name: "AES-KW", length: 256 },
+    { name: 'AES-KW', length: 256 },
     true,
-    ["wrapKey", "unwrapKey"]
+    ['wrapKey', 'unwrapKey'],
   );
 };
 
 export const wrapEncryptionKey = async (
   encryptionKey: CryptoKey,
-  passphrase: string
+  passphrase: string,
 ): Promise<AppData> => {
   const keyMaterial = await getKeyMaterial(passphrase);
   const salt = self.crypto.getRandomValues(new Uint8Array(16));
   const wrapKey = await getWrapKey(keyMaterial, salt);
-  const key = await self.crypto.subtle.wrapKey(
-    "raw",
-    encryptionKey,
-    wrapKey,
-    "AES-KW"
-  );
+  const key = await self.crypto.subtle.wrapKey('raw', encryptionKey, wrapKey, 'AES-KW');
   return {
     key: toB64(key),
     salt: [...salt],
@@ -96,57 +87,50 @@ export const wrapEncryptionKey = async (
 
 export const unwrapEncryptionKey = async (
   appData: AppData,
-  passphrase: string
+  passphrase: string,
 ): Promise<CryptoKey> => {
   const salt = new Uint8Array(appData.salt);
   const keyMaterial = await getKeyMaterial(passphrase);
   const wrapKey = await getWrapKey(keyMaterial, salt);
   return self.crypto.subtle.unwrapKey(
-    "raw",
+    'raw',
     fromB64(appData.key),
     wrapKey,
-    "AES-KW",
+    'AES-KW',
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       length: 256,
     },
     true,
-    ["encrypt", "decrypt"]
+    ['encrypt', 'decrypt'],
   );
 };
 
-export const exportEncryptionKey = async (
-  encryptionKey: CryptoKey
-): Promise<string> => {
-  return toB64(await self.crypto.subtle.exportKey("raw", encryptionKey));
+export const exportEncryptionKey = async (encryptionKey: CryptoKey): Promise<string> => {
+  return toB64(await self.crypto.subtle.exportKey('raw', encryptionKey));
 };
 
-export const importEncryptionKey = async (
-  encryptionKey: string
-): Promise<CryptoKey> => {
+export const importEncryptionKey = async (encryptionKey: string): Promise<CryptoKey> => {
   return self.crypto.subtle.importKey(
-    "raw",
+    'raw',
     fromB64(encryptionKey),
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       length: 256,
     },
     true,
-    ["encrypt", "decrypt"]
+    ['encrypt', 'decrypt'],
   );
 };
 
 export const sha256 = async (str: string): Promise<string> => {
-  const digest = await self.crypto.subtle.digest("SHA-512", fromB64(str));
+  const digest = await self.crypto.subtle.digest('SHA-512', fromB64(str));
   return toB64(digest);
 };
 
 const toB64 = (buf: ArrayBuffer): string => {
   return self.btoa(
-    new Uint8Array(buf).reduce(
-      (data, byte) => data + String.fromCharCode(byte),
-      ""
-    )
+    new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), ''),
   );
 };
 
@@ -154,7 +138,7 @@ const fromB64 = (buf: string): ArrayBuffer => {
   return new Uint8Array(
     [...self.atob(buf)].reduce(
       (data, char) => data.concat([char.charCodeAt(0)]),
-      [] as number[]
-    )
+      [] as number[],
+    ),
   ).buffer;
 };

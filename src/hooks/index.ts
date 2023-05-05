@@ -1,15 +1,15 @@
-import { AppContext } from "@app/context";
-import { generateEncryptionKey, wrapEncryptionKey } from "@app/lib/crypto";
-import promisify from "@app/lib/promisify";
+import { AppContext } from '@app/context';
+import { generateEncryptionKey, wrapEncryptionKey } from '@app/lib/crypto';
+import promisify from '@app/lib/promisify';
 import {
   delStorageAccessToken,
   getStorageAccessToken,
   setStorageAccessToken,
-} from "@app/lib/storage";
-import DecryptWorker from "@app/lib/webworkers/decrypt.worker?worker";
-import EncryptWorker from "@app/lib/webworkers/encrypt.worker?worker";
-import { useCallback, useContext } from "react";
-import useSWR, { mutate } from "swr";
+} from '@app/lib/storage';
+import DecryptWorker from '@app/lib/webworkers/decrypt.worker?worker';
+import EncryptWorker from '@app/lib/webworkers/encrypt.worker?worker';
+import { useCallback, useContext } from 'react';
+import useSWR, { mutate } from 'swr';
 import {
   deleteAppFolder,
   deleteFile,
@@ -21,13 +21,12 @@ import {
   revokeToken,
   saveAppData,
   uploadFile,
-} from "./http";
+} from './http';
 
 export const useIsAuthenticated = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
-  const hasAccessToken = accessToken.value != "" && accessToken.value != null;
-  const hasEncryptionKey =
-    encryptionKey.value != "" && encryptionKey.value != null;
+  const hasAccessToken = accessToken.value != '' && accessToken.value != null;
+  const hasEncryptionKey = encryptionKey.value != '' && encryptionKey.value != null;
   return hasAccessToken && hasEncryptionKey;
 };
 
@@ -44,7 +43,7 @@ export const useRecoverAccessToken = () => {
         setStorageAccessToken(token);
         return true;
       } catch (err) {
-        accessToken.setValue("");
+        accessToken.setValue('');
         delStorageAccessToken();
       }
     }
@@ -56,7 +55,7 @@ export const useRecoverAccessToken = () => {
 export const useUserInfo = () => {
   const { accessToken } = useContext(AppContext);
 
-  return useSWR("UserInfo", () => getUserInfo(accessToken.value));
+  return useSWR('UserInfo', () => getUserInfo(accessToken.value));
 };
 
 export const useLogout = () => {
@@ -64,9 +63,9 @@ export const useLogout = () => {
 
   return async () => {
     sessionStorage.clear();
-    encryptionKey.setValue("");
+    encryptionKey.setValue('');
     await revokeToken(accessToken.value);
-    accessToken.setValue("");
+    accessToken.setValue('');
 
     // Clear all previous, to force refetch new data with new token/user
     await mutate(() => true, undefined, {
@@ -78,19 +77,19 @@ export const useLogout = () => {
 
 export const useDriveQuota = () => {
   const { accessToken } = useContext(AppContext);
-  return useSWR("driveQuota", () => getStorageQuota(accessToken.value));
+  return useSWR('driveQuota', () => getStorageQuota(accessToken.value));
 };
 
 export const useListFiles = () => {
   const { accessToken } = useContext(AppContext);
-  return useSWR("listFiles", () => getUserFiles(accessToken.value), {
+  return useSWR('listFiles', () => getUserFiles(accessToken.value), {
     revalidateOnFocus: false,
     revalidateIfStale: false,
   });
 };
 
 export const revalidateListFiles = async () => {
-  const keys = ["listFiles", "driveQuota"];
+  const keys = ['listFiles', 'driveQuota'];
 
   await mutate((key: string) => keys.includes(key), undefined, {
     revalidate: true,
@@ -106,7 +105,7 @@ export const useEncryptFile = () => {
       const worker = new EncryptWorker();
       return promisify(worker, { file, key: encryptionKey.value });
     },
-    [encryptionKey.value]
+    [encryptionKey.value],
   );
 };
 
@@ -118,7 +117,7 @@ export const useDecryptFile = () => {
       const worker = new DecryptWorker();
       return promisify(worker, { data, key: encryptionKey.value });
     },
-    [encryptionKey.value]
+    [encryptionKey.value],
   );
 };
 
@@ -151,7 +150,7 @@ export const useDeleteFile = () => {
 
 export const useAppData = () => {
   const { accessToken } = useContext(AppContext);
-  return useSWR("appData", () => loadAppData(accessToken.value));
+  return useSWR('appData', () => loadAppData(accessToken.value));
 };
 
 export const useSaveAppData = () => {

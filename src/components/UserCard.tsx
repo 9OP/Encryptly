@@ -1,6 +1,6 @@
-import { AppContext } from "@app/context";
-import { useUserInfo } from "@app/hooks";
-import { saveFile } from "@app/lib/files";
+import { AppContext } from '@app/context';
+import { useUserInfo } from '@app/hooks';
+import { saveFile } from '@app/lib/files';
 import {
   Button,
   HStack,
@@ -14,11 +14,11 @@ import {
   Text,
   VStack,
   useDisclosure,
-} from "@chakra-ui/react";
-import { FC, useContext, useRef } from "react";
-import Card from "./Card";
-import { SecretIcon } from "./Icons";
-import LogoutButton from "./LogoutButton";
+} from '@chakra-ui/react';
+import { FC, useContext, useRef } from 'react';
+import Card from './Card';
+import { SecretIcon } from './Icons';
+import LogoutButton from './LogoutButton';
 
 interface PropsModal {
   onDownload: () => void;
@@ -40,8 +40,8 @@ const InfoModal: FC<PropsModal> = (props: PropsModal) => {
       <ModalContent backgroundColor="blue.500">
         <ModalHeader>Info</ModalHeader>
         <ModalBody>
-          Backup your encryption key securely. Anyone with access to your key is
-          able to decrypt your files.
+          Backup your encryption key securely. Anyone with access to your key is able to
+          decrypt your files.
           <br />
           <br />
           <Tag colorScheme="blue">Do not store your key on Google Drive !</Tag>
@@ -64,22 +64,12 @@ const UserCard: FC = () => {
   const ref = useRef<HTMLAnchorElement>(null);
 
   const onDownload = () => {
-    saveFile(
-      [encryptionKey.value],
-      `${user?.email}_key.txt`,
-      "text/plain",
-      ref
-    );
+    saveFile([encryptionKey.value], `${user?.email}_key.txt`, 'text/plain', ref);
   };
 
   return (
     <Card backgroundColor="teal.200">
-      <VStack
-        spacing="1.5rem"
-        align="flex-end"
-        justifyContent="flex-end"
-        height="100%"
-      >
+      <VStack spacing="1.5rem" align="flex-end" justifyContent="flex-end" height="100%">
         <Text fontSize="md" fontWeight="semibold">
           [{user?.email}]
         </Text>
@@ -93,11 +83,7 @@ const UserCard: FC = () => {
           >
             key
           </Button>
-          <InfoModal
-            onDownload={onDownload}
-            onClose={onClose}
-            isOpen={isOpen}
-          />
+          <InfoModal onDownload={onDownload} onClose={onClose} isOpen={isOpen} />
           <a hidden ref={ref} />
 
           <LogoutButton />

@@ -1,5 +1,5 @@
-import { Button } from "@chakra-ui/react";
-import { FC, useRef } from "react";
+import { Button } from '@chakra-ui/react';
+import { FC, useRef } from 'react';
 
 interface UploadButtonProps {
   onUpload: (files: File[]) => Promise<void>;

@@ -1,9 +1,9 @@
-import { AppContext } from "@app/context";
-import { getUserInfo } from "@app/hooks/http";
-import getAuthorizationUrl from "@app/lib/authorizationUrl";
-import { exportEncryptionKey, sha256, unwrapEncryptionKey } from "@app/lib/crypto";
-import { delStorageAccessToken, setStorageAccessToken } from "@app/lib/storage";
-import { AppData } from "@app/models";
+import { AppContext } from '@app/context';
+import { getUserInfo } from '@app/hooks/http';
+import getAuthorizationUrl from '@app/lib/authorizationUrl';
+import { exportEncryptionKey, sha256, unwrapEncryptionKey } from '@app/lib/crypto';
+import { delStorageAccessToken, setStorageAccessToken } from '@app/lib/storage';
+import { AppData } from '@app/models';
 import {
   Alert,
   AlertDescription,
@@ -19,17 +19,17 @@ import {
   Stack,
   Text,
   VStack,
-} from "@chakra-ui/react";
-import { FC, useContext, useEffect, useMemo, useState } from "react";
+} from '@chakra-ui/react';
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
 
-import { GithubIcon, LinkedinIcon } from "@app/components/Icons";
-import GoogleLoginButton from "@app/components/LoginButton";
-import PassphraseInput from "@app/components/PassphraseInput";
-import { useRecoverAccessToken } from "@app/hooks";
+import { GithubIcon, LinkedinIcon } from '@app/components/Icons';
+import GoogleLoginButton from '@app/components/LoginButton';
+import PassphraseInput from '@app/components/PassphraseInput';
+import { useRecoverAccessToken } from '@app/hooks';
 
 const Login: FC = () => {
   const url = getAuthorizationUrl();
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const { accessToken, encryptionKey } = useContext(AppContext);
   const recoverAccessToken = useRecoverAccessToken();
 
@@ -39,7 +39,7 @@ const Login: FC = () => {
 
   const setAccessToken = async (token: string) => {
     try {
-      setError("");
+      setError('');
       await getUserInfo(token);
       accessToken.setValue(token);
       setStorageAccessToken(token);
@@ -51,7 +51,7 @@ const Login: FC = () => {
 
   const setEncryptionKey = async (passphrase: string, data: AppData) => {
     try {
-      setError("");
+      setError('');
       const digest = await sha256(passphrase);
       const key = await unwrapEncryptionKey(data, digest);
       const exportKey = await exportEncryptionKey(key);
@@ -64,9 +64,9 @@ const Login: FC = () => {
   const showLoginButton = useMemo(() => !accessToken.value, [accessToken.value]);
 
   return (
-    <Flex flexDirection={{ base: "column", lg: "row" }}>
+    <Flex flexDirection={{ base: 'column', lg: 'row' }}>
       {/* <DeleteAppDataFolder /> */}
-      <Flex width={{ base: "100%", lg: "45%" }} height={{ base: "100vh", lg: "none" }}>
+      <Flex width={{ base: '100%', lg: '45%' }} height={{ base: '100vh', lg: 'none' }}>
         <VStack
           padding="2rem"
           paddingBottom="0.5rem"
@@ -78,30 +78,34 @@ const Login: FC = () => {
           <VStack spacing="2.5rem">
             <Box
               width="100%"
-              height={{ base: "10rem", xl: "15rem" }}
+              height={{ base: '10rem', xl: '15rem' }}
               opacity="0.6"
               backgroundImage="radial-gradient(purple.500 4px, #fff0 0px);"
               backgroundSize="60px 60px;"
             />
 
             <Heading
-              size={{ base: "3xl", xl: "4xl" }}
+              size={{ base: '3xl', xl: '4xl' }}
               fontWeight="bold"
               lineHeight="5rem"
               marginBottom="2rem"
             >
               → Keep your data safe
             </Heading>
-            <Stack spacing="2rem" direction={{ base: "column", xl: "row" }}>
-              <Box w={{ base: "100%", xl: "50%" }}>
+            <Stack spacing="2rem" direction={{ base: 'column', xl: 'row' }}>
+              <Box w={{ base: '100%', xl: '50%' }}>
                 {showLoginButton ? (
-                  <GoogleLoginButton url={url} onSuccess={setAccessToken} onFailure={setError} />
+                  <GoogleLoginButton
+                    url={url}
+                    onSuccess={setAccessToken}
+                    onFailure={setError}
+                  />
                 ) : (
                   <PassphraseInput setEncryptionKey={setEncryptionKey} />
                 )}
               </Box>
               <Text
-                w={{ base: "100%", xl: "50%" }}
+                w={{ base: '100%', xl: '50%' }}
                 fontSize="xl"
                 fontWeight="semibold"
                 textAlign="justify"
@@ -153,7 +157,7 @@ const Login: FC = () => {
       </Flex>
 
       <Flex
-        width={{ base: "100%", lg: "55%" }}
+        width={{ base: '100%', lg: '55%' }}
         padding="2rem"
         backgroundColor="yellow.200"
         height="100vh"
@@ -166,7 +170,7 @@ const Login: FC = () => {
         <Image
           src="/schema.png"
           alt="schema"
-          maxWidth={{ base: "95%", md: "90%", lg: "85%", xl: "70%" }}
+          maxWidth={{ base: '95%', md: '90%', lg: '85%', xl: '70%' }}
           zIndex="10"
           marginRight="3rem"
         />

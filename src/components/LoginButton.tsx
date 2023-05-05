@@ -1,6 +1,6 @@
-import { GoogleIcon } from "@app/components/Icons";
-import { Button } from "@chakra-ui/react";
-import { useCallback } from "react";
+import { GoogleIcon } from '@app/components/Icons';
+import { Button } from '@chakra-ui/react';
+import { useCallback } from 'react';
 
 interface props {
   url: string;
@@ -17,15 +17,15 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
 
     return window.open(
       url,
-      "",
-      "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no width=" +
+      '',
+      'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no width=' +
         width +
-        ", height=" +
+        ', height=' +
         height +
-        ", top=" +
+        ', top=' +
         top +
-        ", left=" +
-        left
+        ', left=' +
+        left,
     );
   }, [url]);
 
@@ -34,7 +34,7 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
       const polling = setInterval(() => {
         if (!popup || popup.closed || popup.closed === undefined) {
           clearInterval(polling);
-          onFailure("Popup has been closed by user");
+          onFailure('Popup has been closed by user');
         }
 
         const closeDialog = () => {
@@ -43,17 +43,17 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
         };
 
         try {
-          if (!popup.location.hostname.includes("google.com")) {
+          if (!popup.location.hostname.includes('google.com')) {
             if (popup.location.hash) {
               // redirectUri/#access_token=....
-              const hash = popup.location.hash.split("#")[1];
+              const hash = popup.location.hash.split('#')[1];
               const parsedHash = new URLSearchParams(hash);
-              const accessToken = parsedHash.get("access_token");
+              const accessToken = parsedHash.get('access_token');
               closeDialog();
               if (accessToken) {
                 return onSuccess(accessToken);
               }
-              return onFailure("Access token not found");
+              return onFailure('Access token not found');
             }
           }
         } catch (err) {
@@ -69,7 +69,7 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
         }
       }, 250);
     },
-    [onFailure, onSuccess]
+    [onFailure, onSuccess],
   );
 
   const handleClick = useCallback(() => {
@@ -85,13 +85,18 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
       height="4rem"
       fontSize="lg"
       leftIcon={
-        <GoogleIcon boxSize="2rem" backgroundColor="white" borderRadius="25px" padding="0.1rem" />
+        <GoogleIcon
+          boxSize="2rem"
+          backgroundColor="white"
+          borderRadius="25px"
+          padding="0.1rem"
+        />
       }
       onClick={handleClick}
       backgroundColor="white"
       _active={{
-        backgroundColor: "#4285F4",
-        color: "white",
+        backgroundColor: '#4285F4',
+        color: 'white',
       }}
     >
       Sign in with Google

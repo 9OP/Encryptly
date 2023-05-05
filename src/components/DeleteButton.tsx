@@ -1,5 +1,5 @@
-import { useDeleteFile, useListFiles } from "@app/hooks";
-import { FileMetadata } from "@app/models";
+import { useDeleteFile, useListFiles } from '@app/hooks';
+import { FileMetadata } from '@app/models';
 import {
   Button,
   IconButton,
@@ -13,9 +13,9 @@ import {
   Tag,
   useDisclosure,
   useToast,
-} from "@chakra-ui/react";
-import { FC, useMemo, useState } from "react";
-import { TrashIcon } from "./Icons";
+} from '@chakra-ui/react';
+import { FC, useMemo, useState } from 'react';
+import { TrashIcon } from './Icons';
 
 interface PropsModal {
   onDelete: () => Promise<void>;
@@ -48,17 +48,11 @@ const DeleteModal: FC<PropsModal> = (props: PropsModal) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button
-            autoFocus
-            mr={3}
-            onClick={onClose}
-            color="black"
-            disabled={deleting}
-          >
+          <Button autoFocus mr={3} onClick={onClose} color="black" disabled={deleting}>
             Cancel
           </Button>
           <Button onClick={handleDelete} disabled={deleting} colorScheme="red">
-            {deleting ? <Spinner /> : "Delete"}
+            {deleting ? <Spinner /> : 'Delete'}
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -82,11 +76,11 @@ const DeleteButton: FC<PropsButton> = (props: PropsButton) => {
   const onDelete = async () => {
     await deleteFile(fileId);
     toast({
-      status: "info",
+      status: 'info',
       duration: 3000,
-      position: "bottom-right",
+      position: 'bottom-right',
       isClosable: true,
-      title: "File deleted",
+      title: 'File deleted',
       description: file?.name,
     });
   };
@@ -103,12 +97,7 @@ const DeleteButton: FC<PropsButton> = (props: PropsButton) => {
         onClick={onOpen}
       />
       {file && (
-        <DeleteModal
-          file={file}
-          onDelete={onDelete}
-          onClose={onClose}
-          isOpen={isOpen}
-        />
+        <DeleteModal file={file} onDelete={onDelete} onClose={onClose} isOpen={isOpen} />
       )}
     </>
   );

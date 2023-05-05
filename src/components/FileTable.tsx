@@ -1,9 +1,9 @@
-import DownloadButton from "@app/components/DownloadButton";
-import { ArrowDownIcon, ArrowUpIcon } from "@app/components/Icons";
-import Pagination from "@app/components/Pagination";
-import { useListFiles } from "@app/hooks";
-import formatBytes from "@app/lib/formatBytes";
-import { FileMetadata } from "@app/models";
+import DownloadButton from '@app/components/DownloadButton';
+import { ArrowDownIcon, ArrowUpIcon } from '@app/components/Icons';
+import Pagination from '@app/components/Pagination';
+import { useListFiles } from '@app/hooks';
+import formatBytes from '@app/lib/formatBytes';
+import { FileMetadata } from '@app/models';
 import {
   Box,
   HStack,
@@ -18,7 +18,7 @@ import {
   Thead,
   Tooltip,
   Tr,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   Dispatch,
   FC,
@@ -27,30 +27,30 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react";
-import DeleteButton from "./DeleteButton";
+} from 'react';
+import DeleteButton from './DeleteButton';
 
 interface props {
   files: FileMetadata[];
   isFetching: boolean;
 }
 
-type SortOrder = "ASC" | "DESC";
+type SortOrder = 'ASC' | 'DESC';
 
 const FileTable: FC<props> = (props: props) => {
   const { files, isFetching } = props;
   const [sortedFiles, setSortedFiles] = useState<FileMetadata[]>(files);
-  const [nameOrder, setNameOrder] = useState<SortOrder>("DESC");
-  const [dateOrder, setDateOrder] = useState<SortOrder>("DESC");
-  const [sizeOrder, setSizeOrder] = useState<SortOrder>("DESC");
-  const [sort, setSort] = useState<"name" | "date" | "size">("name");
+  const [nameOrder, setNameOrder] = useState<SortOrder>('DESC');
+  const [dateOrder, setDateOrder] = useState<SortOrder>('DESC');
+  const [sizeOrder, setSizeOrder] = useState<SortOrder>('DESC');
+  const [sort, setSort] = useState<'name' | 'date' | 'size'>('name');
 
   const ColHeader = ({
     title,
     order,
     setOrder,
   }: {
-    title: "name" | "date" | "size";
+    title: 'name' | 'date' | 'size';
     order: SortOrder;
     setOrder: Dispatch<SetStateAction<SortOrder>>;
   }) => (
@@ -66,12 +66,12 @@ const FileTable: FC<props> = (props: props) => {
           size="xs"
           aria-label="sort"
           onClick={() => {
-            setOrder((prev) => (prev === "ASC" ? "DESC" : "ASC"));
+            setOrder((prev) => (prev === 'ASC' ? 'DESC' : 'ASC'));
             handleSorting(title);
             setSort(title);
           }}
           icon={
-            order === "DESC" ? (
+            order === 'DESC' ? (
               <ArrowUpIcon boxSize="1rem" />
             ) : (
               <ArrowDownIcon boxSize="1rem" />
@@ -83,21 +83,21 @@ const FileTable: FC<props> = (props: props) => {
   );
 
   const handleSorting = useCallback(
-    (sortField: "name" | "date" | "size") => {
+    (sortField: 'name' | 'date' | 'size') => {
       const sorted = [...files].sort((a, b) => {
         switch (sortField) {
-          case "name":
-            return nameOrder === "DESC"
+          case 'name':
+            return nameOrder === 'DESC'
               ? a.name.localeCompare(b.name)
               : b.name.localeCompare(a.name);
 
-          case "date":
-            return dateOrder === "DESC"
+          case 'date':
+            return dateOrder === 'DESC'
               ? a.createdTime.getTime() - b.createdTime.getTime()
               : b.createdTime.getTime() - a.createdTime.getTime();
 
-          case "size":
-            return sizeOrder === "DESC" ? a.size - b.size : b.size - a.size;
+          case 'size':
+            return sizeOrder === 'DESC' ? a.size - b.size : b.size - a.size;
 
           default:
             return 0;
@@ -107,7 +107,7 @@ const FileTable: FC<props> = (props: props) => {
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    [dateOrder, files, nameOrder, sizeOrder]
+    [dateOrder, files, nameOrder, sizeOrder],
   );
 
   useEffect(() => {
@@ -123,11 +123,7 @@ const FileTable: FC<props> = (props: props) => {
             <ColHeader title="date" order={dateOrder} setOrder={setDateOrder} />
             <ColHeader title="size" order={sizeOrder} setOrder={setSizeOrder} />
             <Td padding={0}>
-              <HStack
-                justifyContent="flex-end"
-                alignItems="center"
-                marginBottom="0.6rem"
-              >
+              <HStack justifyContent="flex-end" alignItems="center" marginBottom="0.6rem">
                 {isFetching ? <Spinner size="md" /> : <></>}
               </HStack>
             </Td>
@@ -139,10 +135,10 @@ const FileTable: FC<props> = (props: props) => {
               key={file.id}
               sx={{
                 [`&:hover #download-${file.id}`]: {
-                  visibility: "visible!important",
+                  visibility: 'visible!important',
                 },
                 [`&:hover #delete-${file.id}`]: {
-                  visibility: "visible!important",
+                  visibility: 'visible!important',
                 },
               }}
               cursor="pointer"
@@ -151,7 +147,7 @@ const FileTable: FC<props> = (props: props) => {
                 <HStack
                   draggable={true}
                   onDragStart={(e) => {
-                    e.dataTransfer.setData("text/plain", file.id);
+                    e.dataTransfer.setData('text/plain', file.id);
                   }}
                 >
                   <Tooltip label={file.name} hasArrow>
@@ -202,18 +198,13 @@ const PaginatedFileTable: FC<PropsTable> = (props: PropsTable): JSX.Element => {
 
   const pagination = 8;
 
-  const isFetching = useMemo(
-    () => isLoading || isValidating,
-    [isLoading, isValidating]
-  );
+  const isFetching = useMemo(() => isLoading || isValidating, [isLoading, isValidating]);
 
   const filteredFiles = useMemo(() => {
     let filtered = data || [];
     if (search) {
       filtered =
-        filtered.filter((f) =>
-          f.name.toLowerCase().includes(search.toLowerCase())
-        ) || [];
+        filtered.filter((f) => f.name.toLowerCase().includes(search.toLowerCase())) || [];
     }
     return filtered;
   }, [data, search]);
@@ -244,11 +235,7 @@ const PaginatedFileTable: FC<PropsTable> = (props: PropsTable): JSX.Element => {
       <FileTable files={rangeFiles} isFetching={isFetching} />
 
       {pages > 1 && (
-        <Pagination
-          range={pages}
-          selected={selected}
-          setSelected={setSelected}
-        />
+        <Pagination range={pages} selected={selected} setSelected={setSelected} />
       )}
     </Box>
   );
