@@ -2,8 +2,18 @@ import react from '@vitejs/plugin-react-swc';
 import { resolve } from 'path';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import eslint from 'vite-plugin-eslint';
+import { dependencies } from './package.json';
 
 const projectRootDir = resolve(__dirname);
+
+function renderChunks(deps: Record<string, string>) {
+  let chunks = {};
+  Object.keys(deps).forEach((key) => {
+    if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
+    chunks[key] = [key];
+  });
+  return chunks;
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,9 +21,7 @@ export default defineConfig({
     react(),
     {
       // default settings on build (i.e. fail on error)
-      ...eslint({
-        failOnError: false,
-      }),
+      ...eslint(),
       apply: 'build',
     },
     {
@@ -44,15 +52,14 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    // rollupOptions: {
-    //   output: {
-    //     // Separate node_modules/ from src/
-    //     manualChunks(id) {
-    //       if (id.includes('node_modules')) {
-    //         return id.toString().split('node_modules/')[1].split('/')[0].toString();
-    //       }
-    //     },
-    //   },
-    // },
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-router-dom', 'react-dom'],
+          ...renderChunks(dependencies),
+        },
+      },
+    },
   },
 });

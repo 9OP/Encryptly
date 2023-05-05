@@ -104,8 +104,6 @@ const FileTable: FC<props> = (props: props) => {
         }
       });
       setSortedFiles(sorted);
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
     [dateOrder, files, nameOrder, sizeOrder],
   );

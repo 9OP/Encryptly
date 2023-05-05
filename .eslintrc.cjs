@@ -37,5 +37,17 @@ module.exports = {
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'react/display-name': 'off',
+    // Should not turn off no-explicit-any in the long term
+    '@typescript-eslint/no-explicit-any': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn', // or "error"
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
   },
 };

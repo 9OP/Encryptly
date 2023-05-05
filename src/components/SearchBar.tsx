@@ -1,4 +1,3 @@
-import { useListFiles } from '@app/hooks';
 import formatBytes from '@app/lib/formatBytes';
 import {
   HStack,
@@ -21,7 +20,6 @@ interface props {
 
 const SearchBar: FC<props> = (props: props) => {
   const { search, setSearch, filesCount, storageCount } = props;
-  const { data: files } = useListFiles();
 
   return (
     <Card

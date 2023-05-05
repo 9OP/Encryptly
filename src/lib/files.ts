@@ -19,7 +19,7 @@ export const saveFile = (
 export const handleDataItem = async (items: DataTransferItem[]) => {
   const files: File[] = [];
 
-  for (var i = 0; i < items.length; i++) {
+  for (let i = 0; i < items.length; i++) {
     const item = items[0].webkitGetAsEntry();
 
     if (!item) {
@@ -27,12 +27,13 @@ export const handleDataItem = async (items: DataTransferItem[]) => {
     }
 
     switch (true) {
-      case item.isFile:
+      case item.isFile: {
         const file = await getFile(item as FileSystemFileEntry);
         files.push(file);
         break;
+      }
 
-      case item.isDirectory:
+      case item.isDirectory: {
         const tree: File[] = [];
         await traverseFileTree(item as FileSystemDirectoryEntry, '', tree);
         const archive = await createArchive(tree);
@@ -41,6 +42,7 @@ export const handleDataItem = async (items: DataTransferItem[]) => {
         });
         files.push(archiveFile);
         break;
+      }
 
       default:
         break;
@@ -62,18 +64,20 @@ const traverseFileTree = async (
   path = path || '';
 
   switch (true) {
-    case item.isFile:
+    case item.isFile: {
       const file = await getFile(item as FileSystemFileEntry);
       acc.push(new File([file], path + file.name, { type: file.type }));
       return;
+    }
 
-    case item.isDirectory:
+    case item.isDirectory: {
       const dirReader = (item as FileSystemDirectoryEntry).createReader();
       const entries = await readEntries(dirReader);
-      for (var entry of entries) {
+      for (const entry of entries) {
         await traverseFileTree(entry, path + item.name + '/', acc);
       }
       return;
+    }
 
     default:
       return;
@@ -81,7 +85,7 @@ const traverseFileTree = async (
 };
 
 const readEntries = (reader: FileSystemDirectoryReader): Promise<FileSystemEntry[]> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _) => {
     reader.readEntries((entries) => {
       resolve(entries);
     });

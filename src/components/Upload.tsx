@@ -45,7 +45,6 @@ const Upload = forwardRef<UploadHandle, UploadProps>((props: UploadProps, ref: a
         render: () => <UploadFeedback files={files} steps={steps} progress={progress} />,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [steps, progress, files]);
 
   useEffect(() => {
@@ -65,8 +64,6 @@ const Upload = forwardRef<UploadHandle, UploadProps>((props: UploadProps, ref: a
       setSteps({});
       setFiles([]);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitCount]);
 
   const onSubmit = async (fls: File[]) => {
