@@ -1,15 +1,21 @@
 import react from '@vitejs/plugin-react-swc';
 import { resolve } from 'path';
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import { dependencies } from './package.json';
 
 const projectRootDir = resolve(__dirname);
 
+const BASE_CHUNKS = {
+  vendor: ['react', 'react-router-dom', 'react-dom', 'swr', 'react-icons'],
+  ui: ['@chakra-ui/react', '@emotion/react'],
+};
+
 function renderChunks(deps: Record<string, string>) {
-  let chunks = {};
+  const chunks = {};
+  const alreadySplit = Object.values(BASE_CHUNKS).reduce((acc, l) => acc.concat(l), []);
   Object.keys(deps).forEach((key) => {
-    if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
+    if (alreadySplit.includes(key)) return;
     chunks[key] = [key];
   });
   return chunks;
@@ -34,7 +40,7 @@ export default defineConfig({
       apply: 'serve',
       enforce: 'post',
     },
-    splitVendorChunkPlugin(),
+    // splitVendorChunkPlugin(),
   ],
   // base: "/Encryptly/",
   resolve: {
@@ -56,7 +62,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-router-dom', 'react-dom'],
+          ...BASE_CHUNKS,
           ...renderChunks(dependencies),
         },
       },
