@@ -1,3 +1,4 @@
+import { FC, useMemo, useState } from 'react';
 import { useDeleteFile, useListFiles } from '@app/hooks';
 import { FileMetadata } from '@app/models';
 import {
@@ -14,7 +15,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { FC, useMemo, useState } from 'react';
+
 import { TrashIcon } from './Icons';
 
 interface PropsModal {

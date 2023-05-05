@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import formatBytes from '@app/lib/formatBytes';
 import {
   Alert,
@@ -9,7 +10,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { FC } from 'react';
+
 import { CheckIcon, ShieldLockIcon } from './Icons';
 
 interface props {

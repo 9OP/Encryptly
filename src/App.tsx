@@ -1,8 +1,8 @@
+import React, { FC, useContext, useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AppContext } from '@app/context';
 import { useLogout } from '@app/hooks';
 import { useToast } from '@chakra-ui/react';
-import React, { FC, useContext, useEffect } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { SWRConfig } from 'swr';
 
 const AuthGuard = React.lazy(() => import('@app/guard/authenticationGuard'));

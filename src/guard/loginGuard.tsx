@@ -1,6 +1,6 @@
-import { useIsAuthenticated } from '@app/hooks';
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useIsAuthenticated } from '@app/hooks';
 
 const LoginGuard = () => {
   const navigate = useNavigate();

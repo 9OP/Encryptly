@@ -1,3 +1,4 @@
+import { FC, useContext, useRef } from 'react';
 import { AppContext } from '@app/context';
 import { useUserInfo } from '@app/hooks';
 import { saveFile } from '@app/lib/files';
@@ -12,10 +13,10 @@ import {
   ModalOverlay,
   Tag,
   Text,
-  VStack,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
-import { FC, useContext, useRef } from 'react';
+
 import Card from './Card';
 import { SecretIcon } from './Icons';
 import LogoutButton from './LogoutButton';

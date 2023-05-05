@@ -1,3 +1,4 @@
+import { FC, useRef, useState } from 'react';
 import Card from '@app/components/Card';
 import DropZone from '@app/components/DropZone';
 import FileTable from '@app/components/FileTable';
@@ -7,7 +8,6 @@ import Upload, { UploadHandle } from '@app/components/Upload';
 import UploadButton from '@app/components/UploadButton';
 import UserCard from '@app/components/UserCard';
 import { Flex, Stack, VStack } from '@chakra-ui/react';
-import { FC, useRef, useState } from 'react';
 
 const Index: FC = () => {
   const [search, setSearch] = useState('');

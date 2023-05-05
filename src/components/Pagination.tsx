@@ -1,6 +1,6 @@
+import { FC } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@app/components/Icons';
 import { Button, Flex, HStack, IconButton, Text } from '@chakra-ui/react';
-import { FC } from 'react';
 
 interface props {
   range: number;

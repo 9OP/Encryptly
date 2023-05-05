@@ -1,6 +1,7 @@
+import { FC, useEffect, useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import { marked } from 'marked';
-import { FC, useEffect, useState } from 'react';
+
 import './index.css';
 
 const Terms: FC = () => {

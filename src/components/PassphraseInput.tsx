@@ -1,3 +1,9 @@
+import { FC, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ShieldLockIcon } from '@app/components/Icons';
+import { useAppData, useSaveAppData, useUserInfo } from '@app/hooks';
+import { sha256 } from '@app/lib/crypto';
+import { AppData } from '@app/models';
 import {
   Alert,
   AlertDescription,
@@ -13,13 +19,6 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { FC, useMemo, useState } from 'react';
-
-import { ShieldLockIcon } from '@app/components/Icons';
-import { useAppData, useSaveAppData, useUserInfo } from '@app/hooks';
-import { sha256 } from '@app/lib/crypto';
-import { AppData } from '@app/models';
-import { useNavigate } from 'react-router-dom';
 
 const SetPassphrase = () => {
   const [passphrase, setPassphrase] = useState('');

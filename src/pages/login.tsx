@@ -1,4 +1,9 @@
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { GithubIcon, LinkedinIcon } from '@app/components/Icons';
+import GoogleLoginButton from '@app/components/LoginButton';
+import PassphraseInput from '@app/components/PassphraseInput';
 import { AppContext } from '@app/context';
+import { useRecoverAccessToken } from '@app/hooks';
 import { getUserInfo } from '@app/hooks/http';
 import getAuthorizationUrl from '@app/lib/authorizationUrl';
 import { exportEncryptionKey, sha256, unwrapEncryptionKey } from '@app/lib/crypto';
@@ -12,20 +17,14 @@ import {
   Box,
   Button,
   Flex,
-  HStack,
   Heading,
+  HStack,
   Image,
   Link,
   Stack,
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { FC, useContext, useEffect, useMemo, useState } from 'react';
-
-import { GithubIcon, LinkedinIcon } from '@app/components/Icons';
-import GoogleLoginButton from '@app/components/LoginButton';
-import PassphraseInput from '@app/components/PassphraseInput';
-import { useRecoverAccessToken } from '@app/hooks';
 
 const Login: FC = () => {
   const url = getAuthorizationUrl();

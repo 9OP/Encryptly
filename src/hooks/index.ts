@@ -1,3 +1,4 @@
+import { useCallback, useContext } from 'react';
 import { AppContext } from '@app/context';
 import { generateEncryptionKey, wrapEncryptionKey } from '@app/lib/crypto';
 import promisify from '@app/lib/promisify';
@@ -8,8 +9,8 @@ import {
 } from '@app/lib/storage';
 import DecryptWorker from '@app/lib/webworkers/decrypt.worker?worker';
 import EncryptWorker from '@app/lib/webworkers/encrypt.worker?worker';
-import { useCallback, useContext } from 'react';
 import useSWR, { mutate } from 'swr';
+
 import {
   deleteAppFolder,
   deleteFile,

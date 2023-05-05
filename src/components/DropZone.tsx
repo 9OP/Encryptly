@@ -1,6 +1,6 @@
+import React, { FC, ReactNode, useState } from 'react';
 import { handleDataItem } from '@app/lib/files';
 import { Box, useToast } from '@chakra-ui/react';
-import React, { FC, ReactNode, useState } from 'react';
 
 interface DropZoneProps {
   onUpload: (files: File[]) => Promise<void>;

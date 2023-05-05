@@ -1,3 +1,4 @@
+import { Dispatch, FC, SetStateAction } from 'react';
 import formatBytes from '@app/lib/formatBytes';
 import {
   HStack,
@@ -7,7 +8,7 @@ import {
   InputRightElement,
   Tag,
 } from '@chakra-ui/react';
-import { Dispatch, FC, SetStateAction } from 'react';
+
 import Card from './Card';
 import { CloseIcon, SearchIcon } from './Icons';
 

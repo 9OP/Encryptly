@@ -1,13 +1,14 @@
-import { revalidateListFiles, useEncryptFile, useUploadFile } from '@app/hooks';
-import { ToastId, useToast } from '@chakra-ui/react';
 import {
+  forwardRef,
   ReactNode,
   RefObject,
-  forwardRef,
   useEffect,
   useImperativeHandle,
   useState,
 } from 'react';
+import { revalidateListFiles, useEncryptFile, useUploadFile } from '@app/hooks';
+import { ToastId, useToast } from '@chakra-ui/react';
+
 import UploadFeedback from './UploadToast';
 
 interface UploadProps {
