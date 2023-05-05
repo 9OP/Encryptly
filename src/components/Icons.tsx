@@ -1,15 +1,14 @@
-import { Icon, IconProps, useStyleConfig } from "@chakra-ui/react";
-import { IconType } from "react-icons";
-import { BsShieldLockFill } from "react-icons/bs";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { IoMdKey } from "react-icons/io";
+import { IconType } from 'react-icons';
+import { BsShieldLockFill } from 'react-icons/bs';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { IoMdKey } from 'react-icons/io';
 import {
   IoDocumentOutline,
   IoFolderOpenOutline,
   IoFolderOutline,
   IoTrashBin,
-} from "react-icons/io5";
+} from 'react-icons/io5';
 import {
   MdCheck,
   MdChevronLeft,
@@ -25,13 +24,14 @@ import {
   MdOutlineCloud,
   MdSearch,
   MdUpload,
-} from "react-icons/md";
-import { SiGithub, SiLinkedin } from "react-icons/si";
-import { VscNewFile } from "react-icons/vsc";
+} from 'react-icons/md';
+import { SiGithub, SiLinkedin } from 'react-icons/si';
+import { VscNewFile } from 'react-icons/vsc';
+import { Icon, IconProps, useStyleConfig } from '@chakra-ui/react';
 
 const iconFactory = (icon: IconType) => {
   const IconFactory = (props: IconProps) => {
-    const styles = useStyleConfig("Icon");
+    const styles = useStyleConfig('Icon');
     return <Icon __css={styles} as={icon} {...props} />;
   };
   return IconFactory;

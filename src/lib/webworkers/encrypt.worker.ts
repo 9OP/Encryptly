@@ -1,4 +1,4 @@
-import { encrypt, importEncryptionKey } from "@app/lib/crypto";
+import { encrypt, importEncryptionKey } from '@app/lib/crypto';
 
 self.onmessage = async function (e) {
   try {

@@ -1,7 +1,7 @@
-const ACCESS_TOKEN = "access-token";
+const ACCESS_TOKEN = 'access-token';
 
 export const getStorageAccessToken = (): string => {
-  return sessionStorage.getItem(ACCESS_TOKEN) || "";
+  return sessionStorage.getItem(ACCESS_TOKEN) || '';
 };
 
 export const setStorageAccessToken = (token: string) => {

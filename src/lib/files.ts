@@ -2,7 +2,7 @@ export const saveFile = (
   fileData: BlobPart[],
   name: string,
   type: string,
-  ref: React.RefObject<HTMLAnchorElement>
+  ref: React.RefObject<HTMLAnchorElement>,
 ) => {
   const file = new File(fileData, name, {
     type,
@@ -19,7 +19,7 @@ export const saveFile = (
 export const handleDataItem = async (items: DataTransferItem[]) => {
   const files: File[] = [];
 
-  for (var i = 0; i < items.length; i++) {
+  for (let i = 0; i < items.length; i++) {
     const item = items[0].webkitGetAsEntry();
 
     if (!item) {
@@ -27,18 +27,22 @@ export const handleDataItem = async (items: DataTransferItem[]) => {
     }
 
     switch (true) {
-      case item.isFile:
+      case item.isFile: {
         const file = await getFile(item as FileSystemFileEntry);
         files.push(file);
         break;
+      }
 
-      case item.isDirectory:
+      case item.isDirectory: {
         const tree: File[] = [];
-        await traverseFileTree(item as FileSystemDirectoryEntry, "", tree);
+        await traverseFileTree(item as FileSystemDirectoryEntry, '', tree);
         const archive = await createArchive(tree);
-        const archiveFile = new File([archive], item.name + ".zip", { type: "application/zip" });
+        const archiveFile = new File([archive], item.name + '.zip', {
+          type: 'application/zip',
+        });
         files.push(archiveFile);
         break;
+      }
 
       default:
         break;
@@ -55,23 +59,25 @@ const getFile = async (fileEntry: FileSystemFileEntry): Promise<File> => {
 const traverseFileTree = async (
   item: FileSystemFileEntry | FileSystemDirectoryEntry | FileSystemEntry,
   path: string,
-  acc: File[]
+  acc: File[],
 ) => {
-  path = path || "";
+  path = path || '';
 
   switch (true) {
-    case item.isFile:
+    case item.isFile: {
       const file = await getFile(item as FileSystemFileEntry);
       acc.push(new File([file], path + file.name, { type: file.type }));
       return;
+    }
 
-    case item.isDirectory:
+    case item.isDirectory: {
       const dirReader = (item as FileSystemDirectoryEntry).createReader();
       const entries = await readEntries(dirReader);
-      for (var entry of entries) {
-        await traverseFileTree(entry, path + item.name + "/", acc);
+      for (const entry of entries) {
+        await traverseFileTree(entry, path + item.name + '/', acc);
       }
       return;
+    }
 
     default:
       return;
@@ -79,7 +85,7 @@ const traverseFileTree = async (
 };
 
 const readEntries = (reader: FileSystemDirectoryReader): Promise<FileSystemEntry[]> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _) => {
     reader.readEntries((entries) => {
       resolve(entries);
     });
@@ -91,7 +97,7 @@ const readEntries = (reader: FileSystemDirectoryReader): Promise<FileSystemEntry
  * Check for better/lighter library for archiving multiple File into a single one
  */
 const createArchive = async (files: File[]) => {
-  const { BlobReader, BlobWriter, ZipWriter } = await import("@zip.js/zip.js");
+  const { BlobReader, BlobWriter, ZipWriter } = await import('@zip.js/zip.js');
 
   const zipFileWriter = new BlobWriter();
   const zipWriter = new ZipWriter(zipFileWriter);

@@ -1,8 +1,6 @@
-import { FC } from "react";
-import { useLocation, Navigate, Outlet } from "react-router-dom";
-import { useIsAuthenticated } from "@app/hooks";
-
-
+import { FC } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useIsAuthenticated } from '@app/hooks';
 
 const AuthGuard: FC = () => {
   const location = useLocation();
@@ -16,8 +14,6 @@ const AuthGuard: FC = () => {
 
     return <Navigate to="/login" state={{ from: location }} />;
   }
-
-
 
   return <Outlet />;
 };

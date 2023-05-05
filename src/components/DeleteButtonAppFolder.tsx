@@ -1,5 +1,5 @@
-import { useDeleteAppDataFolder } from "@app/hooks";
-import { Button } from "@chakra-ui/react";
+import { useDeleteAppDataFolder } from '@app/hooks';
+import { Button } from '@chakra-ui/react';
 
 const DeleteAppDataFolder = () => {
   const deleteAppDataFolder = useDeleteAppDataFolder();

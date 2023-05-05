@@ -1,5 +1,5 @@
-import { useListFiles } from "@app/hooks";
-import formatBytes from "@app/lib/formatBytes";
+import { Dispatch, FC, SetStateAction } from 'react';
+import formatBytes from '@app/lib/formatBytes';
 import {
   HStack,
   Input,
@@ -7,10 +7,10 @@ import {
   InputLeftElement,
   InputRightElement,
   Tag,
-} from "@chakra-ui/react";
-import { Dispatch, FC, SetStateAction } from "react";
-import Card from "./Card";
-import { CloseIcon, SearchIcon } from "./Icons";
+} from '@chakra-ui/react';
+
+import Card from './Card';
+import { CloseIcon, SearchIcon } from './Icons';
 
 interface props {
   storageCount: number;
@@ -21,7 +21,6 @@ interface props {
 
 const SearchBar: FC<props> = (props: props) => {
   const { search, setSearch, filesCount, storageCount } = props;
-  const { data: files } = useListFiles();
 
   return (
     <Card
@@ -51,16 +50,16 @@ const SearchBar: FC<props> = (props: props) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           //
-          _hover={{ boxShadow: "none" }}
+          _hover={{ boxShadow: 'none' }}
           borderRadius="10px"
           borderWidth="2px"
           borderColor="black"
           boxShadow="-4px 4px 0px 0px #000"
         />
         <InputRightElement
-          hidden={search === ""}
+          hidden={search === ''}
           color="gray.400"
-          onClick={() => setSearch("")}
+          onClick={() => setSearch('')}
           cursor="pointer"
         >
           <CloseIcon />

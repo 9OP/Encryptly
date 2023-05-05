@@ -1,15 +1,16 @@
-import { AppContext } from "@app/context";
-import AuthGuard from "@app/guard/authenticationGuard";
-import LoginGuard from "@app/guard/loginGuard";
-import { useLogout } from "@app/hooks";
-import IndexPage from "@app/pages";
-import LoginPage from "@app/pages/login";
-import { useToast } from "@chakra-ui/react";
-import { FC, useContext, useEffect } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { SWRConfig } from "swr";
-import Privacy from "./pages/privacy";
-import Terms from "./pages/terms";
+import React, { FC, useContext, useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { AppContext } from '@app/context';
+import { useLogout } from '@app/hooks';
+import { useToast } from '@chakra-ui/react';
+import { SWRConfig } from 'swr';
+
+const AuthGuard = React.lazy(() => import('@app/guard/authenticationGuard'));
+const LoginGuard = React.lazy(() => import('@app/guard/loginGuard'));
+const IndexPage = React.lazy(() => import('@app/pages/index'));
+const LoginPage = React.lazy(() => import('@app/pages/login'));
+const Privacy = React.lazy(() => import('@app/pages/privacy'));
+const Terms = React.lazy(() => import('@app/pages/terms'));
 
 const Logout: FC = () => {
   const { accessToken, encryptionKey } = useContext(AppContext);
@@ -18,17 +19,15 @@ const Logout: FC = () => {
 
   useEffect(() => {
     (async function () {
-      accessToken.setValue("");
-      encryptionKey.setValue("");
+      accessToken.setValue('');
+      encryptionKey.setValue('');
 
       try {
         await logout();
       } finally {
-        navigate("/login", { replace: true });
+        navigate('/login', { replace: true });
       }
     })();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <></>;
@@ -43,7 +42,7 @@ const NotFound: FC = () => {
 
   useEffect(() => {
     (function () {
-      if (pathname !== "/") {
+      if (pathname !== '/') {
         navigate(-1);
       }
     })();
@@ -60,16 +59,16 @@ export default function App() {
   return (
     <SWRConfig
       value={{
-        onError: (error: Error, key) => {
-          if (error?.status === 401 && location.pathname !== "/login") {
+        onError: (error: Error) => {
+          if (error?.status === 401 && location.pathname !== '/login') {
             toast({
-              status: "warning",
-              title: "Session expired",
+              status: 'warning',
+              title: 'Session expired',
               duration: 3000,
               isClosable: true,
-              position: "top-right",
+              position: 'top-right',
             });
-            navigate("/login");
+            navigate('/login');
           } else {
             // toast({
             //   status: "warning",

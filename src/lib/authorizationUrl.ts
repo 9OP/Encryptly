@@ -6,19 +6,19 @@ const getAuthorizationUrl = (): string => {
   const redirectUri = import.meta.env.VITE_REDIRECT_URI;
 
   const scopes = [
-    "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive.appdata",
-    "https://www.googleapis.com/auth/userinfo.email",
+    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/drive.appdata',
+    'https://www.googleapis.com/auth/userinfo.email',
   ];
 
   const url =
-    "https://accounts.google.com/o/oauth2/v2/auth?" +
-    "access_type=online&" +
-    "prompt=select_account&" +
-    "response_type=token&" +
-    "include_granted_scopes=false&" +
+    'https://accounts.google.com/o/oauth2/v2/auth?' +
+    'access_type=online&' +
+    'prompt=select_account&' +
+    'response_type=token&' +
+    'include_granted_scopes=false&' +
     `client_id=${clientId}&` +
-    `scope=${scopes.join(" ")}&` +
+    `scope=${scopes.join(' ')}&` +
     `redirect_uri=${redirectUri}&`;
 
   return url;

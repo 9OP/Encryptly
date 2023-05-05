@@ -1,3 +1,5 @@
+import { FC } from 'react';
+import formatBytes from '@app/lib/formatBytes';
 import {
   Alert,
   AlertDescription,
@@ -5,16 +7,15 @@ import {
   AlertTitle,
   CircularProgress,
   HStack,
-  VStack,
   Text,
-} from "@chakra-ui/react";
-import formatBytes from "@app/lib/formatBytes";
-import { ShieldLockIcon, CheckIcon } from "./Icons";
-import { FC } from "react";
+  VStack,
+} from '@chakra-ui/react';
+
+import { CheckIcon, ShieldLockIcon } from './Icons';
 
 interface props {
   files: File[];
-  steps: { [name: string]: "ENCRYPTING" | "UPLOADING" };
+  steps: { [name: string]: 'ENCRYPTING' | 'UPLOADING' };
   progress: { [name: string]: number };
 }
 
@@ -32,8 +33,10 @@ const UploadFeedback: FC<props> = (props: props) => {
 
             return (
               <HStack key={i} alignItems="center" justifyContent="flex-start">
-                {steps[f.name] === "ENCRYPTING" && <ShieldLockIcon boxSize="1rem" color="white" />}
-                {steps[f.name] === "UPLOADING" &&
+                {steps[f.name] === 'ENCRYPTING' && (
+                  <ShieldLockIcon boxSize="1rem" color="white" />
+                )}
+                {steps[f.name] === 'UPLOADING' &&
                   (value < 100 ? (
                     <CircularProgress
                       value={value}

@@ -1,6 +1,6 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@app/components/Icons";
-import { Button, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@app/components/Icons';
+import { Button, Flex, HStack, IconButton, Text } from '@chakra-ui/react';
 
 interface props {
   range: number;
@@ -41,7 +41,7 @@ const Pagination: FC<props> = (props: props) => {
           onClick={() => setSelected(1)}
           size="xs"
           variant="ghost"
-          color={selected === 1 ? "red.600" : ""}
+          color={selected === 1 ? 'red.600' : ''}
         >
           1
         </Button>
@@ -73,7 +73,7 @@ const Pagination: FC<props> = (props: props) => {
             onClick={() => setSelected(range)}
             size="xs"
             variant="ghost"
-            color={selected === range ? "red.600" : ""}
+            color={selected === range ? 'red.600' : ''}
           >
             {range}
           </Button>

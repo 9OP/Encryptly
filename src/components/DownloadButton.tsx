@@ -1,8 +1,9 @@
-import { useDecryptFile, useDownloadFile } from "@app/hooks";
-import { saveFile } from "@app/lib/files";
-import { IconButton, Spinner, useToast } from "@chakra-ui/react";
-import { FC, useCallback, useRef, useState } from "react";
-import { DownloadIcon, ShieldLockIcon } from "./Icons";
+import { FC, useCallback, useRef, useState } from 'react';
+import { useDecryptFile, useDownloadFile } from '@app/hooks';
+import { saveFile } from '@app/lib/files';
+import { IconButton, Spinner, useToast } from '@chakra-ui/react';
+
+import { DownloadIcon, ShieldLockIcon } from './Icons';
 
 interface props {
   fileId: string;
@@ -30,12 +31,12 @@ const DownloadButton: FC<props> = (props: props) => {
     } catch (err) {
       toast.closeAll();
       toast({
-        position: "bottom-right",
+        position: 'bottom-right',
         duration: 5000,
         isClosable: true,
-        title: "Error decrypting file",
+        title: 'Error decrypting file',
         description: (err as Error).message,
-        status: "error",
+        status: 'error',
       });
     } finally {
       setDecrypting(false);
@@ -46,7 +47,7 @@ const DownloadButton: FC<props> = (props: props) => {
     <>
       <IconButton
         id={`download-${fileId}`}
-        visibility={downloading || decrypting ? "visible" : "hidden"}
+        visibility={downloading || decrypting ? 'visible' : 'hidden'}
         variant="none"
         color="purple.600"
         aria-label="download"
