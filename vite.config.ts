@@ -2,14 +2,14 @@ import react from '@vitejs/plugin-react-swc';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
+
 import { dependencies } from './package.json';
 
 const projectRootDir = resolve(__dirname);
 
 const BASE_CHUNKS = {
-  // vendor: ['react', 'react-router-dom', 'react-dom', 'swr', 'react-icons'],
-  // ui: ['@chakra-ui/react', '@emotion/react'],
-  vendor: ['react', 'react-router-dom', 'react-dom'],
+  vendor: ['react', 'react-router-dom', 'react-dom', 'swr', 'react-icons'],
+  ui: ['@chakra-ui/react', '@emotion/react'],
 };
 
 function renderChunks(deps: Record<string, string>) {
