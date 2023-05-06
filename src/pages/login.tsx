@@ -1,4 +1,5 @@
 import { FC, useContext, useEffect, useMemo, useState } from 'react';
+// import DeleteAppDataFolder from '@app/components/DeleteButtonAppFolder';
 import { GithubIcon, LinkedinIcon } from '@app/components/Icons';
 import GoogleLoginButton from '@app/components/LoginButton';
 import PassphraseInput from '@app/components/PassphraseInput';
@@ -8,7 +9,7 @@ import { getUserInfo } from '@app/hooks/http';
 import { getAuthorizationUrl } from '@app/lib/authorizationUrl';
 import { exportEncryptionKey, sha256, unwrapEncryptionKey } from '@app/lib/crypto';
 import { delStorageAccessToken, setStorageAccessToken } from '@app/lib/storage';
-import { AppData, WrappedKey } from '@app/models';
+import { WrappedKey } from '@app/models';
 import {
   Alert,
   AlertDescription,
@@ -65,6 +66,7 @@ const Login: FC = () => {
   return (
     <Flex flexDirection={{ base: 'column', lg: 'row' }}>
       {/* <DeleteAppDataFolder /> */}
+
       <Flex width={{ base: '100%', lg: '45%' }} height={{ base: '100vh', lg: 'none' }}>
         <VStack
           padding="2rem"

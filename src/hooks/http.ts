@@ -35,8 +35,8 @@ const JSONtoFilesMetadata = (json: any): FileMetadata[] => {
 const JSONtoAppData = (json: any): AppData => {
   const appData: AppData = {
     encryptionKey: {
-      enc: json['key'],
-      salt: json['salt'],
+      enc: json['encryptionKey']['enc'],
+      salt: json['encryptionKey']['salt'],
     },
   };
   return appData;
@@ -147,11 +147,12 @@ const loadConfigFile = async (token: string, configFileId: string): Promise<AppD
   const json = await res.json();
   return JSONtoAppData(json);
 };
-export const loadAppData = async (token: string): Promise<AppData> => {
+export const loadAppData = async (token: string): Promise<AppData | undefined> => {
   const files = await getAppFiles(token);
   const configFile = files.find((f) => f.name == CONFIG_FILE_NAME);
   if (!configFile) {
-    throw new Error(`Config file <${CONFIG_FILE_NAME}> not found`);
+    // throw new Error(`Config file <${CONFIG_FILE_NAME}> not found`);
+    return;
   }
   return await loadConfigFile(token, configFile.id);
 };
