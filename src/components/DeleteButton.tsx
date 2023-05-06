@@ -49,10 +49,10 @@ const DeleteModal: FC<PropsModal> = (props: PropsModal) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button autoFocus mr={3} onClick={onClose} color="black" disabled={deleting}>
+          <Button autoFocus mr={3} onClick={onClose} color="black" isDisabled={deleting}>
             Cancel
           </Button>
-          <Button onClick={handleDelete} disabled={deleting} colorScheme="red">
+          <Button onClick={handleDelete} isDisabled={deleting} colorScheme="red">
             {deleting ? <Spinner /> : 'Delete'}
           </Button>
         </ModalFooter>

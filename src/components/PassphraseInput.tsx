@@ -1,13 +1,9 @@
 import { FC, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ShieldLockIcon } from '@app/components/Icons';
+import { SecretIcon, ShieldLockIcon } from '@app/components/Icons';
 import { useAppData, useSaveAppData, useUserInfo } from '@app/hooks';
 import { sha256 } from '@app/lib/crypto';
-import { AppData } from '@app/models';
+import { WrappedKey } from '@app/models';
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
   Box,
   Button,
   FormControl,
@@ -21,17 +17,19 @@ import {
 } from '@chakra-ui/react';
 
 const SetPassphrase = () => {
+  const [loading, setLoading] = useState(false);
   const [passphrase, setPassphrase] = useState('');
   const [confirm, setConfirm] = useState('');
   const saveAppData = useSaveAppData();
-  const navigate = useNavigate();
 
   const onSetPassphrase = async () => {
+    setLoading(true);
     if (isValid) {
       const digest = await sha256(passphrase);
+      console.log('set passphrase', digest);
       await saveAppData(digest);
-      navigate('/login');
     }
+    setLoading(false);
   };
 
   const isValid = useMemo(
@@ -69,28 +67,24 @@ const SetPassphrase = () => {
         )}
       </FormControl>
       <Button
+        leftIcon={<SecretIcon />}
         size="md"
         width="100%"
-        disabled={!isValid}
+        variant="solid"
+        isDisabled={!isValid}
+        isLoading={loading}
         onClick={onSetPassphrase}
         colorScheme="yellow"
         backgroundColor="yellow.200"
       >
         Set passphrase
       </Button>
-
-      <Alert variant="subtle" borderRadius="6px">
-        <AlertIcon />
-        <VStack spacing="0" alignItems="flex-start">
-          <AlertDescription>Set your *secret* passphrase</AlertDescription>
-        </VStack>
-      </Alert>
     </VStack>
   );
 };
 
 interface props {
-  setEncryptionKey: (key: string, data: AppData) => Promise<void>;
+  setEncryptionKey: (key: string, wrappedKey: WrappedKey) => Promise<void>;
 }
 
 const PassphraseForm: FC<props> = (props: props) => {
@@ -104,7 +98,7 @@ const PassphraseForm: FC<props> = (props: props) => {
     event.stopPropagation();
 
     if (data) {
-      await setEncryptionKey(passphrase, data);
+      await setEncryptionKey(passphrase, data.encryptionKey);
     }
   };
 
@@ -133,7 +127,7 @@ const PassphraseForm: FC<props> = (props: props) => {
         size="lg"
         width="100%"
         onClick={handleClick}
-        disabled={!passphrase}
+        isDisabled={!passphrase}
         colorScheme="yellow"
         backgroundColor="yellow.200"
       >

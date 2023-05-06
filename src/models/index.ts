@@ -6,7 +6,6 @@ export interface StorageQuota {
   limit: number;
   usage: number;
   usageInDrive: number;
-  usageInDriveTrash: number;
 }
 
 export interface FileMetadata {
@@ -15,17 +14,13 @@ export interface FileMetadata {
   size: number;
   createdTime: Date;
   mimeType: string;
-  fileExtension: string;
 }
 
-export interface AppData {
-  key: string;
+export interface WrappedKey {
+  enc: string;
   salt: number[];
 }
 
-// export interface AppData {
-//   encryptionKey: {
-//     key: string;
-//     salt: number[];
-//   };
-// }
+export interface AppData {
+  encryptionKey: WrappedKey;
+}

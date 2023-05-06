@@ -151,7 +151,11 @@ export const useDeleteFile = () => {
 
 export const useAppData = () => {
   const { accessToken } = useContext(AppContext);
-  return useSWR('appData', () => loadAppData(accessToken.value));
+  return useSWR('appData', () => loadAppData(accessToken.value), {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
+  });
 };
 
 export const useSaveAppData = () => {
@@ -159,8 +163,12 @@ export const useSaveAppData = () => {
 
   return async (passphrase: string) => {
     const encryptionKey = await generateEncryptionKey();
-    const appData = await wrapEncryptionKey(encryptionKey, passphrase);
-    await saveAppData(accessToken.value, appData);
+    const wrappedKey = await wrapEncryptionKey(encryptionKey, passphrase);
+    await saveAppData(accessToken.value, { encryptionKey: wrappedKey });
+    await mutate((key: string) => key == 'appData', undefined, {
+      revalidate: true,
+      populateCache: false,
+    });
   };
 };
 

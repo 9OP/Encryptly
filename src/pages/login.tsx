@@ -1,14 +1,15 @@
 import { FC, useContext, useEffect, useMemo, useState } from 'react';
+// import DeleteAppDataFolder from '@app/components/DeleteButtonAppFolder';
 import { GithubIcon, LinkedinIcon } from '@app/components/Icons';
 import GoogleLoginButton from '@app/components/LoginButton';
 import PassphraseInput from '@app/components/PassphraseInput';
 import { AppContext } from '@app/context';
 import { useRecoverAccessToken } from '@app/hooks';
 import { getUserInfo } from '@app/hooks/http';
-import getAuthorizationUrl from '@app/lib/authorizationUrl';
+import { getAuthorizationUrl } from '@app/lib/authorizationUrl';
 import { exportEncryptionKey, sha256, unwrapEncryptionKey } from '@app/lib/crypto';
 import { delStorageAccessToken, setStorageAccessToken } from '@app/lib/storage';
-import { AppData } from '@app/models';
+import { WrappedKey } from '@app/models';
 import {
   Alert,
   AlertDescription,
@@ -48,11 +49,11 @@ const Login: FC = () => {
     }
   };
 
-  const setEncryptionKey = async (passphrase: string, data: AppData) => {
+  const setEncryptionKey = async (passphrase: string, wrappedKey: WrappedKey) => {
     try {
       setError('');
       const digest = await sha256(passphrase);
-      const key = await unwrapEncryptionKey(data, digest);
+      const key = await unwrapEncryptionKey(wrappedKey, digest);
       const exportKey = await exportEncryptionKey(key);
       encryptionKey.setValue(exportKey);
     } catch (err) {
@@ -65,6 +66,7 @@ const Login: FC = () => {
   return (
     <Flex flexDirection={{ base: 'column', lg: 'row' }}>
       {/* <DeleteAppDataFolder /> */}
+
       <Flex width={{ base: '100%', lg: '45%' }} height={{ base: '100vh', lg: 'none' }}>
         <VStack
           padding="2rem"
@@ -167,9 +169,10 @@ const Login: FC = () => {
         <Heading marginBottom="3rem">How it works ?</Heading>
 
         <Image
+          loading="lazy"
           src="/schema.png"
           alt="schema"
-          maxWidth={{ base: '95%', md: '90%', lg: '85%', xl: '70%' }}
+          width={{ base: '95%', md: '90%', lg: '85%', xl: '70%' }}
           zIndex="10"
           marginRight="3rem"
         />

@@ -14,7 +14,6 @@ const JSONtoFileMetadata = (json: any): FileMetadata => {
     size: parseInt(json['size'] || 0),
     createdTime: new Date(json['createdTime']),
     mimeType: json['mimeType'],
-    fileExtension: json['fileExtension'],
   };
   return fileMetadata;
 };
@@ -35,8 +34,10 @@ const JSONtoFilesMetadata = (json: any): FileMetadata[] => {
 
 const JSONtoAppData = (json: any): AppData => {
   const appData: AppData = {
-    key: json['key'],
-    salt: json['salt'],
+    encryptionKey: {
+      enc: json['encryptionKey']['enc'],
+      salt: json['encryptionKey']['salt'],
+    },
   };
   return appData;
 };
@@ -46,7 +47,6 @@ const JSONtoStorageQuota = (json: any): StorageQuota => {
     limit: parseInt(json['limit']),
     usage: parseInt(json['usage']),
     usageInDrive: parseInt(json['usageInDrive']),
-    usageInDriveTrash: parseInt(json['usageInDriveTrash']),
   };
   return storageQuota;
 };
@@ -72,6 +72,13 @@ export const revokeToken = async (token: string): Promise<void> => {
   fetch(`https://oauth2.googleapis.com/revoke?token=${token}type=accesstoken`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  });
+};
+
+export const revokeApp = async (token: string): Promise<void> => {
+  fetch(`https://oauth2.googleapis.com/revoke`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
   });
 };
 
@@ -140,11 +147,12 @@ const loadConfigFile = async (token: string, configFileId: string): Promise<AppD
   const json = await res.json();
   return JSONtoAppData(json);
 };
-export const loadAppData = async (token: string): Promise<AppData> => {
+export const loadAppData = async (token: string): Promise<AppData | undefined> => {
   const files = await getAppFiles(token);
   const configFile = files.find((f) => f.name == CONFIG_FILE_NAME);
   if (!configFile) {
-    throw new Error(`Config file <${CONFIG_FILE_NAME}> not found`);
+    // throw new Error(`Config file <${CONFIG_FILE_NAME}> not found`);
+    return;
   }
   return await loadConfigFile(token, configFile.id);
 };

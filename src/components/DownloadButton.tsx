@@ -61,7 +61,7 @@ const DownloadButton: FC<props> = (props: props) => {
           )
         }
         onClick={handleClick}
-        disabled={downloading || decrypting}
+        isDisabled={downloading || decrypting}
       />
       <a hidden ref={ref} />
     </>

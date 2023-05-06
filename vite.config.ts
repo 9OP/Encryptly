@@ -2,6 +2,7 @@ import react from '@vitejs/plugin-react-swc';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
+
 import { dependencies } from './package.json';
 
 const projectRootDir = resolve(__dirname);
@@ -61,6 +62,7 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
+        format: 'esm',
         manualChunks: {
           ...BASE_CHUNKS,
           ...renderChunks(dependencies),

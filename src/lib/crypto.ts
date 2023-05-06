@@ -1,4 +1,4 @@
-import { AppData } from '@app/models';
+import { WrappedKey } from '@app/models';
 
 // Recommended nonce byte lenght for AES-GCM 256bytes
 const NONCE_SIZE = 12;
@@ -10,6 +10,7 @@ const VERSION_SIZE = 1;
 
 export const decrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
   const buff = await data.arrayBuffer();
+
   const version = buff.slice(0, VERSION_SIZE);
   const iv = buff.slice(VERSION_SIZE, NONCE_SIZE + VERSION_SIZE);
   const cipher = buff.slice(NONCE_SIZE + VERSION_SIZE);
@@ -74,27 +75,27 @@ const getWrapKey = async (keyMaterial: CryptoKey, salt: Uint8Array) => {
 export const wrapEncryptionKey = async (
   encryptionKey: CryptoKey,
   passphrase: string,
-): Promise<AppData> => {
+): Promise<WrappedKey> => {
   const keyMaterial = await getKeyMaterial(passphrase);
   const salt = self.crypto.getRandomValues(new Uint8Array(16));
   const wrapKey = await getWrapKey(keyMaterial, salt);
   const key = await self.crypto.subtle.wrapKey('raw', encryptionKey, wrapKey, 'AES-KW');
   return {
-    key: toB64(key),
+    enc: toB64(key),
     salt: [...salt],
   };
 };
 
 export const unwrapEncryptionKey = async (
-  appData: AppData,
+  wrappedKey: WrappedKey,
   passphrase: string,
 ): Promise<CryptoKey> => {
-  const salt = new Uint8Array(appData.salt);
+  const salt = new Uint8Array(wrappedKey.salt);
   const keyMaterial = await getKeyMaterial(passphrase);
   const wrapKey = await getWrapKey(keyMaterial, salt);
   return self.crypto.subtle.unwrapKey(
     'raw',
-    fromB64(appData.key),
+    fromB64(wrappedKey.enc),
     wrapKey,
     'AES-KW',
     {
