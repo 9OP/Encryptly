@@ -159,8 +159,8 @@ export const useSaveAppData = () => {
 
   return async (passphrase: string) => {
     const encryptionKey = await generateEncryptionKey();
-    const appData = await wrapEncryptionKey(encryptionKey, passphrase);
-    await saveAppData(accessToken.value, appData);
+    const wrappedKey = await wrapEncryptionKey(encryptionKey, passphrase);
+    await saveAppData(accessToken.value, { encryptionKey: wrappedKey });
   };
 };
 

@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 import { GoogleIcon } from '@app/components/Icons';
+import { revokeApp } from '@app/hooks/http';
+import { verifyScopes } from '@app/lib/authorizationUrl';
 import { Button } from '@chakra-ui/react';
 
 interface props {
@@ -31,7 +33,7 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
 
   const polling = useCallback(
     (popup: Window) => {
-      const polling = setInterval(() => {
+      const polling = setInterval(async () => {
         if (!popup || popup.closed || popup.closed === undefined) {
           clearInterval(polling);
           onFailure('Popup has been closed by user');
@@ -49,11 +51,20 @@ const LoginButton = ({ url, onSuccess, onFailure }: props) => {
               const hash = popup.location.hash.split('#')[1];
               const parsedHash = new URLSearchParams(hash);
               const accessToken = parsedHash.get('access_token');
+              const scopes = parsedHash.get('scope');
+
               closeDialog();
-              if (accessToken) {
-                return onSuccess(accessToken);
+
+              if (!accessToken) {
+                return onFailure('Access token not found');
               }
-              return onFailure('Access token not found');
+
+              if (!verifyScopes(scopes?.split(' ') || [])) {
+                await revokeApp(accessToken);
+                return onFailure('Missing application scopes');
+              }
+
+              return onSuccess(accessToken);
             }
           }
         } catch (err) {

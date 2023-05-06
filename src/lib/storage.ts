@@ -1,4 +1,4 @@
-const ACCESS_TOKEN = 'access-token';
+const ACCESS_TOKEN = 'ACCESS_TOKEN';
 
 export const getStorageAccessToken = (): string => {
   return sessionStorage.getItem(ACCESS_TOKEN) || '';

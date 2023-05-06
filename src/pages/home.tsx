@@ -9,7 +9,7 @@ import UploadButton from '@app/components/UploadButton';
 import UserCard from '@app/components/UserCard';
 import { Flex, Stack, VStack } from '@chakra-ui/react';
 
-const Index: FC = () => {
+const Home: FC = () => {
   const [search, setSearch] = useState('');
   const [filesCount, setFilesCount] = useState(0);
   const [storageCount, setStorageCount] = useState(0);
@@ -61,4 +61,4 @@ const Index: FC = () => {
   );
 };
 
-export default Index;
+export default Home;

@@ -14,7 +14,6 @@ const JSONtoFileMetadata = (json: any): FileMetadata => {
     size: parseInt(json['size'] || 0),
     createdTime: new Date(json['createdTime']),
     mimeType: json['mimeType'],
-    fileExtension: json['fileExtension'],
   };
   return fileMetadata;
 };
@@ -35,8 +34,10 @@ const JSONtoFilesMetadata = (json: any): FileMetadata[] => {
 
 const JSONtoAppData = (json: any): AppData => {
   const appData: AppData = {
-    key: json['key'],
-    salt: json['salt'],
+    encryptionKey: {
+      enc: json['key'],
+      salt: json['salt'],
+    },
   };
   return appData;
 };
@@ -46,7 +47,6 @@ const JSONtoStorageQuota = (json: any): StorageQuota => {
     limit: parseInt(json['limit']),
     usage: parseInt(json['usage']),
     usageInDrive: parseInt(json['usageInDrive']),
-    usageInDriveTrash: parseInt(json['usageInDriveTrash']),
   };
   return storageQuota;
 };
@@ -72,6 +72,13 @@ export const revokeToken = async (token: string): Promise<void> => {
   fetch(`https://oauth2.googleapis.com/revoke?token=${token}type=accesstoken`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  });
+};
+
+export const revokeApp = async (token: string): Promise<void> => {
+  fetch(`https://oauth2.googleapis.com/revoke`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
   });
 };
 

@@ -7,8 +7,9 @@ import { dependencies } from './package.json';
 const projectRootDir = resolve(__dirname);
 
 const BASE_CHUNKS = {
-  vendor: ['react', 'react-router-dom', 'react-dom', 'swr', 'react-icons'],
-  ui: ['@chakra-ui/react', '@emotion/react'],
+  // vendor: ['react', 'react-router-dom', 'react-dom', 'swr', 'react-icons'],
+  // ui: ['@chakra-ui/react', '@emotion/react'],
+  vendor: ['react', 'react-router-dom', 'react-dom'],
 };
 
 function renderChunks(deps: Record<string, string>) {
@@ -61,6 +62,7 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
+        format: 'esm',
         manualChunks: {
           ...BASE_CHUNKS,
           ...renderChunks(dependencies),

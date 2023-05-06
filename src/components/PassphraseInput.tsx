@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ShieldLockIcon } from '@app/components/Icons';
 import { useAppData, useSaveAppData, useUserInfo } from '@app/hooks';
 import { sha256 } from '@app/lib/crypto';
-import { AppData } from '@app/models';
+import { WrappedKey } from '@app/models';
 import {
   Alert,
   AlertDescription,
@@ -90,7 +90,7 @@ const SetPassphrase = () => {
 };
 
 interface props {
-  setEncryptionKey: (key: string, data: AppData) => Promise<void>;
+  setEncryptionKey: (key: string, wrappedKey: WrappedKey) => Promise<void>;
 }
 
 const PassphraseForm: FC<props> = (props: props) => {
@@ -104,7 +104,7 @@ const PassphraseForm: FC<props> = (props: props) => {
     event.stopPropagation();
 
     if (data) {
-      await setEncryptionKey(passphrase, data);
+      await setEncryptionKey(passphrase, data.encryptionKey);
     }
   };
 
