@@ -7,21 +7,6 @@ import { dependencies } from './package.json';
 
 const projectRootDir = resolve(__dirname);
 
-const BASE_CHUNKS = {
-  vendor: ['react', 'react-router-dom', 'react-dom', 'swr', 'react-icons'],
-  ui: ['@chakra-ui/react', '@emotion/react'],
-};
-
-function renderChunks(deps: Record<string, string>) {
-  const chunks = {};
-  const alreadySplit = Object.values(BASE_CHUNKS).reduce((acc, l) => acc.concat(l), []);
-  Object.keys(deps).forEach((key) => {
-    if (alreadySplit.includes(key)) return;
-    chunks[key] = [key];
-  });
-  return chunks;
-}
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -61,12 +46,30 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     rollupOptions: {
+      cache: true,
       output: {
         format: 'esm',
-        manualChunks: {
-          ...BASE_CHUNKS,
-          ...renderChunks(dependencies),
+        manualChunks: function manualChunks(id) {
+          const chunks = {
+            framer: ['framer-motion'],
+            ui: ['chakra-ui'],
+            react: ['react', 'react-router-dom', 'react-dom'],
+          };
+
+          for (const [key, val] of Object.entries(chunks)) {
+            if (val.reduce((acc, v) => id.includes(v) || acc, false)) {
+              return key;
+            }
+          }
+
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
         },
+        // manualChunks: {
+        //   ...BASE_CHUNKS,
+        //   ...renderChunks(dependencies),
+        // },
       },
     },
   },
