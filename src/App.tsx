@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { useToast } from '@chakra-ui/react';
 import { SWRConfig } from 'swr';
 
 const AuthGuard = React.lazy(() => import('@app/guard/authenticationGuard'));
@@ -12,7 +11,6 @@ const Terms = React.lazy(() => import('@app/pages/terms'));
 const Logout = React.lazy(() => import('@app/pages/logout'));
 
 export default function App() {
-  const toast = useToast();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -21,23 +19,7 @@ export default function App() {
       value={{
         onError: (error: Error) => {
           if (error?.status === 401 && location.pathname !== '/login') {
-            toast({
-              status: 'warning',
-              title: 'Session expired',
-              duration: 3000,
-              isClosable: true,
-              position: 'top-right',
-            });
             navigate('/login');
-          } else {
-            // toast({
-            //   status: "warning",
-            //   title: error?.info,
-            //   description: error?.message,
-            //   duration: 3000,
-            //   isClosable: true,
-            //   position: "top-right",
-            // });
           }
         },
       }}
