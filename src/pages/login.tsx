@@ -3,6 +3,7 @@ import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { GithubIcon, LinkedinIcon } from '@app/components/Icons';
 import GoogleLoginButton from '@app/components/LoginButton';
 import PassphraseInput from '@app/components/PassphraseInput';
+import ProductHuntBadge from '@app/components/ProductHuntBadge';
 import { AppContext } from '@app/context';
 import { useRecoverAccessToken } from '@app/hooks';
 import { getUserInfo } from '@app/hooks/http';
@@ -77,7 +78,9 @@ const Login: FC = () => {
           justifyContent="space-between"
         >
           <VStack spacing="2.5rem">
+            <ProductHuntBadge />
             <Box
+              marginTop="0!important"
               width="100%"
               height={{ base: '10rem', xl: '15rem' }}
               opacity="0.6"
@@ -105,6 +108,7 @@ const Login: FC = () => {
                   <PassphraseInput setEncryptionKey={setEncryptionKey} />
                 )}
               </Box>
+
               <Text
                 w={{ base: '100%', xl: '50%' }}
                 fontSize="xl"
@@ -126,32 +130,31 @@ const Login: FC = () => {
             )}
           </VStack>
 
-          <VStack w="100%">
-            <HStack justifyContent="space-between" width="100%">
+          <VStack w="100%" alignItems="flex-start">
+            <Link href="https://www.linkedin.com/in/martin-guyard-105b74150/">
+              <Button leftIcon={<LinkedinIcon />} variant="link">
+                Martin
+              </Button>
+            </Link>
+
+            <HStack w="100%" justifyContent="space-between">
               <Link href="https://github.com/9OP/Encryptly/">
                 <Button leftIcon={<GithubIcon />} variant="link">
                   Show me the code
                 </Button>
               </Link>
-
-              <Link href="https://www.linkedin.com/in/martin-guyard-105b74150/">
-                <Button leftIcon={<LinkedinIcon />} variant="link">
-                  Martin
-                </Button>
-              </Link>
-            </HStack>
-
-            <HStack spacing="2rem" w="100%">
-              <Link href="/terms">
-                <Button variant="link" size="xs">
-                  Terms
-                </Button>
-              </Link>
-              <Link href="/privacy">
-                <Button variant="link" size="xs">
-                  Privacy
-                </Button>
-              </Link>
+              <HStack spacing="1rem">
+                <Link href="/terms">
+                  <Button variant="link" size="sm">
+                    Terms
+                  </Button>
+                </Link>
+                <Link href="/privacy">
+                  <Button variant="link" size="sm">
+                    Privacy
+                  </Button>
+                </Link>
+              </HStack>
             </HStack>
           </VStack>
         </VStack>
