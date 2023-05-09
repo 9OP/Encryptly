@@ -8,9 +8,7 @@ import { AppContext } from '@app/context';
 import { useRecoverAccessToken } from '@app/hooks';
 import { getUserInfo } from '@app/hooks/http';
 import { getAuthorizationUrl } from '@app/lib/authorizationUrl';
-import { exportEncryptionKey, sha256, unwrapEncryptionKey } from '@app/lib/crypto';
 import { delStorageAccessToken, setStorageAccessToken } from '@app/lib/storage';
-import { WrappedKey } from '@app/models';
 import {
   Alert,
   AlertDescription,
@@ -47,18 +45,6 @@ const Login: FC = () => {
     } catch (err) {
       setError((err as Error).message);
       delStorageAccessToken();
-    }
-  };
-
-  const setEncryptionKey = async (passphrase: string, wrappedKey: WrappedKey) => {
-    try {
-      setError('');
-      const digest = await sha256(passphrase);
-      const key = await unwrapEncryptionKey(wrappedKey, digest);
-      const exportKey = await exportEncryptionKey(key);
-      encryptionKey.setValue(exportKey);
-    } catch (err) {
-      setError(`Failed unwrapping your encryption key`);
     }
   };
 
@@ -105,7 +91,10 @@ const Login: FC = () => {
                     onFailure={setError}
                   />
                 ) : (
-                  <PassphraseInput setEncryptionKey={setEncryptionKey} />
+                  <PassphraseInput
+                    onSuccess={encryptionKey.setValue}
+                    onFailure={setError}
+                  />
                 )}
               </Box>
 

@@ -1,8 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 import { SecretIcon, ShieldLockIcon } from '@app/components/Icons';
-import { useAppData, useSaveAppData, useUserInfo } from '@app/hooks';
+import { useAppData, useGetKey, useSaveAppData, useUserInfo } from '@app/hooks';
 import { sha256 } from '@app/lib/crypto';
-import { WrappedKey } from '@app/models';
 import {
   Box,
   Button,
@@ -84,21 +83,27 @@ const SetPassphrase = () => {
 };
 
 interface props {
-  setEncryptionKey: (key: string, wrappedKey: WrappedKey) => Promise<void>;
+  onSuccess: (encryptionKey: string) => void;
+  onFailure: (err: string) => void;
 }
 
 const PassphraseForm: FC<props> = (props: props) => {
   const [passphrase, setPassphrase] = useState('');
-  const { setEncryptionKey } = props;
+  const { onSuccess, onFailure } = props;
   const { data: userInfo } = useUserInfo();
-  const { data } = useAppData();
+  const getKey = useGetKey();
 
   const handleClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (data) {
-      await setEncryptionKey(passphrase, data.encryptionKey);
+    try {
+      const key = await getKey(passphrase);
+      if (key) {
+        onSuccess(key);
+      }
+    } catch (error) {
+      onFailure('' + error);
     }
   };
 
@@ -139,7 +144,7 @@ const PassphraseForm: FC<props> = (props: props) => {
 
 const PassphraseInput: FC<props> = (props: props) => {
   const { data, isLoading } = useAppData();
-  const { setEncryptionKey } = props;
+  const { onSuccess, onFailure } = props;
 
   return (
     <>
@@ -156,7 +161,7 @@ const PassphraseInput: FC<props> = (props: props) => {
       ) : (
         <>
           {data != null ? (
-            <PassphraseForm setEncryptionKey={setEncryptionKey} />
+            <PassphraseForm onSuccess={onSuccess} onFailure={onFailure} />
           ) : (
             <SetPassphrase />
           )}

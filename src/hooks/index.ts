@@ -1,14 +1,20 @@
 import { useCallback, useContext } from 'react';
 import { AppContext } from '@app/context';
-import { generateEncryptionKey, wrapEncryptionKey } from '@app/lib/crypto';
-import promisify from '@app/lib/promisify';
+import {
+  decrypt,
+  encrypt,
+  exportEncryptionKey,
+  generateEncryptionKey,
+  sha256,
+  unwrapEncryptionKey,
+  wrapEncryptionKey,
+} from '@app/lib/crypto';
+import greenlet from '@app/lib/greenlet';
 import {
   delStorageAccessToken,
   getStorageAccessToken,
   setStorageAccessToken,
 } from '@app/lib/storage';
-import DecryptWorker from '@app/lib/webworkers/decrypt.worker?worker';
-import EncryptWorker from '@app/lib/webworkers/encrypt.worker?worker';
 import useSWR, { mutate } from 'swr';
 
 import {
@@ -100,26 +106,12 @@ export const revalidateListFiles = async () => {
 
 export const useEncryptFile = () => {
   const { encryptionKey } = useContext(AppContext);
-
-  return useCallback(
-    (file: File): Promise<Blob> => {
-      const worker = new EncryptWorker();
-      return promisify(worker, { file, key: encryptionKey.value });
-    },
-    [encryptionKey.value],
-  );
+  return greenlet(async (data: Blob) => encrypt(data, encryptionKey.value));
 };
 
 export const useDecryptFile = () => {
   const { encryptionKey } = useContext(AppContext);
-
-  return useCallback(
-    async (data: Blob): Promise<Blob> => {
-      const worker = new DecryptWorker();
-      return promisify(worker, { data, key: encryptionKey.value });
-    },
-    [encryptionKey.value],
-  );
+  return greenlet(async (data: Blob) => decrypt(data, encryptionKey.value));
 };
 
 export const useUploadFile = () => {
@@ -158,10 +150,26 @@ export const useAppData = () => {
   });
 };
 
+export const useGetKey = () => {
+  const { data } = useAppData();
+
+  return useCallback(
+    greenlet(async (passphrase: string) => {
+      if (appData?.encryptionKey) {
+        const digest = await sha256(passphrase);
+        const key = await unwrapEncryptionKey(appData.encryptionKey, digest);
+        const exportKey = await exportEncryptionKey(key);
+        return exportKey;
+      }
+    }),
+    [data],
+  );
+};
+
 export const useSaveAppData = () => {
   const { accessToken } = useContext(AppContext);
 
-  return async (passphrase: string) => {
+  return greenlet(async (passphrase: string) => {
     const encryptionKey = await generateEncryptionKey();
     const wrappedKey = await wrapEncryptionKey(encryptionKey, passphrase);
     await saveAppData(accessToken.value, { encryptionKey: wrappedKey });
@@ -169,7 +177,7 @@ export const useSaveAppData = () => {
       revalidate: true,
       populateCache: false,
     });
-  };
+  });
 };
 
 // only for debug

@@ -8,9 +8,9 @@ const NONCE_SIZE = 12;
 const VERSION = 0x01;
 const VERSION_SIZE = 1;
 
-export const decrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
+export const decrypt = async (data: Blob, key: string): Promise<Blob> => {
+  const importKey = await importEncryptionKey(key);
   const buff = await data.arrayBuffer();
-
   const version = buff.slice(0, VERSION_SIZE);
   const iv = buff.slice(VERSION_SIZE, NONCE_SIZE + VERSION_SIZE);
   const cipher = buff.slice(NONCE_SIZE + VERSION_SIZE);
@@ -21,16 +21,21 @@ export const decrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
 
   const decrypted = await self.crypto.subtle.decrypt(
     { name: 'AES-GCM', iv },
-    key,
+    importKey,
     cipher,
   );
   return new Blob([decrypted]);
 };
 
-export const encrypt = async (data: Blob, key: CryptoKey): Promise<Blob> => {
+export const encrypt = async (data: Blob, key: string): Promise<Blob> => {
+  const importKey = await importEncryptionKey(key);
   const iv = self.crypto.getRandomValues(new Uint8Array(NONCE_SIZE));
   const plain = await data.arrayBuffer();
-  const encrypted = await self.crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plain);
+  const encrypted = await self.crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv },
+    importKey,
+    plain,
+  );
   return new Blob([new Uint8Array([VERSION]).buffer, iv.buffer, encrypted]);
 };
 
@@ -111,7 +116,7 @@ export const exportEncryptionKey = async (encryptionKey: CryptoKey): Promise<str
   return toB64(await self.crypto.subtle.exportKey('raw', encryptionKey));
 };
 
-export const importEncryptionKey = async (encryptionKey: string): Promise<CryptoKey> => {
+const importEncryptionKey = async (encryptionKey: string): Promise<CryptoKey> => {
   return self.crypto.subtle.importKey(
     'raw',
     fromB64(encryptionKey),
