@@ -131,7 +131,7 @@ const Login: FC = () => {
           </VStack>
 
           <VStack w="100%" alignItems="flex-start">
-            <Link href="https://www.linkedin.com/in/martin-guyard-105b74150/">
+            <Link href="https://www.linkedin.com/in/martin-g-105b74150/">
               <Button leftIcon={<LinkedinIcon />} variant="link">
                 Martin
               </Button>
